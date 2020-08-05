@@ -1,3 +1,69 @@
-## code to prepare `update-proj` dataset goes here
 
-usethis::use_data(update-proj, overwrite = TRUE)
+library(tidyverse)
+
+# download PROJ
+source_url <- "https://download.osgeo.org/proj/proj-7.1.0.tar.gz"
+curl::curl_download(source_url, "data-raw/proj-source.tar.gz")
+untar("data-raw/proj-source.tar.gz", exdir = "data-raw")
+
+# make sure the dir exists
+proj_dir <- list.files("data-raw", "^proj-[0-9.]+", include.dirs = TRUE, full.names = TRUE)
+stopifnot(dir.exists(proj_dir), length(proj_dir) == 1)
+
+# headers shouldn't be included in other packages,
+# so put them in /src/proj_include
+headers <- tibble(
+  path = c(
+    list.files(file.path(proj_dir, "include"), "\\.(h|hpp)$", full.names = TRUE, recursive = TRUE),
+    list.files(file.path(proj_dir, "src"), "\\.(h|hpp)$", full.names = TRUE, recursive = TRUE)
+  ),
+  final_path = str_replace(path, ".*?(include|src)/", "src/proj_include/")
+)
+
+# put sources in src/proj
+source_files <- tibble(
+  path = list.files(file.path(proj_dir, "src"), "\\.(h|hpp|c|cpp)$", full.names = TRUE, recursive = TRUE),
+  final_path = str_replace(path, ".*?src/", "src/proj/")
+) %>%
+  filter(!str_detect(path, "/(apps|tests?)/"))
+
+# clean source dir
+unlink("src/proj/", recursive = TRUE)
+unlink("src/proj_include/", recursive = TRUE)
+
+# create destination dirs
+dest_dirs <- c(
+  headers %>% pull(final_path),
+  source_files %>% pull(final_path)
+) %>%
+  dirname() %>%
+  unique()
+dest_dirs[!dir.exists(dest_dirs)] %>% sort() %>% walk(dir.create, recursive = TRUE)
+
+# copy source files
+stopifnot(
+  file.copy(headers$path, headers$final_path),
+  file.copy(source_files$path, source_files$final_path)
+)
+
+# need to update objects, because they are in subdirectories
+objects <- list.files("src", pattern = "\\.(cpp|c)$", recursive = TRUE, full.names = TRUE) %>%
+  gsub("\\.(cpp|c)$", ".o", .) %>%
+  gsub("src/", "", .) %>%
+  paste("    ", ., "\\", collapse = "\n")
+
+# modify source files (not automated yet)
+# - pragmas (check with  tools:::.check_pragmas())
+# - calls to exit(), abort()
+# - stderr, stdout, putchar
+# - fprintf\(stderr,\s* -> REprintf(
+
+print_next <- function() {
+  cli::cat_rule("Manual modifications")
+
+  cli::cat_bullet("Update exported C API using update-libproj-api.R")
+  cli::cat_bullet("Update OBJECTS in Makevars (copied to cliboard)")
+  clipr::write_clip(objects)
+}
+
+print_next()

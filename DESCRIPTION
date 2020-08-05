@@ -10,7 +10,7 @@ Authors@R:
              comment = c(ORCID = "0000-0002-9415-4582")),
       person("PROJ authors", role = "aut")
     )
-Description: Provides the 'PROJ' C API that can be used to write
+Description: Provides a 'PROJ' C API that can be used to write
   high-performance C and C++ geometry operations using R as an interface.
   This package contains an internal version of the 'PROJ' library to
   guarnatee the best possible consistency on multiple platforms.
