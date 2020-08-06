@@ -10,6 +10,13 @@ untar("data-raw/proj-source.tar.gz", exdir = "data-raw")
 proj_dir <- list.files("data-raw", "^proj-[0-9.]+", include.dirs = TRUE, full.names = TRUE)
 stopifnot(dir.exists(proj_dir), length(proj_dir) == 1)
 
+# build PROJ! needed for proj_config.h and the db
+withr::with_dir(proj_dir, system("./configure"))
+withr::with_dir(proj_dir, system("make"))
+
+# copy the db into inst/
+file.copy(file.path(proj_dir, "data/proj.db"), "inst/proj.db")
+
 # headers shouldn't be included in other packages,
 # so put them in /src/proj_include
 headers <- tibble(
