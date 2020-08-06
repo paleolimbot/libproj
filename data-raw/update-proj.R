@@ -83,10 +83,7 @@ print_next <- function() {
   cli::cat_rule("Manual modifications")
 
   cli::cat_bullet(
-    "Replace stderr/stdout with cpp_compat_"
-  )
-  cli::cat_bullet(
-    "Replace stderr with cpp_compat_"
+    "Replace stderrp/stdoutp with cpp_compat_"
   )
   cli::cat_bullet(
     "Replace abort() with cpp_compat_abort()"

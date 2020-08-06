@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 #pragma once
 
 /*
@@ -365,7 +366,7 @@ template <typename T> struct hash<::dropbox::oxygen::nn<T>> {
      * compiled out. */                                                        \
     assert(p &&#_e " must not be null");                                       \
     if (!p)                                                                    \
-      std::abort();                                                            \
+      cpp_compat_abort();                                                            \
     return dropbox::oxygen::nn<                                                \
         typename std::remove_reference<decltype(p)>::type>(                    \
         dropbox::oxygen::i_promise_i_checked_for_null, std::move(p));          \

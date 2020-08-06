@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /*
     __ _____ _____ _____
  __|  |   __|     |   | |  JSON for Modern C++
@@ -907,7 +908,7 @@ struct position_t
     #endif
     #define JSON_HEDLEY_UNREACHABLE_RETURN(value) return value
 #elif defined(EXIT_FAILURE)
-    #define JSON_HEDLEY_UNREACHABLE() abort()
+    #define JSON_HEDLEY_UNREACHABLE() cpp_compat_abort()
 #else
     #define JSON_HEDLEY_UNREACHABLE()
     #define JSON_HEDLEY_UNREACHABLE_RETURN(value) return value
@@ -1661,7 +1662,7 @@ JSON_HEDLEY_DIAGNOSTIC_POP
     #define JSON_INTERNAL_CATCH(exception) catch(exception)
 #else
     #include <cstdlib>
-    #define JSON_THROW(exception) std::abort()
+    #define JSON_THROW(exception) cpp_compat_abort()
     #define JSON_TRY if(true)
     #define JSON_CATCH(exception) if(false)
     #define JSON_INTERNAL_CATCH(exception) if(false)
