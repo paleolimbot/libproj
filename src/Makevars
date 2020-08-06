@@ -1,9 +1,12 @@
 
-PKG_CPPFLAGS = -I../src/proj_include
+PKG_CXXFLAGS = -I../src/proj_include
+PKG_LIBS = -lsqlite3
 
 CXX_STD = CXX11
 
 OBJECTS = cpp-compat.o \
+     libproj-init.o \
+     libproj-version.o \
      proj/4D_api.o \
      proj/aasincos.o \
      proj/adjlon.o \

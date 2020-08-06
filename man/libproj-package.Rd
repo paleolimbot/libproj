@@ -6,10 +6,18 @@
 \alias{libproj-package}
 \title{libproj: Generic Coordinate Transformation Library ('PROJ') C API}
 \description{
-Provides the 'PROJ' C API that can be used to write
+Provides a 'PROJ' C API that can be used to write
   high-performance C and C++ geometry operations using R as an interface.
   This package contains an internal version of the 'PROJ' library to
   guarnatee the best possible consistency on multiple platforms.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/paleolimbot/libproj}
+  \item Report bugs at \url{https://github.com/paleolimbot/libproj/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Dewey Dunnington \email{dewey@fishandwhistle.net} (\href{https://orcid.org/0000-0002-9415-4582}{ORCID})

@@ -4,6 +4,7 @@
 # The following block is used by usethis to automatically manage
 # roxygen namespace tags. Modify with care!
 ## usethis namespace: start
+#' @useDynLib libproj, .registration = TRUE
 ## usethis namespace: end
 NULL
 
@@ -16,5 +17,5 @@ NULL
 #' libproj_version()
 #'
 libproj_version <- function() {
-  "7.1.0"
+  .Call(libproj_proj_version)
 }
