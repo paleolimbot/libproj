@@ -79,14 +79,27 @@ objects <- list.files("src", pattern = "\\.(cpp|c)$", recursive = TRUE, full.nam
   gsub("src/", "", .) %>%
   paste("    ", ., "\\", collapse = "\n")
 
-# modify source files (not automated yet)
-# - pragmas (check with  tools:::.check_pragmas())
-# - calls to exit(), abort()
-# - stderr, stdout, putchar
-# - fprintf\(stderr,\s* -> REprintf(
-
 print_next <- function() {
   cli::cat_rule("Manual modifications")
+
+  cli::cat_bullet(
+    "Replace stderr/stdout with cpp_compat_"
+  )
+  cli::cat_bullet(
+    "Replace stderr with cpp_compat_"
+  )
+  cli::cat_bullet(
+    "Replace abort() with cpp_compat_abort()"
+  )
+  cli::cat_bullet(
+    "Replace exit() with cpp_compat_exit()"
+  )
+  cli::cat_bullet(
+    "Replace putchar() with cpp_compat_"
+  )
+  cli::cat_bullet(
+    "Replace random() with cpp_compat_random() (sqlite3.c)"
+  )
 
   cli::cat_bullet("Update exported C API using update-libproj-api.R")
   cli::cat_bullet("Update OBJECTS in Makevars (copied to cliboard)")
