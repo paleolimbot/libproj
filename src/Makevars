@@ -1,5 +1,5 @@
 
-PKG_CXXFLAGS = -I../src/proj_include
+PKG_CPPFLAGS = -I../src/proj_include
 PKG_LIBS = -lsqlite3
 
 CXX_STD = CXX11
