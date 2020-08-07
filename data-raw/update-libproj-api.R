@@ -21,7 +21,8 @@ function_defs_chr <- capi_header %>%
 typedefs_chr <- c(
   read_lines(capi_header)[182:345],
   read_lines(capi_header)[365:366],
-  read_lines(capi_header)[380:498],
+  read_lines(capi_header)[378:429],
+  read_lines(capi_header)[434:498],
   read_lines(capi_header)[565:570],
   read_lines(capi_header)[665:995],
   read_lines(capi_header)[1152]
@@ -72,6 +73,15 @@ libproj_h <- with(
 // generated automatically by data-raw/update-libgeos-api.R - do not edit by hand!
 #ifndef LIBPROJ_H
 #define LIBPROJ_H
+
+#ifndef __cplusplus
+# include <stddef.h> /* for size_t definition */
+#else
+# include <cstddef>
+using std::size_t;
+#endif
+
+#define PROJ_DLL
 
 { paste0(version_defs_chr, collapse = "\n") }
 

@@ -2,6 +2,15 @@
 #ifndef LIBPROJ_H
 #define LIBPROJ_H
 
+#ifndef __cplusplus
+# include <stddef.h> /* for size_t definition */
+#else
+# include <cstddef>
+using std::size_t;
+#endif
+
+#define PROJ_DLL
+
 #define PROJ_VERSION_MAJOR 7
 #define PROJ_VERSION_MINOR 1
 #define PROJ_VERSION_PATCH 0
@@ -172,6 +181,8 @@ struct projCtx_t;
 typedef struct projCtx_t PJ_CONTEXT;
 /** Callback to resolve a filename to a full path */
 typedef const char* (*proj_file_finder) (PJ_CONTEXT *ctx, const char*, void* user_data);
+typedef struct PROJ_FILE_HANDLE PROJ_FILE_HANDLE;
+
 /** Open access / mode */
 typedef enum PROJ_OPEN_ACCESS
 {
@@ -222,10 +233,6 @@ typedef struct PROJ_FILE_API
     int (*rename_cbk)(PJ_CONTEXT *ctx, const char *oldPath, const char *newPath, void* user_data);
 } PROJ_FILE_API;
 
-int PROJ_DLL proj_context_set_fileapi(
-    PJ_CONTEXT* ctx, const PROJ_FILE_API* fileapi, void* user_data);
-
-void PROJ_DLL proj_context_set_sqlite3_vfs_name(PJ_CONTEXT* ctx, const char* name);
 
 /** Opaque structure for PROJ for a network handle. Implementations might cast it to their
  * structure/class of choice. */
