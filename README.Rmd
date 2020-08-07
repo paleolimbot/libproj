@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ![R-CMD-check](https://github.com/paleolimbot/libproj/workflows/R-CMD-check/badge.svg)
 <!-- badges: end -->
 
-The goal of libgeos is to provide access to the [PROJ](https://proj.org) C API for high-performance geometry operations within the R package framework. This package contains a copy of the PROJ library, modified slightly to eliminate errors on all the platforms checked by CRAN and GitHub actions. This means you don't have to install anything (other than the package) to take advantage of PROJ functions in R. It also means you don't need a configure script if you're writing a package that needs PROJ functionality (just `LinkingTo: libproj`).
+The goal of libproj is to provide access to the [PROJ](https://proj.org) C API for high-performance geometry operations within the R package framework. This package contains a copy of the PROJ library, modified slightly to eliminate errors on all the platforms checked by CRAN and GitHub actions. This means you don't have to install anything (other than the package) to take advantage of PROJ functions in R. It also means you don't need a configure script if you're writing a package that needs PROJ functionality (just `LinkingTo: libproj`).
 
 ## Installation
 
@@ -36,7 +36,7 @@ This package only exists for its exported C API, for which headers are provided 
 
 ```{Rcpp}
 #include <Rcpp.h>
-// Packages will also need LinkingTo: libgeos
+// Packages will also need LinkingTo: libproj
 // [[Rcpp::depends(libproj)]]
 // needed in every file that uses proj_*() functions
 #include "libproj.h"

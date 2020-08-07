@@ -10,7 +10,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 ![R-CMD-check](https://github.com/paleolimbot/libproj/workflows/R-CMD-check/badge.svg)
 <!-- badges: end -->
 
-The goal of libgeos is to provide access to the [PROJ](https://proj.org)
+The goal of libproj is to provide access to the [PROJ](https://proj.org)
 C API for high-performance geometry operations within the R package
 framework. This package contains a copy of the PROJ library, modified
 slightly to eliminate errors on all the platforms checked by CRAN and
@@ -37,7 +37,7 @@ easy and as safe as possible.
 
 ``` cpp
 #include <Rcpp.h>
-// Packages will also need LinkingTo: libgeos
+// Packages will also need LinkingTo: libproj
 // [[Rcpp::depends(libproj)]]
 // needed in every file that uses proj_*() functions
 #include "libproj.h"
