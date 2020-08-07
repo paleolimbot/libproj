@@ -74,7 +74,7 @@
 <a href="#libproj" class="anchor"></a>libproj</h1></div>
 <!-- badges: start -->
 
-<p>The goal of libgeos is to provide access to the <a href="https://proj.org">PROJ</a> C API for high-performance geometry operations within the R package framework. This package contains a copy of the PROJ library, modified slightly to eliminate errors on all the platforms checked by CRAN and GitHub actions. This means you don’t have to install anything (other than the package) to take advantage of PROJ functions in R. It also means you don’t need a configure script if you’re writing a package that needs PROJ functionality (just <code>LinkingTo: libproj</code>).</p>
+<p>The goal of libproj is to provide access to the <a href="https://proj.org">PROJ</a> C API for high-performance geometry operations within the R package framework. This package contains a copy of the PROJ library, modified slightly to eliminate errors on all the platforms checked by CRAN and GitHub actions. This means you don’t have to install anything (other than the package) to take advantage of PROJ functions in R. It also means you don’t need a configure script if you’re writing a package that needs PROJ functionality (just <code>LinkingTo: libproj</code>).</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -87,7 +87,7 @@
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This package only exists for its exported C API, for which headers are provided to make calling these functions from Rcpp or another package as easy and as safe as possible.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">// Packages will also need LinkingTo: libgeos</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">// Packages will also need LinkingTo: libproj</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">// [[Rcpp::depends(libproj)]]</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a><span class="co">// needed in every file that uses proj_*() functions</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a><span class="pp">#include </span><span class="im">"libproj.h"</span></span>
