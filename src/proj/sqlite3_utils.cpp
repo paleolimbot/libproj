@@ -25,16 +25,16 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
+// #ifdef __GNUC__
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Weffc++"
+// #endif
 
 #include "sqlite3_utils.hpp"
 
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
+// #ifdef __GNUC__
+// #pragma GCC diagnostic pop
+// #endif
 
 #include <cstdlib>
 #include <cstring>

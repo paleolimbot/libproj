@@ -98,6 +98,8 @@ print_next <- function() {
     "Replace random() with cpp_compat_random() (sqlite3.c)"
   )
 
+  cli::cat_bullet("Remove pragmas supressing diagnostics")
+
   cli::cat_bullet("Update exported C API using update-libproj-api.R")
   cli::cat_bullet("Update OBJECTS in Makevars (copied to cliboard)")
   clipr::write_clip(objects)
