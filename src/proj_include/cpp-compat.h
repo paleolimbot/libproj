@@ -8,6 +8,7 @@ extern "C" {
 
 int cpp_compat_putchar(int c);
 void cpp_compat_printf(const char* fmt, ...);
+void cpp_compat_printerrf(const char* fmt, ...);
 void cpp_compat_abort();
 void cpp_compat_exit(int code);
 int cpp_compat_random();

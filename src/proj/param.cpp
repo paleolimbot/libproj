@@ -164,7 +164,7 @@ PROJVALUE pj_param (projCtx ctx, paralist *pl, const char *opt) {
     type = *opt++;
 
     if (nullptr==strchr ("tbirds", type)) {
-        fprintf(stderr, "invalid request to pj_param, fatal\n");
+        cpp_compat_printerrf("invalid request to pj_param, fatal\n");
         cpp_compat_exit(1);
     }
 

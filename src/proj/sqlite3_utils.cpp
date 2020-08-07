@@ -135,7 +135,7 @@ static int VFSCustomAccess(sqlite3_vfs *vfs, const char *zName, int flags,
 
 // SQLite3 logging infrastructure
 static void projSqlite3LogCallback(void *, int iErrCode, const char *zMsg) {
-    fprintf(stderr, "SQLite3 message: (code %d) %s\n", iErrCode, zMsg);
+    cpp_compat_printerrf("SQLite3 message: (code %d) %s\n", iErrCode, zMsg);
 }
 
 std::unique_ptr<SQLite3VFS> SQLite3VFS::create(bool fakeSync, bool fakeLock,

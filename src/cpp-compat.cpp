@@ -69,6 +69,13 @@ void cpp_compat_printf(const char* fmt, ...) {
   va_end(args);
 }
 
+void cpp_compat_printerrf(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  REprintf(fmt, args);
+  va_end(args);
+}
+
 void cpp_compat_abort() {
   throw std::runtime_error("abort() called");
 }
