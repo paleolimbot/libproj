@@ -21,18 +21,12 @@ needs PROJ functionality (just `LinkingTo: libproj`).
 
 ## Installation
 
-You can install the released version of libproj from
-[CRAN](https://CRAN.R-project.org) with:
+You can install the development version from
+[GitHub](https://github.com/) with:
 
 ``` r
-install.packages("libproj")
-```
-
-And the development version from [GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("paleolimbot/libproj")
+# install.packages("remotes")
+remotes::install_github("paleolimbot/libproj")
 ```
 
 ## Example
