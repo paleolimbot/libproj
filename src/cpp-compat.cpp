@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <cstdio>
+#include <stdarg.h> // va_ stuff
 #include <streambuf>
 #include <R.h>
 #include <Rmath.h>
@@ -62,8 +63,10 @@ static Rostream<true>  Rcout;
 static Rostream<false> Rcerr;
 
 void cpp_compat_printf(const char* fmt, ...) {
-  // don't know how to pass on elipses
-  Rprintf(fmt);
+  va_list args;
+  va_start(args, fmt);
+  Rprintf(fmt, args);
+  va_end(args);
 }
 
 void cpp_compat_abort() {
@@ -79,7 +82,7 @@ int cpp_compat_random() {
   // www.gnu.org/software/libc/manual/html_node/BSD-Random.html#BSD-Random
   // the RNG state is correctly managed for functions that use
   // Rcpp::export...other functions will require management of the RNGScope
-  return unif_rand() * INT_MAX;
+  return unif_rand() * UINT_MAX;
 }
 
 void cpp_compat_srandom(int seed) {
@@ -91,3 +94,12 @@ void cpp_compat_srandom(int seed) {
 
 std::ostream& cpp_compat_cerr = Rcerr;
 std::ostream& cpp_compat_cout = Rcout;
+
+int cpp_compat_putchar(int c) {
+  try {
+    Rcout << c;
+    return c;
+  } catch (std::exception& e) {
+    return EOF;
+  }
+}
