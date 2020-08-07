@@ -478,7 +478,7 @@ bool DiskChunkCache::checkConsistency() {
             auto next = stmt->getInt64();
             if (next == 0) {
                 if (id != tail) {
-                    fprintf(stderr,
+                  cpp_compat_printerrf(
                             "last item when following next is not tail.\n");
                     return false;
                 }
@@ -492,7 +492,7 @@ bool DiskChunkCache::checkConsistency() {
             id = next;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            fprintf(stderr,
+          cpp_compat_printerrf(
                     "ghost items in linked_chunks when following next.\n");
             return false;
         }
@@ -521,7 +521,7 @@ bool DiskChunkCache::checkConsistency() {
             auto prev = stmt->getInt64();
             if (prev == 0) {
                 if (id != head) {
-                    fprintf(stderr,
+                  cpp_compat_printerrf(
                             "last item when following prev is not head.\n");
                     return false;
                 }
@@ -535,7 +535,7 @@ bool DiskChunkCache::checkConsistency() {
             id = prev;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            fprintf(stderr,
+          cpp_compat_printerrf(
                     "ghost items in linked_chunks when following prev.\n");
             return false;
         }
