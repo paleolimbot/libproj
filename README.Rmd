@@ -44,28 +44,75 @@ This package only exists for its exported C API, for which headers are provided 
 #include <Rcpp.h>
 // Packages will also need LinkingTo: libgeos
 // [[Rcpp::depends(libproj)]]
-// needed in every file that uses GEOS functions
+// needed in every file that uses proj_*() functions
 #include "libproj.h"
+
 // needed exactly once in your package or Rcpp script
 // contains all the function pointers and the
 // implementation of the function to initialize them
 // (`libproj_init_api()`)
 #include "libproj.c"
-// this function needs to be called once before any GEOS functions
+
+// this function needs to be called once before any proj_*() functions
 // are called (e.g., in .onLoad() for your package)
+// also need to specify the path to the database
+
+using namespace Rcpp;
 // [[Rcpp::export]]
 void cpp_libproj_init_api() {
   libproj_init_api();
+  Function systemFile("system.file");
+  CharacterVector dbPath = systemFile("proj.db", _["package"] = "libproj");
+  const char* dbPath0 = dbPath[0];
+  proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
 }
-// regular C or C++ code that uses GEOS functions!
+
+// regular C or C++ code that uses proj_()* functions!
 // [[Rcpp::export]]
-std::string version() {
-  return "7.1.0";
+List proj_coords(List xy, std::string from, std::string to) {
+  NumericVector x = xy[0];
+  NumericVector y = xy[1];
+  
+  PJ_CONTEXT* context = PJ_DEFAULT_CTX;
+  PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);
+  if (trans == NULL) {
+    int errorCode = proj_context_errno(context);
+    std::stringstream err;
+    err << "Error creating transform: " << proj_errno_string(errorCode);
+    stop(err.str());
+  }
+  
+  NumericVector xout = clone(x);
+  NumericVector yout = clone(y);
+  size_t stride = sizeof(double);
+  
+  proj_trans_generic(
+    trans, PJ_FWD,
+    &(xout[0]), stride, xout.size(),
+    &(yout[0]), stride, yout.size(),
+    nullptr, stride, 0,
+    nullptr, stride, 0
+  );
+  
+  int errorCode = proj_errno(trans);
+  proj_destroy(trans);
+  
+  if (errorCode != 0) {
+    std::stringstream err;
+    err << "Error transforming coords: " << proj_errno_string(errorCode);
+    stop(err.str());
+  }
+  
+  return List::create(_["x"] = xout, _["y"]  = yout);
 }
 ```
 
 ```{r}
 cpp_libproj_init_api()
-version()
-```
 
+sf::st_transform(sf::st_sfc(sf::st_point(c(-64, 45)), crs = 4326), 26920)
+
+# note that the PROJ default axis ordering (at the C level)
+# is not what you expect!
+proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")
+```
