@@ -20,6 +20,7 @@ function_defs_chr <- capi_header %>%
 # too complex for a regex...also includes enums
 typedefs_chr <- c(
   read_lines(capi_header)[182:345],
+  read_lines(capi_header)[357:361],
   read_lines(capi_header)[365:366],
   read_lines(capi_header)[378:429],
   read_lines(capi_header)[434:498],
@@ -81,6 +82,10 @@ libproj_h <- with(
 using std::size_t;
 #endif
 
+#ifdef __cplusplus
+extern "C" {{
+#endif
+
 #define PROJ_DLL
 
 { paste0(version_defs_chr, collapse = "\n") }
@@ -90,6 +95,10 @@ using std::size_t;
 { paste0(header_def, collapse = "\n") }
 
 void libgeos_init_api();
+
+#ifdef __cplusplus
+}}
+#endif
 
 #endif
 

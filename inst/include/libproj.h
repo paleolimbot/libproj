@@ -9,6 +9,10 @@
 using std::size_t;
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define PROJ_DLL
 
 #define PROJ_VERSION_MAJOR 7
@@ -179,6 +183,11 @@ typedef void (*PJ_LOG_FUNCTION)(void *, int, const char *);
 /* The context type - properly namespaced synonym for projCtx */
 struct projCtx_t;
 typedef struct projCtx_t PJ_CONTEXT;
+#ifdef __cplusplus
+#define PJ_DEFAULT_CTX nullptr
+#else
+#define PJ_DEFAULT_CTX 0
+#endif
 /** Callback to resolve a filename to a full path */
 typedef const char* (*proj_file_finder) (PJ_CONTEXT *ctx, const char*, void* user_data);
 typedef struct PROJ_FILE_HANDLE PROJ_FILE_HANDLE;
@@ -787,5 +796,9 @@ extern int (*proj_concatoperation_get_step_count)(PJ_CONTEXT*, const PJ*);
 extern PJ* (*proj_concatoperation_get_step)(PJ_CONTEXT*, const PJ*, int);
 
 void libgeos_init_api();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
