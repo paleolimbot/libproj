@@ -1,6 +1,6 @@
 
-PKG_CPPFLAGS = -I../src/proj_include
-
+PKG_CPPFLAGS = -I../src/proj_include -DTIFF_ENABLED @cflags@
+PKG_LIBS = @libs@
 CXX_STD = CXX11
 
 OBJECTS = cpp-compat.o \
