@@ -39,7 +39,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@master
 
       - name: Install system dependencies (Linux)
-        if: runner.os == 'Linux' and matrix.config.curl == 'curl'
+        if: runner.os == 'Linux' && matrix.config.curl == 'curl'
         run: sudo apt-get install libtiff-dev libcurl4-openssl-dev
 
       - name: Install system dependencies (MacOS)
