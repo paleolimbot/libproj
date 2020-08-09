@@ -85,11 +85,10 @@ void cpp_compat_exit(int code) {
 }
 
 int cpp_compat_random() {
-  // trying to match what random() would return
-  // www.gnu.org/software/libc/manual/html_node/BSD-Random.html#BSD-Random
+  // trying to match what rand() would return
   // the RNG state is correctly managed for functions that use
   // Rcpp::export...other functions will require management of the RNGScope
-  return unif_rand() * UINT_MAX;
+  return unif_rand() * RAND_MAX;
 }
 
 void cpp_compat_srandom(int seed) {
