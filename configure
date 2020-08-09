@@ -19,6 +19,7 @@ LIBTIFF_PKG_RPM_NAME="libtiff-devel"
 LIBTIFF_PKG_BREW_NAME="libtiff"
 LIBTIFF_PKG_TEST_HEADER="<tiff.h>"
 LIBTIFF_PKG_LIBS="-ltiff"
+LIBTIFF_PKG_CFLAGS=""
 
 # Use pkg-config if available
 if [ $(command -v pkg-config) ]; then
@@ -61,6 +62,7 @@ if [ $? -ne 0 ]; then
   echo "is unavailable you can set LIBTIFF_INCLUDE_DIR and LIBTIFF_LIB_DIR manually via:"
   echo "R CMD INSTALL --configure-vars='LIBTIFF_INCLUDE_DIR=... LIBTIFF_LIB_DIR=...'"
   echo "--------------------------------------------------------------------"
+  LIBTIFF_PKG_LIBS=""
 else
   LIBTIFF_PKG_CFLAGS="-DCURL_ENABLED $PKG_CFLAGS"
 fi
@@ -128,6 +130,7 @@ if [ $R_CONFIG_ERROR ]; then
   echo "is unavailable you can set LIBCURL_INCLUDE_DIR and LIBCURL_LIB_DIR manually via:"
   echo "R CMD INSTALL --configure-vars='LIBCURL_INCLUDE_DIR=... LIBCURL_LIB_DIR=...'"
   echo "--------------------------------------------------------------------"
+  PKG_LIBS=""
 else
   PKG_CFLAGS="-DCURL_ENABLED $PKG_CFLAGS"
 fi

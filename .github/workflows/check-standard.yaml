@@ -19,8 +19,9 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: '3.6'}
-          - {os: macOS-latest,   r: '4.0'}
           - {os: windows-latest, r: '4.0'}
+          - {os: macOS-latest,   r: '4.0'}
+          - {os: macOS-latest,   r: '4.0', curl: "curl"}
           - {os: ubuntu-16.04,   r: '4.0', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
           - {os: ubuntu-18.04,   r: '4.0', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
           - {os: ubuntu-18.04,   r: '4.0', curl: "curl", rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
@@ -43,7 +44,7 @@ jobs:
         run: sudo apt-get install libtiff-dev libcurl4-openssl-dev
 
       - name: Install system dependencies (MacOS)
-        if: runner.os == 'MacOS'
+        if: runner.os == 'MacOS' && matrix.config.curl == 'curl'
         run: brew install libtiff
 
       - name: Query dependencies
