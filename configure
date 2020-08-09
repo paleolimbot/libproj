@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# PROJ needs libtiff to do grid shifts, and libcurl to use the CDN
+# technically it doesn't need either, and because these are relatively
+# new, most people don't need them at all
+
 # ================ LIBTIFF ========================
 
 # Anticonf (tm) script by Jeroen Ooms (2018)
@@ -47,8 +51,8 @@ echo "#include $LIBTIFF_PKG_TEST_HEADER" | ${CC} ${CPPFLAGS} ${LIBTIFF_PKG_CFLAG
 
 # Customize the error
 if [ $? -ne 0 ]; then
-  echo "------------------------- ANTICONF ERROR ---------------------------"
-  echo "Configuration failed because $LIBTIFF_PKG_CONFIG_NAME was not found. Try installing:"
+  echo "------------------------- ANTICONF WARNING ---------------------------"
+  echo "$LIBTIFF_PKG_CONFIG_NAME was not found. Try installing:"
   echo " * deb: $LIBTIFF_PKG_DEB_NAME (Debian, Ubuntu, etc)"
   echo " * rpm: $LIBTIFF_PKG_RPM_NAME (Fedora, EPEL)"
   echo " * brew: $LIBTIFF_PKG_BREW_NAME (OSX)"
@@ -57,7 +61,8 @@ if [ $? -ne 0 ]; then
   echo "is unavailable you can set LIBTIFF_INCLUDE_DIR and LIBTIFF_LIB_DIR manually via:"
   echo "R CMD INSTALL --configure-vars='LIBTIFF_INCLUDE_DIR=... LIBTIFF_LIB_DIR=...'"
   echo "--------------------------------------------------------------------"
-  exit 1;
+else
+  LIBTIFF_PKG_CFLAGS="-DCURL_ENABLED $PKG_CFLAGS"
 fi
 
 
@@ -113,8 +118,8 @@ echo "#include $PKG_TEST_HEADER" | ${CC} ${CPPFLAGS} ${PKG_CFLAGS} ${CFLAGS} -E 
 
 # Customize the error
 if [ $R_CONFIG_ERROR ]; then
-  echo "------------------------- ANTICONF ERROR ---------------------------"
-  echo "Configuration failed because $PKG_CONFIG_NAME was not found. Try installing:"
+  echo "------------------------- ANTICONF WARNING ---------------------------"
+  echo "$PKG_CONFIG_NAME was not found. Try installing:"
   echo " * deb: $PKG_DEB_NAME (Debian, Ubuntu, etc)"
   echo " * rpm: $PKG_RPM_NAME (Fedora, CentOS, RHEL)"
   echo " * csw: $PKG_CSW_NAME (Solaris)"
@@ -123,7 +128,8 @@ if [ $R_CONFIG_ERROR ]; then
   echo "is unavailable you can set LIBCURL_INCLUDE_DIR and LIBCURL_LIB_DIR manually via:"
   echo "R CMD INSTALL --configure-vars='LIBCURL_INCLUDE_DIR=... LIBCURL_LIB_DIR=...'"
   echo "--------------------------------------------------------------------"
-  exit 1;
+else
+  PKG_CFLAGS="-DCURL_ENABLED $PKG_CFLAGS"
 fi
 
 # ============== ASSEMBLE =============
