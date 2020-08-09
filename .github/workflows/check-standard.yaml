@@ -36,6 +36,14 @@ jobs:
           r-version: ${{ matrix.config.r }}
       - uses: r-lib/actions/setup-pandoc@master
 
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: apt-get install libcurl4-openssl-dev
+
+      - name: Install system dependencies (MacOS)
+        if: runner.os == 'MacOS'
+        run: brew install libtiff
+
       - name: Query dependencies
         run: |
           install.packages('remotes')
