@@ -38,7 +38,7 @@ jobs:
 
       - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
-        run: apt-get install libcurl4-openssl-dev
+        run: sudo apt-get install libcurl4-openssl-dev
 
       - name: Install system dependencies (MacOS)
         if: runner.os == 'MacOS'
