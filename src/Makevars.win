@@ -1,6 +1,6 @@
 RWINLIB = ../windows/libtiff-4.1.0/mingw$(WIN)
 PKG_CPPFLAGS = -I../src/proj_include -DTIFF_ENABLED -I$(RWINLIB)/include
-PKG_LIBS = -L$(RWINLIB)/lib -ltiff
+PKG_LIBS = -L$(RWINLIB)/lib -ltiff -ljpeg -lz
 CXX_STD = CXX11
 
 OBJECTS = cpp-compat.o \
