@@ -31,14 +31,15 @@ remotes::install_github("paleolimbot/libproj")
 
 ## Example
 
-This package only exists for its exported C API, for which headers are
-provided to make calling these functions from Rcpp or another package as
-easy and as safe as possible.
+This package only exists for its exported C API:
 
 ``` cpp
 #include <Rcpp.h>
+using namespace Rcpp;
+
 // Packages will also need LinkingTo: libproj
 // [[Rcpp::depends(libproj)]]
+
 // needed in every file that uses proj_*() functions
 #include "libproj.h"
 
@@ -50,16 +51,9 @@ easy and as safe as possible.
 
 // this function needs to be called once before any proj_*() functions
 // are called (e.g., in .onLoad() for your package)
-// also need to specify the path to the database
-
-using namespace Rcpp;
 // [[Rcpp::export]]
 void cpp_libproj_init_api() {
   libproj_init_api();
-  Function systemFile("system.file");
-  CharacterVector dbPath = systemFile("proj.db", _["package"] = "libproj");
-  const char* dbPath0 = dbPath[0];
-  proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
 }
 
 // regular C or C++ code that uses proj_()* functions!

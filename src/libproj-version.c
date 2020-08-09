@@ -12,3 +12,9 @@ SEXP libproj_proj_version() {
   UNPROTECT(1);
   return out;
 }
+
+SEXP libproj_set_database_path(SEXP path) {
+  const char* path0 = CHAR(STRING_ELT(path, 0));
+  proj_context_set_database_path(PJ_DEFAULT_CTX, path0, NULL, NULL);
+  return R_NilValue;
+}

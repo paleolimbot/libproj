@@ -5,14 +5,18 @@
 
 // defined in libproj-version.c
 SEXP libproj_proj_version();
+SEXP libproj_set_database_path(SEXP path);
+
 static const R_CallMethodDef CallEntries[] = {
   {"libproj_proj_version", (DL_FUNC) &libproj_proj_version, 0},
+  {"libproj_set_database_path", (DL_FUNC) &libproj_set_database_path, 1},
   {NULL, NULL, 0}
 };
 
 void R_init_libproj(DllInfo *dll) {
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
+
   /* used by external packages linking to libproj from C */
     R_RegisterCCallable("libproj", "proj_context_create", (DL_FUNC) &proj_context_create);
     R_RegisterCCallable("libproj", "proj_context_destroy", (DL_FUNC) &proj_context_destroy);
