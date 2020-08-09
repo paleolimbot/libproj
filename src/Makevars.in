@@ -1,5 +1,5 @@
 
-PKG_CPPFLAGS = -I../src/proj_include -DTIFF_ENABLED @cflags@
+PKG_CPPFLAGS = -I../src/proj_include -DCURL_ENABLED -DTIFF_ENABLED @cflags@
 PKG_LIBS = @libs@
 CXX_STD = CXX11
 
