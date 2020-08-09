@@ -2,12 +2,12 @@
 % Please edit documentation in R/libproj-package.R
 \name{libproj_version}
 \alias{libproj_version}
-\title{PROJ version information}
+\title{PROJ configuration}
 \usage{
 libproj_version()
 }
 \description{
-PROJ version information
+PROJ configuration
 }
 \examples{
 libproj_version()

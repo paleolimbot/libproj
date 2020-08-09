@@ -137,11 +137,11 @@ libproj_init_c <- with(
 
 // defined in libproj-version.c
 SEXP libproj_proj_version();
-SEXP libproj_set_database_path(SEXP path);
+SEXP libproj_configure_default_context(SEXP dbPath);
 
 static const R_CallMethodDef CallEntries[] = {{
   {{"libproj_proj_version", (DL_FUNC) &libproj_proj_version, 0}},
-  {{"libproj_set_database_path", (DL_FUNC) &libproj_set_database_path, 1}},
+  {{"libproj_configure_default_context", (DL_FUNC) &libproj_configure_default_context, 1}},
   {{NULL, NULL, 0}}
 }};
 

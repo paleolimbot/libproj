@@ -13,8 +13,20 @@ SEXP libproj_proj_version() {
   return out;
 }
 
-SEXP libproj_set_database_path(SEXP path) {
-  const char* path0 = CHAR(STRING_ELT(path, 0));
-  proj_context_set_database_path(PJ_DEFAULT_CTX, path0, NULL, NULL);
+SEXP libproj_configure_default_context(SEXP dbPath) {
+  const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
+  proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
+
+  // by default, the writable directory, which is currently set by env var,
+  // is always considered (even if the search paths are empty)
+  // the package should be completely isolated from a system install
+  // (unless some other package explicitly wants to make this connection)
+  proj_context_set_search_paths(PJ_DEFAULT_CTX, 0, NULL);
+
+  // with the default writable directory as a tempdir, it should be safe
+  // to enable network by default (other packages should make this choice
+  // explicit)
+  proj_context_set_enable_network(PJ_DEFAULT_CTX, 1);
+
   return R_NilValue;
 }

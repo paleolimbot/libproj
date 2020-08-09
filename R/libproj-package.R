@@ -9,7 +9,7 @@
 NULL
 
 
-#' PROJ version information
+#' PROJ configuration
 #'
 #' @export
 #'
@@ -20,8 +20,18 @@ libproj_version <- function() {
   .Call(libproj_proj_version)
 }
 
-# set the database for the default context so that users who don't set
-# a custom context for their package can skip this step
+# by default, this setup makes sure that anybody using PJ_DEFAULT_CTX
+# isn't writing files anywhere they didn't mean to (realistically
+# this should be cached, but that is outside the scope of this package)
+libproj_tempdir <- NULL
+
 .onLoad <- function(...) {
-  .Call(libproj_set_database_path, system.file("proj.db", package = "libproj"))
+  libproj_tempdir <<- tempfile()
+  Sys.setenv(PROJ_USER_WRITABLE_DIRECTORY = libproj_tempdir)
+  .Call(libproj_configure_default_context, system.file("proj.db", package = "libproj"))
+}
+
+# cleanup any files that might have been downloaded on exit
+.onUnload <- function(...) {
+  unlink(libproj_tempdir, recursive = TRUE)
 }
