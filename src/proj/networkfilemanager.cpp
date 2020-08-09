@@ -1662,7 +1662,7 @@ static double GetNewRetryDelay(int response_code, double dfOldDelay,
         // Use an exponential backoff factor of 2 plus some random jitter
         // We don't care about cryptographic quality randomness, hence:
         // coverity[dont_call]
-        return dfOldDelay * (2 + rand() * 0.5 / RAND_MAX);
+        return dfOldDelay * (2 + cpp_compat_random() * 0.5 / RAND_MAX);
     } else {
         return 0;
     }
