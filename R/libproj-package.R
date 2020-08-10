@@ -15,9 +15,23 @@ NULL
 #'
 #' @examples
 #' libproj_version()
+#' libproj_has_libtiff()
+#' libproj_has_libcurl()
 #'
 libproj_version <- function() {
-  .Call(libproj_proj_version)
+  .Call(libproj_c_version)
+}
+
+#' @rdname libproj_version
+#' @export
+libproj_has_libtiff <- function() {
+  .Call(libproj_c_has_libtiff)
+}
+
+#' @rdname libproj_version
+#' @export
+libproj_has_libcurl <- function() {
+  .Call(libproj_c_has_libcurl)
 }
 
 # by default, this setup makes sure that anybody using PJ_DEFAULT_CTX
@@ -28,7 +42,7 @@ libproj_tempdir <- NULL
 .onLoad <- function(...) {
   libproj_tempdir <<- tempfile()
   Sys.setenv(PROJ_USER_WRITABLE_DIRECTORY = libproj_tempdir)
-  .Call(libproj_configure_default_context, system.file("proj.db", package = "libproj"))
+  .Call(libproj_c_configure_default_context, system.file("proj.db", package = "libproj"))
 }
 
 # cleanup any files that might have been downloaded on exit

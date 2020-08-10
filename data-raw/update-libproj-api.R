@@ -135,12 +135,16 @@ libproj_init_c <- with(
 #include <R_ext/Rdynload.h>
 #include "proj.h"
 
-// defined in libproj-version.c
-SEXP libproj_proj_version();
-SEXP libproj_configure_default_context(SEXP dbPath);
+// defined in libproj-config.c
+SEXP libproj_c_version();
+SEXP libproj_c_configure_default_context(SEXP dbPath);
+SEXP libproj_c_has_libtiff();
+SEXP libproj_c_has_libcurl();
 
 static const R_CallMethodDef CallEntries[] = {{
   {{"libproj_proj_version", (DL_FUNC) &libproj_proj_version, 0}},
+  {{"libproj_c_has_libtiff", (DL_FUNC) &libproj_c_has_libtiff, 0}},
+  {{"libproj_c_has_libcurl", (DL_FUNC) &libproj_c_has_libcurl, 0}},
   {{"libproj_configure_default_context", (DL_FUNC) &libproj_configure_default_context, 1}},
   {{NULL, NULL, 0}}
 }};

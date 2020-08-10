@@ -5,7 +5,7 @@ CXX_STD = CXX11
 
 OBJECTS = cpp-compat.o \
      libproj-init.o \
-     libproj-version.o \
+     libproj-config.o \
      sqlite3.o \
      proj/4D_api.o \
      proj/aasincos.o \

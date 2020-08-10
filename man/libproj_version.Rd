@@ -2,14 +2,22 @@
 % Please edit documentation in R/libproj-package.R
 \name{libproj_version}
 \alias{libproj_version}
+\alias{libproj_has_libtiff}
+\alias{libproj_has_libcurl}
 \title{PROJ configuration}
 \usage{
 libproj_version()
+
+libproj_has_libtiff()
+
+libproj_has_libcurl()
 }
 \description{
 PROJ configuration
 }
 \examples{
 libproj_version()
+libproj_has_libtiff()
+libproj_has_libcurl()
 
 }

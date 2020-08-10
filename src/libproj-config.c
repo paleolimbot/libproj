@@ -6,14 +6,36 @@
 #define STR(x) STR_HELPER(x)
 #define LIBPROJ_PROJ_VERSION STR(PROJ_VERSION_MAJOR) "." STR(PROJ_VERSION_MINOR) "." STR(PROJ_VERSION_PATCH)
 
-SEXP libproj_proj_version() {
+SEXP libproj_c_version() {
   SEXP out = PROTECT(Rf_allocVector(STRSXP, 1));
   SET_STRING_ELT(out, 0, Rf_mkChar(LIBPROJ_PROJ_VERSION));
   UNPROTECT(1);
   return out;
 }
 
-SEXP libproj_configure_default_context(SEXP dbPath) {
+SEXP libproj_c_has_libtiff() {
+  SEXP out = PROTECT(Rf_allocVector(LGLSXP, 1));
+#ifdef TIFF_ENABLED
+  LOGICAL(out)[0] = TRUE;
+#else
+  LOGICAL(out)[0] = FALSE;
+#endif
+  UNPROTECT(1);
+  return out;
+}
+
+SEXP libproj_c_has_libcurl() {
+  SEXP out = PROTECT(Rf_allocVector(LGLSXP, 1));
+#ifdef CURL_ENABLED
+  LOGICAL(out)[0] = TRUE;
+#else
+  LOGICAL(out)[0] = FALSE;
+#endif
+  UNPROTECT(1);
+  return out;
+}
+
+SEXP libproj_c_configure_default_context(SEXP dbPath) {
   const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
   proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
 
