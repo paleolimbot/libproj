@@ -69,8 +69,10 @@ test_that("libproj can be linked to", {
   without_network <- proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920", networking = FALSE)
   expect_identical(list.files(libproj:::libproj_tempdir), character(0))
 
-  with_network <- proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920", networking = TRUE)
-  expect_identical(list.files(libproj:::libproj_tempdir), "cache.db")
+  if (libproj_has_libcurl() && libproj_has_libtiff()) {
+    with_network <- proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920", networking = TRUE)
+    expect_identical(list.files(libproj:::libproj_tempdir), "cache.db")
+  }
 
   unlink(cache, recursive = TRUE)
 })
