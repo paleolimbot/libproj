@@ -104,7 +104,7 @@ List proj_coords(List xy, std::string from, std::string to, bool networking = fa
 ```{r}
 cpp_libproj_init_api()
 
-sf::st_transform(sf::st_sfc(sf::st_point(c(-64, 45)), crs = 4326), 26920)
+sf::st_transform(sf::st_sfc(sf::st_point(c(-64, 45)), crs = 4326), 32620)
 
 # Note that the PROJ default axis ordering (at the C level)
 # is not what you expect!

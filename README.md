@@ -103,12 +103,12 @@ List proj_coords(List xy, std::string from, std::string to, bool networking = fa
 ``` r
 cpp_libproj_init_api()
 
-sf::st_transform(sf::st_sfc(sf::st_point(c(-64, 45)), crs = 4326), 26920)
+sf::st_transform(sf::st_sfc(sf::st_point(c(-64, 45)), crs = 4326), 32620)
 #> Geometry set for 1 feature 
 #> geometry type:  POINT
 #> dimension:      XY
 #> bbox:           xmin: 421184.7 ymin: 4983437 xmax: 421184.7 ymax: 4983437
-#> CRS:            EPSG:26920
+#> CRS:            EPSG:32620
 #> POINT (421184.7 4983437)
 
 # Note that the PROJ default axis ordering (at the C level)
@@ -146,5 +146,5 @@ You can examine the temporary directory with the (currently unexported)
 
 ``` r
 list.files(libproj:::libproj_tempdir, full.names = TRUE)
-#> [1] "/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmpMa2xvs/file450155b028cb/cache.db"
+#> [1] "/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmpnsJhZN/file4d854f221008/cache.db"
 ```
