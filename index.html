@@ -110,42 +110,46 @@
 <span id="cb2-22"><a href="#cb2-22"></a></span>
 <span id="cb2-23"><a href="#cb2-23"></a><span class="co">// regular C or C++ code that uses proj_()* functions!</span></span>
 <span id="cb2-24"><a href="#cb2-24"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb2-25"><a href="#cb2-25"></a>List proj_coords(List xy, <span class="bu">std::</span>string from, <span class="bu">std::</span>string to) {</span>
+<span id="cb2-25"><a href="#cb2-25"></a>List proj_coords(List xy, <span class="bu">std::</span>string from, <span class="bu">std::</span>string to, <span class="dt">bool</span> networking = <span class="kw">false</span>) {</span>
 <span id="cb2-26"><a href="#cb2-26"></a>  NumericVector x = xy[<span class="dv">0</span>];</span>
 <span id="cb2-27"><a href="#cb2-27"></a>  NumericVector y = xy[<span class="dv">1</span>];</span>
 <span id="cb2-28"><a href="#cb2-28"></a>  </span>
 <span id="cb2-29"><a href="#cb2-29"></a>  PJ_CONTEXT* context = PJ_DEFAULT_CTX;</span>
-<span id="cb2-30"><a href="#cb2-30"></a>  PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);</span>
-<span id="cb2-31"><a href="#cb2-31"></a>  <span class="cf">if</span> (trans == NULL) {</span>
-<span id="cb2-32"><a href="#cb2-32"></a>    <span class="dt">int</span> errorCode = proj_context_errno(context);</span>
-<span id="cb2-33"><a href="#cb2-33"></a>    <span class="bu">std::</span>stringstream err;</span>
-<span id="cb2-34"><a href="#cb2-34"></a>    err &lt;&lt; <span class="st">"Error creating transform: "</span> &lt;&lt; proj_errno_string(errorCode);</span>
-<span id="cb2-35"><a href="#cb2-35"></a>    stop(err.str());</span>
-<span id="cb2-36"><a href="#cb2-36"></a>  }</span>
-<span id="cb2-37"><a href="#cb2-37"></a>  </span>
-<span id="cb2-38"><a href="#cb2-38"></a>  NumericVector xout = clone(x);</span>
-<span id="cb2-39"><a href="#cb2-39"></a>  NumericVector yout = clone(y);</span>
-<span id="cb2-40"><a href="#cb2-40"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
+<span id="cb2-30"><a href="#cb2-30"></a>  </span>
+<span id="cb2-31"><a href="#cb2-31"></a>  <span class="co">// allows gridshift files to be downloaded on the fly</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a>  proj_context_set_enable_network(PJ_DEFAULT_CTX, networking);</span>
+<span id="cb2-33"><a href="#cb2-33"></a>  </span>
+<span id="cb2-34"><a href="#cb2-34"></a>  PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);</span>
+<span id="cb2-35"><a href="#cb2-35"></a>  <span class="cf">if</span> (trans == NULL) {</span>
+<span id="cb2-36"><a href="#cb2-36"></a>    <span class="dt">int</span> errorCode = proj_context_errno(context);</span>
+<span id="cb2-37"><a href="#cb2-37"></a>    <span class="bu">std::</span>stringstream err;</span>
+<span id="cb2-38"><a href="#cb2-38"></a>    err &lt;&lt; <span class="st">"Error creating transform: "</span> &lt;&lt; proj_errno_string(errorCode);</span>
+<span id="cb2-39"><a href="#cb2-39"></a>    stop(err.str());</span>
+<span id="cb2-40"><a href="#cb2-40"></a>  }</span>
 <span id="cb2-41"><a href="#cb2-41"></a>  </span>
-<span id="cb2-42"><a href="#cb2-42"></a>  proj_trans_generic(</span>
-<span id="cb2-43"><a href="#cb2-43"></a>    trans, PJ_FWD,</span>
-<span id="cb2-44"><a href="#cb2-44"></a>    &amp;(xout[<span class="dv">0</span>]), stride, xout.size(),</span>
-<span id="cb2-45"><a href="#cb2-45"></a>    &amp;(yout[<span class="dv">0</span>]), stride, yout.size(),</span>
-<span id="cb2-46"><a href="#cb2-46"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span>,</span>
-<span id="cb2-47"><a href="#cb2-47"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span></span>
-<span id="cb2-48"><a href="#cb2-48"></a>  );</span>
-<span id="cb2-49"><a href="#cb2-49"></a>  </span>
-<span id="cb2-50"><a href="#cb2-50"></a>  <span class="dt">int</span> errorCode = proj_errno(trans);</span>
-<span id="cb2-51"><a href="#cb2-51"></a>  proj_destroy(trans);</span>
-<span id="cb2-52"><a href="#cb2-52"></a>  </span>
-<span id="cb2-53"><a href="#cb2-53"></a>  <span class="cf">if</span> (errorCode != <span class="dv">0</span>) {</span>
-<span id="cb2-54"><a href="#cb2-54"></a>    <span class="bu">std::</span>stringstream err;</span>
-<span id="cb2-55"><a href="#cb2-55"></a>    err &lt;&lt; <span class="st">"Error transforming coords: "</span> &lt;&lt; proj_errno_string(errorCode);</span>
-<span id="cb2-56"><a href="#cb2-56"></a>    stop(err.str());</span>
-<span id="cb2-57"><a href="#cb2-57"></a>  }</span>
-<span id="cb2-58"><a href="#cb2-58"></a>  </span>
-<span id="cb2-59"><a href="#cb2-59"></a>  <span class="cf">return</span> List::create(_[<span class="st">"x"</span>] = xout, _[<span class="st">"y"</span>]  = yout);</span>
-<span id="cb2-60"><a href="#cb2-60"></a>}</span></code></pre></div>
+<span id="cb2-42"><a href="#cb2-42"></a>  NumericVector xout = clone(x);</span>
+<span id="cb2-43"><a href="#cb2-43"></a>  NumericVector yout = clone(y);</span>
+<span id="cb2-44"><a href="#cb2-44"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
+<span id="cb2-45"><a href="#cb2-45"></a>  </span>
+<span id="cb2-46"><a href="#cb2-46"></a>  proj_trans_generic(</span>
+<span id="cb2-47"><a href="#cb2-47"></a>    trans, PJ_FWD,</span>
+<span id="cb2-48"><a href="#cb2-48"></a>    &amp;(xout[<span class="dv">0</span>]), stride, xout.size(),</span>
+<span id="cb2-49"><a href="#cb2-49"></a>    &amp;(yout[<span class="dv">0</span>]), stride, yout.size(),</span>
+<span id="cb2-50"><a href="#cb2-50"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span>,</span>
+<span id="cb2-51"><a href="#cb2-51"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span></span>
+<span id="cb2-52"><a href="#cb2-52"></a>  );</span>
+<span id="cb2-53"><a href="#cb2-53"></a>  </span>
+<span id="cb2-54"><a href="#cb2-54"></a>  <span class="dt">int</span> errorCode = proj_errno(trans);</span>
+<span id="cb2-55"><a href="#cb2-55"></a>  proj_destroy(trans);</span>
+<span id="cb2-56"><a href="#cb2-56"></a>  </span>
+<span id="cb2-57"><a href="#cb2-57"></a>  <span class="cf">if</span> (errorCode != <span class="dv">0</span>) {</span>
+<span id="cb2-58"><a href="#cb2-58"></a>    <span class="bu">std::</span>stringstream err;</span>
+<span id="cb2-59"><a href="#cb2-59"></a>    err &lt;&lt; <span class="st">"Error transforming coords: "</span> &lt;&lt; proj_errno_string(errorCode);</span>
+<span id="cb2-60"><a href="#cb2-60"></a>    stop(err.str());</span>
+<span id="cb2-61"><a href="#cb2-61"></a>  }</span>
+<span id="cb2-62"><a href="#cb2-62"></a>  </span>
+<span id="cb2-63"><a href="#cb2-63"></a>  <span class="cf">return</span> List::create(_[<span class="st">"x"</span>] = xout, _[<span class="st">"y"</span>]  = yout);</span>
+<span id="cb2-64"><a href="#cb2-64"></a>}</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="fu">cpp_libproj_init_api</span>()
 
 <span class="kw pkg">sf</span><span class="kw ns">::</span><span class="fu">st_transform</span>(<span class="kw pkg">sf</span><span class="kw ns">::</span><span class="fu">st_sfc</span>(<span class="kw pkg">sf</span><span class="kw ns">::</span><span class="fu">st_point</span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">64</span>, <span class="fl">45</span>)), <span class="kw">crs</span> <span class="kw">=</span> <span class="fl">4326</span>), <span class="fl">26920</span>)
@@ -156,14 +160,31 @@
 <span class="co">#&gt; CRS:            EPSG:26920</span>
 <span class="co">#&gt; POINT (421184.7 4983437)</span>
 
-<span class="co"># note that the PROJ default axis ordering (at the C level)</span>
+<span class="co"># Note that the PROJ default axis ordering (at the C level)</span>
 <span class="co"># is not what you expect!</span>
-<span class="fu">proj_coords</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fl">45</span>, -<span class="fl">64</span>), <span class="st">"EPSG:4326"</span>, <span class="st">"EPSG:26920"</span>)
+<span class="fu">proj_coords</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fl">45</span>, -<span class="fl">64</span>), <span class="st">"EPSG:4326"</span>, <span class="st">"EPSG:32620"</span>)
 <span class="co">#&gt; $x</span>
 <span class="co">#&gt; [1] 421184.7</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $y</span>
 <span class="co">#&gt; [1] 4983437</span></pre></div>
+<p>You can enable networking to download gridshift files on the fly, which are downloaded to a temporary directory by default (downstream packages can configure this behaviour).</p>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="co"># UTM Zone 20, NAD83</span>
+<span class="fu">proj_coords</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fl">45</span>, -<span class="fl">64</span>), <span class="st">"EPSG:4326"</span>, <span class="st">"EPSG:26920"</span>, <span class="kw">networking</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="co">#&gt; $x</span>
+<span class="co">#&gt; [1] 421184.7</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $y</span>
+<span class="co">#&gt; [1] 4983437</span>
+<span class="fu">proj_coords</span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="fl">45</span>, -<span class="fl">64</span>), <span class="st">"EPSG:4326"</span>, <span class="st">"EPSG:26920"</span>, <span class="kw">networking</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="co">#&gt; $x</span>
+<span class="co">#&gt; [1] 421184.9</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $y</span>
+<span class="co">#&gt; [1] 4983437</span></pre></div>
+<p>You can examine the temporary directory with the (currently unexported) <code>libproj_tempdir</code>:</p>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span>(<span class="kw pkg">libproj</span><span class="kw ns">:::</span><span class="no">libproj_tempdir</span>, <span class="kw">full.names</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="co">#&gt; [1] "/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmpMa2xvs/file450155b028cb/cache.db"</span></pre></div>
 </div>
 </div>
   </div>
