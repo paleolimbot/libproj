@@ -58,11 +58,15 @@ void cpp_libproj_init_api() {
 
 // regular C or C++ code that uses proj_()* functions!
 // [[Rcpp::export]]
-List proj_coords(List xy, std::string from, std::string to) {
+List proj_coords(List xy, std::string from, std::string to, bool networking = false) {
   NumericVector x = xy[0];
   NumericVector y = xy[1];
   
   PJ_CONTEXT* context = PJ_DEFAULT_CTX;
+  
+  // allows gridshift files to be downloaded on the fly
+  proj_context_set_enable_network(PJ_DEFAULT_CTX, networking);
+  
   PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);
   if (trans == NULL) {
     int errorCode = proj_context_errno(context);
@@ -107,12 +111,40 @@ sf::st_transform(sf::st_sfc(sf::st_point(c(-64, 45)), crs = 4326), 26920)
 #> CRS:            EPSG:26920
 #> POINT (421184.7 4983437)
 
-# note that the PROJ default axis ordering (at the C level)
+# Note that the PROJ default axis ordering (at the C level)
 # is not what you expect!
-proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")
+proj_coords(list(45, -64), "EPSG:4326", "EPSG:32620")
 #> $x
 #> [1] 421184.7
 #> 
 #> $y
 #> [1] 4983437
+```
+
+You can enable networking to download gridshift files on the fly, which
+are downloaded to a temporary directory by default (downstream packages
+can configure this behaviour).
+
+``` r
+# UTM Zone 20, NAD83
+proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920", networking = FALSE)
+#> $x
+#> [1] 421184.7
+#> 
+#> $y
+#> [1] 4983437
+proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920", networking = TRUE)
+#> $x
+#> [1] 421184.9
+#> 
+#> $y
+#> [1] 4983437
+```
+
+You can examine the temporary directory with the (currently unexported)
+`libproj_tempdir`:
+
+``` r
+list.files(libproj:::libproj_tempdir, full.names = TRUE)
+#> [1] "/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmpMa2xvs/file450155b028cb/cache.db"
 ```
