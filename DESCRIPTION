@@ -20,6 +20,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat
+    testthat,
+    Rcpp
 URL: https://github.com/paleolimbot/libproj
 BugReports: https://github.com/paleolimbot/libproj/issues
