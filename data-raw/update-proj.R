@@ -16,8 +16,16 @@ stopifnot(dir.exists(proj_dir), length(proj_dir) == 1)
 withr::with_dir(proj_dir, system("./configure"))
 withr::with_dir(proj_dir, system("make"))
 
-# copy the db into inst/
-file.copy(file.path(proj_dir, "data/proj.db"), "inst/proj.db")
+# remove current inst/proj
+unlink("inst/proj", recursive = TRUE)
+dir.create("inst/proj")
+
+# copy the resource files into inst/
+resource_files <- c("proj.db", "GL27", "ITRF2000", "ITRF2008", "ITRF2014", "nad27", "nad83")
+file.copy(
+  file.path(proj_dir, "data", resource_files),
+  file.path("inst/proj", resource_files)
+)
 
 # headers shouldn't be included in other packages,
 # so put them in /src/proj_include

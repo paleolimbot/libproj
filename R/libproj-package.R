@@ -42,7 +42,7 @@ libproj_tempdir <- NULL
 .onLoad <- function(...) {
   libproj_tempdir <<- tempfile()
   Sys.setenv(PROJ_USER_WRITABLE_DIRECTORY = libproj_tempdir)
-  .Call(libproj_c_configure_default_context, system.file("proj.db", package = "libproj"))
+  .Call(libproj_c_configure_default_context, system.file("proj/proj.db", package = "libproj"))
 }
 
 # cleanup any files that might have been downloaded on exit
