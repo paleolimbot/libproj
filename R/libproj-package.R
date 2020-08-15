@@ -11,6 +11,19 @@ NULL
 
 #' PROJ configuration
 #'
+#' @param search_path A character vector of paths where libproj will
+#'   look for resource files (e.g., gridshift, database, init files).
+#'   Defaults to the internal database and init files distributed
+#'   with the PROJ source.
+#' @param db_path Independent of `search_path`, a character vector of
+#'   SQLite databases that may contain updated or alternative
+#'   coordinate operations from the default proj.db included in this
+#'   package. By default, this defers to the search path.
+#' @param user_writable_dir A directory that can safely be written to
+#'   by this package. This contains a cache of grid shift files downloaded
+#'   from the PROJ CDN at `network_endpoint` if using `with_libproj_network()`.
+#' @param network_endpoint A mirror of the PROJ CDN of gridshift files. By default,
+#'   this is set to <https://cdn.proj.org>.
 #' @export
 #'
 #' @examples
@@ -52,10 +65,11 @@ libproj_configuration <- function() {
 #' @rdname libproj_version
 #' @export
 libproj_configure <- function(
-  search_path = system.file("proj", package = "libproj"),
-  db_path = character(0),
+  search_path = c(system.file("proj", package = "libproj"), getOption("libproj.search_path", NULL)),
+  db_path = getOption("libproj.db_path", character(0)),
   user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
-  network_endpoint = "https://cdn.proj.org") {
+  network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org")
+) {
 
   search_path <- as.character(search_path)
   db_path <- as.character(db_path)
