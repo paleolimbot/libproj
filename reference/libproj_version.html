@@ -125,7 +125,7 @@
 
 <span class='fu'>libproj_temp_dir</span>()
 
-<span class='fu'>with_libproj_network</span>(<span class='no'>expr</span>, <span class='kw'>network_enabled</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>with_libproj_configuration</span>(<span class='no'>config</span>, <span class='no'>expr</span>)
 
 <span class='fu'>libproj_configuration</span>()
 
@@ -143,9 +143,13 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>network_enabled</th>
-      <td><p>Whether or not to download gridshift files on the fly.
-This defaults to <code>FALSE</code>.</p></td>
+      <th>config</th>
+      <td><p>A named <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> with elements used to temporarily override elements of the
+current <code>libproj_configuration()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>expr</th>
+      <td><p>An expression to evaluate with the specified state</p></td>
     </tr>
     <tr>
       <th>search_path</th>
@@ -173,11 +177,16 @@ from the PROJ CDN at <code>network_endpoint</code> if using <code>with_libproj_n
       <td><p>A mirror of the PROJ CDN of gridshift files. By default,
 this is set to <a href='https://cdn.proj.org'>https://cdn.proj.org</a>.</p></td>
     </tr>
+    <tr>
+      <th>network_enabled</th>
+      <td><p>Whether or not to download gridshift files on the fly.
+This defaults to <code>FALSE</code>.</p></td>
+    </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_temp_dir</span>()</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpbVZFb8/filec2b7788b993"</div><div class='input'><span class='fu'>libproj_configuration</span>()</div><div class='output co'>#&gt; $db_path
+    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_temp_dir</span>()</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpdEH4yX/filed5d60087dd1"</div><div class='input'><span class='fu'>libproj_configuration</span>()</div><div class='output co'>#&gt; $db_path
 #&gt; [1] "/Users/runner/work/_temp/Library/libproj/proj/proj.db"
 #&gt; 
 #&gt; $search_path
@@ -190,7 +199,7 @@ this is set to <a href='https://cdn.proj.org'>https://cdn.proj.org</a>.</p></td>
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $user_writable_dir
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpbVZFb8/filec2b7788b993"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpdEH4yX/filed5d60087dd1"
 #&gt; </div><div class='input'>
 
 </div></pre>
