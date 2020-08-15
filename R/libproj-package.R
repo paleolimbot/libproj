@@ -27,6 +27,7 @@ NULL
 #'   this is set to <https://cdn.proj.org>.
 #' @param network_enabled Whether or not to download gridshift files on the fly.
 #'   This defaults to `FALSE`.
+#' @param expr An expression to evaluate with the specified state
 #' @export
 #'
 #' @examples

@@ -33,6 +33,8 @@ libproj_configure(
 )
 }
 \arguments{
+\item{expr}{An expression to evaluate with the specified state}
+
 \item{network_enabled}{Whether or not to download gridshift files on the fly.
 This defaults to \code{FALSE}.}
 
