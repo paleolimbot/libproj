@@ -125,19 +125,28 @@
 
 <span class='fu'>libproj_temp_dir</span>()
 
+<span class='fu'>with_libproj_network</span>(<span class='no'>expr</span>, <span class='kw'>network_enabled</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
 <span class='fu'>libproj_configuration</span>()
 
 <span class='fu'>libproj_configure</span>(
   <span class='kw'>search_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"proj"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"libproj"</span>),
     <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.search_path"</span>, <span class='kw'>NULL</span>)),
-  <span class='kw'>db_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.db_path"</span>, <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>)),
+  <span class='kw'>db_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.db_path"</span>, <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"proj/proj.db"</span>, <span class='kw'>package</span> <span class='kw'>=</span>
+    <span class='st'>"libproj"</span>)),
   <span class='kw'>user_writable_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.user_writable_dir"</span>, <span class='fu'>libproj_temp_dir</span>()),
-  <span class='kw'>network_endpoint</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.network_endpoint"</span>, <span class='st'>"https://cdn.proj.org"</span>)
+  <span class='kw'>network_endpoint</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.network_endpoint"</span>, <span class='st'>"https://cdn.proj.org"</span>),
+  <span class='kw'>network_enabled</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.network_enabled"</span>, <span class='fl'>FALSE</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>network_enabled</th>
+      <td><p>Whether or not to download gridshift files on the fly.
+This defaults to <code>FALSE</code>.</p></td>
+    </tr>
     <tr>
       <th>search_path</th>
       <td><p>A character vector of paths where libproj will
@@ -150,7 +159,8 @@ with the PROJ source.</p></td>
       <td><p>Independent of <code>search_path</code>, a character vector of
 SQLite databases that may contain updated or alternative
 coordinate operations from the default proj.db included in this
-package. By default, this defers to the search path.</p></td>
+package. You must specify at least one database as part of this configuration;
+do not rely on <code>search_path</code> to find this value for you.</p></td>
     </tr>
     <tr>
       <th>user_writable_dir</th>
@@ -167,8 +177,8 @@ this is set to <a href='https://cdn.proj.org'>https://cdn.proj.org</a>.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_temp_dir</span>()</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpNWT1l2/filed6a506d8859"</div><div class='input'><span class='fu'>libproj_configuration</span>()</div><div class='output co'>#&gt; $db_path
-#&gt; character(0)
+    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_temp_dir</span>()</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpbVZFb8/filec2b7788b993"</div><div class='input'><span class='fu'>libproj_configuration</span>()</div><div class='output co'>#&gt; $db_path
+#&gt; [1] "/Users/runner/work/_temp/Library/libproj/proj/proj.db"
 #&gt; 
 #&gt; $search_path
 #&gt; [1] "/Users/runner/work/_temp/Library/libproj/proj"
@@ -176,8 +186,11 @@ this is set to <a href='https://cdn.proj.org'>https://cdn.proj.org</a>.</p></td>
 #&gt; $network_endpoint
 #&gt; [1] "https://cdn.proj.org"
 #&gt; 
+#&gt; $network_enabled
+#&gt; [1] FALSE
+#&gt; 
 #&gt; $user_writable_dir
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpNWT1l2/filed6a506d8859"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpbVZFb8/filec2b7788b993"
 #&gt; </div><div class='input'>
 
 </div></pre>
