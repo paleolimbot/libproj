@@ -79,13 +79,10 @@ test_that("libproj can be linked to", {
   expect_identical(list.files(libproj_temp_dir()), character(0))
 
   if (libproj_has_libcurl() && libproj_has_libtiff()) {
-    with_libproj_network(proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920"))
+    with_libproj_configuration( list(network_enabled = TRUE), {
+      proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")
+    })
     expect_identical(list.files(libproj_temp_dir()), "cache.db")
-  } else {
-    expect_error(
-      with_libproj_network(proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")),
-      "libproj was built without"
-    )
   }
 
   unlink(cache, recursive = TRUE)

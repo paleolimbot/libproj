@@ -27,6 +27,8 @@ NULL
 #'   this is set to <https://cdn.proj.org>.
 #' @param network_enabled Whether or not to download gridshift files on the fly.
 #'   This defaults to `FALSE`.
+#' @param config A named `list()` with elements used to temporarily override elements of the
+#'   current [libproj_configuration()].
 #' @param expr An expression to evaluate with the specified state
 #' @export
 #'
@@ -62,19 +64,18 @@ libproj_temp_dir <- function() {
 
 #' @rdname libproj_version
 #' @export
-with_libproj_network <- function(expr, network_enabled = TRUE) {
-  if (network_enabled && (!libproj_has_libcurl() || !libproj_has_libtiff())) {
-    stop(
-      paste0(
-        "libproj was built without libcurl and/or libtiff support. \n",
-        "You may need to install these packages on your system and reinstall libproj."
-      ),
-      call. = FALSE
-    )
-  }
+with_libproj_configuration <- function(config, expr) {
+  stopifnot(
+    is.list(config),
+    length(config) == 0 || (!is.null(names(config)) && all(names(config) != ""))
+  )
 
-  .Call(libproj_c_set_enable_network, network_enabled)
-  on.exit(.Call(libproj_c_set_enable_network, libproj_config$network_enabled))
+  current_config <- libproj_configuration()
+  on.exit(do.call(libproj_configure, current_config))
+
+  new_config <- c(config, current_config)[names(config)]
+  do.call(libproj_configure, new_config)
+
   force(expr)
 }
 

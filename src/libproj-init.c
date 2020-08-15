@@ -8,14 +8,12 @@ SEXP libproj_c_version();
 SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP networkEndpoint, SEXP networkEnabled);
 SEXP libproj_c_has_libtiff();
 SEXP libproj_c_has_libcurl();
-SEXP libproj_c_set_enable_network(SEXP enabled);
 
 static const R_CallMethodDef CallEntries[] = {
   {"libproj_c_version", (DL_FUNC) &libproj_c_version, 0},
   {"libproj_c_has_libtiff", (DL_FUNC) &libproj_c_has_libtiff, 0},
   {"libproj_c_has_libcurl", (DL_FUNC) &libproj_c_has_libcurl, 0},
   {"libproj_c_configure_default_context", (DL_FUNC) &libproj_c_configure_default_context, 4},
-  {"libproj_c_set_enable_network", (DL_FUNC) &libproj_c_set_enable_network, 1},
   {NULL, NULL, 0}
 };
 

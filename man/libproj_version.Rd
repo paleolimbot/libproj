@@ -5,7 +5,7 @@
 \alias{libproj_has_libtiff}
 \alias{libproj_has_libcurl}
 \alias{libproj_temp_dir}
-\alias{with_libproj_network}
+\alias{with_libproj_configuration}
 \alias{libproj_configuration}
 \alias{libproj_configure}
 \title{PROJ configuration}
@@ -18,7 +18,7 @@ libproj_has_libcurl()
 
 libproj_temp_dir()
 
-with_libproj_network(expr, network_enabled = TRUE)
+with_libproj_configuration(config, expr)
 
 libproj_configuration()
 
@@ -33,10 +33,10 @@ libproj_configure(
 )
 }
 \arguments{
-\item{expr}{An expression to evaluate with the specified state}
+\item{config}{A named \code{list()} with elements used to temporarily override elements of the
+current \code{\link[=libproj_configuration]{libproj_configuration()}}.}
 
-\item{network_enabled}{Whether or not to download gridshift files on the fly.
-This defaults to \code{FALSE}.}
+\item{expr}{An expression to evaluate with the specified state}
 
 \item{search_path}{A character vector of paths where libproj will
 look for resource files (e.g., gridshift, database, init files).
@@ -55,6 +55,9 @@ from the PROJ CDN at \code{network_endpoint} if using \code{with_libproj_network
 
 \item{network_endpoint}{A mirror of the PROJ CDN of gridshift files. By default,
 this is set to \url{https://cdn.proj.org}.}
+
+\item{network_enabled}{Whether or not to download gridshift files on the fly.
+This defaults to \code{FALSE}.}
 }
 \description{
 PROJ configuration

@@ -100,9 +100,3 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP netw
 
   return R_NilValue;
 }
-
-SEXP libproj_c_set_enable_network(SEXP enabled) {
-  int enabled0 = LOGICAL(enabled)[0];
-  proj_context_set_enable_network(PJ_DEFAULT_CTX, enabled0);
-  return R_NilValue;
-}
