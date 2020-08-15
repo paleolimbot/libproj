@@ -5,6 +5,7 @@
 \alias{libproj_has_libtiff}
 \alias{libproj_has_libcurl}
 \alias{libproj_temp_dir}
+\alias{with_libproj_network}
 \alias{libproj_configuration}
 \alias{libproj_configure}
 \title{PROJ configuration}
@@ -17,17 +18,24 @@ libproj_has_libcurl()
 
 libproj_temp_dir()
 
+with_libproj_network(expr, network_enabled = TRUE)
+
 libproj_configuration()
 
 libproj_configure(
   search_path = c(system.file("proj", package = "libproj"),
     getOption("libproj.search_path", NULL)),
-  db_path = getOption("libproj.db_path", character(0)),
+  db_path = getOption("libproj.db_path", system.file("proj/proj.db", package =
+    "libproj")),
   user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
-  network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org")
+  network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org"),
+  network_enabled = getOption("libproj.network_enabled", FALSE)
 )
 }
 \arguments{
+\item{network_enabled}{Whether or not to download gridshift files on the fly.
+This defaults to \code{FALSE}.}
+
 \item{search_path}{A character vector of paths where libproj will
 look for resource files (e.g., gridshift, database, init files).
 Defaults to the internal database and init files distributed
@@ -36,7 +44,8 @@ with the PROJ source.}
 \item{db_path}{Independent of \code{search_path}, a character vector of
 SQLite databases that may contain updated or alternative
 coordinate operations from the default proj.db included in this
-package. By default, this defers to the search path.}
+package. You must specify at least one database as part of this configuration;
+do not rely on \code{search_path} to find this value for you.}
 
 \item{user_writable_dir}{A directory that can safely be written to
 by this package. This contains a cache of grid shift files downloaded

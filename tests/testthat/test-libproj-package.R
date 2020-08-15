@@ -10,14 +10,11 @@ test_that("libproj can be linked to", {
 
   cache <- source_rcpp_libproj('
     // [[Rcpp::export]]
-    List proj_coords(List xy, std::string from, std::string to, bool networking = false) {
+    List proj_coords(List xy, std::string from, std::string to) {
       NumericVector x = xy[0];
       NumericVector y = xy[1];
 
       PJ_CONTEXT* context = PJ_DEFAULT_CTX;
-
-      // allows gridshift files to be downloaded on the fly
-      proj_context_set_enable_network(PJ_DEFAULT_CTX, networking);
 
       PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);
       if (trans == NULL) {
@@ -64,14 +61,31 @@ test_that("libproj can be linked to", {
     round(c(421184.697083288, 4983436.7683493), 3)
   )
 
+  # check setting defaults of various lengths to make sure the null-terminated array stuff worked
+  libproj_configure(search_path = character(), db_path = rep(system.file("proj/proj.db", package = "libproj"), 2))
+
+  # reset config
+  libproj_configure()
+  expect_length(proj_coords(list(45, -64), "EPSG:4326", "EPSG:32620"), 2)
+
+  # check setting defaults of various lengths to make sure the null-terminated array stuff worked
+  libproj_configure(search_path = c(system.file("proj", package = "libproj"), getwd()))
+
+  # reset config
+  libproj_configure()
+  expect_length(proj_coords(list(45, -64), "EPSG:4326", "EPSG:32620"), 2)
+
   # check networking
-  expect_identical(list.files(libproj_temp_dir()), character(0))
-  without_network <- proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920", networking = FALSE)
   expect_identical(list.files(libproj_temp_dir()), character(0))
 
   if (libproj_has_libcurl() && libproj_has_libtiff()) {
-    with_network <- proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920", networking = TRUE)
+    with_libproj_network(proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920"))
     expect_identical(list.files(libproj_temp_dir()), "cache.db")
+  } else {
+    expect_error(
+      with_libproj_network(proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")),
+      "libproj was built without"
+    )
   }
 
   unlink(cache, recursive = TRUE)

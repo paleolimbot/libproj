@@ -18,12 +18,15 @@ NULL
 #' @param db_path Independent of `search_path`, a character vector of
 #'   SQLite databases that may contain updated or alternative
 #'   coordinate operations from the default proj.db included in this
-#'   package. By default, this defers to the search path.
+#'   package. You must specify at least one database as part of this configuration;
+#'   do not rely on `search_path` to find this value for you.
 #' @param user_writable_dir A directory that can safely be written to
 #'   by this package. This contains a cache of grid shift files downloaded
 #'   from the PROJ CDN at `network_endpoint` if using `with_libproj_network()`.
 #' @param network_endpoint A mirror of the PROJ CDN of gridshift files. By default,
 #'   this is set to <https://cdn.proj.org>.
+#' @param network_enabled Whether or not to download gridshift files on the fly.
+#'   This defaults to `FALSE`.
 #' @export
 #'
 #' @examples
@@ -58,6 +61,24 @@ libproj_temp_dir <- function() {
 
 #' @rdname libproj_version
 #' @export
+with_libproj_network <- function(expr, network_enabled = TRUE) {
+  if (network_enabled && (!libproj_has_libcurl() || !libproj_has_libtiff())) {
+    stop(
+      paste0(
+        "libproj was built without libcurl and/or libtiff support. \n",
+        "You may need to install these packages on your system and reinstall libproj."
+      ),
+      call. = FALSE
+    )
+  }
+
+  .Call(libproj_c_set_enable_network, network_enabled)
+  on.exit(.Call(libproj_c_set_enable_network, libproj_config$network_enabled))
+  force(expr)
+}
+
+#' @rdname libproj_version
+#' @export
 libproj_configuration <- function() {
   as.list(libproj_config)
 }
@@ -66,22 +87,25 @@ libproj_configuration <- function() {
 #' @export
 libproj_configure <- function(
   search_path = c(system.file("proj", package = "libproj"), getOption("libproj.search_path", NULL)),
-  db_path = getOption("libproj.db_path", character(0)),
+  db_path = getOption("libproj.db_path", system.file("proj/proj.db", package = "libproj")),
   user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
-  network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org")
+  network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),
+  network_enabled = getOption("libproj.network_enabled", FALSE)
 ) {
 
   search_path <- as.character(search_path)
   db_path <- as.character(db_path)
   user_writable_dir <- as.character(user_writable_dir)
   network_endpoint <- as.character(network_endpoint)
+  network_enabled <- as.logical(network_enabled)
 
   stopifnot(
     all(dir.exists(search_path)),
-    all(file.exists(db_path)), all(!dir.exists(db_path)),
-    length(user_writable_dir) == 1,
+    length(db_path) >= 1, all(file.exists(db_path)), all(!dir.exists(db_path)),
+    length(user_writable_dir) == 1, !is.na(user_writable_dir),
     dir.exists(user_writable_dir) || (!file.exists(user_writable_dir)),
-    length(network_endpoint) == 1
+    length(network_endpoint) == 1, !is.na(network_endpoint),
+    length(network_enabled) == 1, !is.na(network_enabled)
   )
 
   # TODO: handle case where this errors (it shouldn't since we've
@@ -91,7 +115,8 @@ libproj_configure <- function(
     libproj_c_configure_default_context,
     search_path,
     db_path,
-    network_endpoint
+    network_endpoint,
+    network_enabled
   )
 
   # this currently has to be set by env var, as there is no
@@ -103,6 +128,7 @@ libproj_configure <- function(
   libproj_config$db_path <- db_path
   libproj_config$user_writable_dir <- user_writable_dir
   libproj_config$network_endpoint <- network_endpoint
+  libproj_config$network_enabled <- network_enabled
 }
 
 # by default, this setup makes sure that anybody using PJ_DEFAULT_CTX
@@ -117,8 +143,16 @@ libproj_config <- new.env(parent = emptyenv())
   libproj_tempdir_ <<- tempfile()
   dir.create(libproj_tempdir_)
 
-  # apply default configuration
-  libproj_configure()
+  # safely apply default configuration
+  if (inherits(try(libproj_configure()), "try-error")) {
+    warning(
+      paste0(
+        "`libproj_configure()` failed, likely as a result of invalid options().\n",
+        "Please run `libproj_configure()` with explicit arguments to fix this error."
+      ),
+      call. = FALSE
+    )
+  }
 }
 
 # cleanup any files that might have been downloaded on exit

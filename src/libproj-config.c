@@ -40,7 +40,7 @@ SEXP libproj_c_has_libcurl() {
 // a reasonable default and can be configured from R (e.g., if a user
 // wants to add additional data directories or aux database paths and have
 // these choices respected by the rest of the spatial stack).
-SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP networkEndpoint) {
+SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP networkEndpoint, SEXP networkEnabled) {
 
   // Set the search paths (this also includes the user-writable directory,
   // which is currently set by environment variable)
@@ -62,6 +62,9 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP netw
   // that PROJ will look in searchPath for the database instead.
   int nDbPaths = Rf_length(dbPath);
   if (nDbPaths == 0) {
+    // surprisingly, this doesn't seem to "unset" the default database
+    // for this reason, this branch is never called because we check length >= 1
+    // from `libproj_configure()`
     proj_context_set_database_path(PJ_DEFAULT_CTX, NULL, NULL, NULL);
 
   } else if (nDbPaths == 1) {
@@ -79,12 +82,9 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP netw
     proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, auxPaths, NULL);
   }
 
-  // Most users probably don't expect CDN use by default
-  // (downloads reasonably large files silently for
-  // some common operations). The suggested way to handle this
-  // is using libproj_with_network(), which always resets the value
-  // to FALSE.
-  proj_context_set_enable_network(PJ_DEFAULT_CTX, 0);
+  // Allow this default to be set from R
+  int networkEnabled0 = LOGICAL(networkEnabled)[0];
+  proj_context_set_enable_network(PJ_DEFAULT_CTX, networkEnabled0);
 
   // The CDN endpoint isn't set by default, and is needed for
   // networking to work out of the box (when enabled by
@@ -98,5 +98,11 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP netw
   // to proj_set_network_handler() and linking to libcurl, so should probably be implemented
   // here to make it practical for downstream packages to do this as well.
 
+  return R_NilValue;
+}
+
+SEXP libproj_c_set_enable_network(SEXP enabled) {
+  int enabled0 = LOGICAL(enabled)[0];
+  proj_context_set_enable_network(PJ_DEFAULT_CTX, enabled0);
   return R_NilValue;
 }
