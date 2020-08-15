@@ -35,38 +35,62 @@ SEXP libproj_c_has_libcurl() {
   return out;
 }
 
-// Here, the PJ_DEFAULT_CTX is configured so that quick one-off code
-// works out of the box. Realistically, downstream packages should create
-// their own context and never update the state of the default context, but
-// leaving this unconfigured makes it difficult to make sure that this
-// package actually works.
-SEXP libproj_c_configure_default_context(SEXP dbPath) {
+// Here, the PJ_DEFAULT_CTX is configured. Downstream packages can also
+// define their own contexts but this configuration is intended to be
+// a reasonable default and can be configured from R (e.g., if a user
+// wants to add additional data directories or aux database paths and have
+// these choices respected by the rest of the spatial stack).
+SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP networkEndpoint) {
 
-  // It may cause problems if a database from an existing system installation
-  // is used by default: if downstream packages want this behaviour, they should
-  // explicitly make this connection
-  const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
-  proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
+  // Set the search paths (this also includes the user-writable directory,
+  // which is currently set by environment variable)
+  int nSearchPaths = Rf_length(searchPath);
+  if (nSearchPaths == 0) {
+    proj_context_set_search_paths(PJ_DEFAULT_CTX, 0, NULL);
 
-  // By default, the writable directory, which is currently set by env var,
-  // is always considered (even if the search paths are empty)
-  // the package should be completely isolated from a system install
-  // (unless a downstream package explicitly wants to make this connection)
-  proj_context_set_search_paths(PJ_DEFAULT_CTX, 0, NULL);
+  } else {
+    const char* searchPaths[nSearchPaths];
+    for (int i = 0; i < nSearchPaths; i++) {
+      searchPaths[i] = CHAR(STRING_ELT(searchPath, i));
+    }
 
-  // With the default writable directory as a tempdir, it is safe
-  // to enable network with the default CDN, but this is probably not what
-  // most users expect (downloads reasonably large files silently for
-  // some common operations). This can theoretically be set by users
-  // of the default context (but should always be reset to FALSE). Again
-  // downstream packages should define their own context to avoid this
-  // complexity.
+    proj_context_set_search_paths(PJ_DEFAULT_CTX, nSearchPaths, searchPaths);
+  }
+
+  // Here, the first element of dbPath is used as the database path; the rest are
+  // used as the aux database paths. Using character(0) for dbPath means
+  // that PROJ will look in searchPath for the database instead.
+  int nDbPaths = Rf_length(dbPath);
+  if (nDbPaths == 0) {
+    proj_context_set_database_path(PJ_DEFAULT_CTX, NULL, NULL, NULL);
+
+  } else if (nDbPaths == 1) {
+    const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
+    proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
+
+  } else {
+    const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
+    const char* auxPaths[nDbPaths];
+    for (int i = 0; i < (nDbPaths - 1); i++) {
+      auxPaths[i] = CHAR(STRING_ELT(dbPath, i + 1));
+    }
+    auxPaths[nDbPaths - 1] = NULL;
+
+    proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, auxPaths, NULL);
+  }
+
+  // Most users probably don't expect CDN use by default
+  // (downloads reasonably large files silently for
+  // some common operations). The suggested way to handle this
+  // is using libproj_with_network(), which always resets the value
+  // to FALSE.
   proj_context_set_enable_network(PJ_DEFAULT_CTX, 0);
 
-  // The cdn.proj.org CDN endpoint isn't set by default, and is needed for
+  // The CDN endpoint isn't set by default, and is needed for
   // networking to work out of the box (when enabled by
   // proj_context_set_enable_network(PJ_DEFAULT_CTX, 1)).
-  proj_context_set_url_endpoint(PJ_DEFAULT_CTX, "https://cdn.proj.org");
+  const char* networkEndpoint0 = CHAR(STRING_ELT(networkEndpoint, 0));
+  proj_context_set_url_endpoint(PJ_DEFAULT_CTX, networkEndpoint0);
 
   // TODO the default network handler (curl) downloads silently. In the context
   // of an R package, this should really be done with a message indicating

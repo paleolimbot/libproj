@@ -4,6 +4,9 @@
 \alias{libproj_version}
 \alias{libproj_has_libtiff}
 \alias{libproj_has_libcurl}
+\alias{libproj_temp_dir}
+\alias{libproj_configuration}
+\alias{libproj_configure}
 \title{PROJ configuration}
 \usage{
 libproj_version()
@@ -11,6 +14,17 @@ libproj_version()
 libproj_has_libtiff()
 
 libproj_has_libcurl()
+
+libproj_temp_dir()
+
+libproj_configuration()
+
+libproj_configure(
+  search_path = system.file("proj", package = "libproj"),
+  db_path = character(0),
+  user_writable_directory = getOption("libproj.user_writable_dir", libproj_temp_dir()),
+  network_endpoint = "https://cdn.proj.org"
+)
 }
 \description{
 PROJ configuration
@@ -19,5 +33,8 @@ PROJ configuration
 libproj_version()
 libproj_has_libtiff()
 libproj_has_libcurl()
+libproj_tempdir()
+libproj_configuration()
+
 
 }

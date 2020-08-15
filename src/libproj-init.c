@@ -13,7 +13,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"libproj_c_version", (DL_FUNC) &libproj_c_version, 0},
   {"libproj_c_has_libtiff", (DL_FUNC) &libproj_c_has_libtiff, 0},
   {"libproj_c_has_libcurl", (DL_FUNC) &libproj_c_has_libcurl, 0},
-  {"libproj_c_configure_default_context", (DL_FUNC) &libproj_c_configure_default_context, 1},
+  {"libproj_c_configure_default_context", (DL_FUNC) &libproj_c_configure_default_context, 3},
   {NULL, NULL, 0}
 };
 
