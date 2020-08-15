@@ -121,12 +121,35 @@
 
 <span class='fu'>libproj_has_libtiff</span>()
 
-<span class='fu'>libproj_has_libcurl</span>()</pre>
+<span class='fu'>libproj_has_libcurl</span>()
+
+<span class='fu'>libproj_temp_dir</span>()
+
+<span class='fu'>libproj_configuration</span>()
+
+<span class='fu'>libproj_configure</span>(
+  <span class='kw'>search_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"proj"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"libproj"</span>),
+  <span class='kw'>db_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>),
+  <span class='kw'>user_writable_directory</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.user_writable_dir"</span>, <span class='fu'>libproj_temp_dir</span>()),
+  <span class='kw'>network_endpoint</span> <span class='kw'>=</span> <span class='st'>"https://cdn.proj.org"</span>
+)</pre>
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_tempdir</span>()</div><div class='output co'>#&gt; <span class='error'>Error in libproj_tempdir(): could not find function "libproj_tempdir"</span></div><div class='input'><span class='fu'>libproj_configuration</span>()</div><div class='output co'>#&gt; $db_path
+#&gt; character(0)
+#&gt; 
+#&gt; $search_path
+#&gt; [1] "/Users/runner/work/_temp/Library/libproj/proj"
+#&gt; 
+#&gt; $network_endpoint
+#&gt; [1] "https://cdn.proj.org"
+#&gt; 
+#&gt; $user_writable_dir
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpEB7BF7/filedb66fae169a"
+#&gt; </div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
