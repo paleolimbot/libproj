@@ -128,16 +128,46 @@
 <span class='fu'>libproj_configuration</span>()
 
 <span class='fu'>libproj_configure</span>(
-  <span class='kw'>search_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"proj"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"libproj"</span>),
-  <span class='kw'>db_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>),
-  <span class='kw'>user_writable_directory</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.user_writable_dir"</span>, <span class='fu'>libproj_temp_dir</span>()),
-  <span class='kw'>network_endpoint</span> <span class='kw'>=</span> <span class='st'>"https://cdn.proj.org"</span>
+  <span class='kw'>search_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"proj"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"libproj"</span>),
+    <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.search_path"</span>, <span class='kw'>NULL</span>)),
+  <span class='kw'>db_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.db_path"</span>, <span class='fu'><a href='https://rdrr.io/r/base/character.html'>character</a></span>(<span class='fl'>0</span>)),
+  <span class='kw'>user_writable_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.user_writable_dir"</span>, <span class='fu'>libproj_temp_dir</span>()),
+  <span class='kw'>network_endpoint</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"libproj.network_endpoint"</span>, <span class='st'>"https://cdn.proj.org"</span>)
 )</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>search_path</th>
+      <td><p>A character vector of paths where libproj will
+look for resource files (e.g., gridshift, database, init files).
+Defaults to the internal database and init files distributed
+with the PROJ source.</p></td>
+    </tr>
+    <tr>
+      <th>db_path</th>
+      <td><p>Independent of <code>search_path</code>, a character vector of
+SQLite databases that may contain updated or alternative
+coordinate operations from the default proj.db included in this
+package. By default, this defers to the search path.</p></td>
+    </tr>
+    <tr>
+      <th>user_writable_dir</th>
+      <td><p>A directory that can safely be written to
+by this package. This contains a cache of grid shift files downloaded
+from the PROJ CDN at <code>network_endpoint</code> if using <code>with_libproj_network()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>network_endpoint</th>
+      <td><p>A mirror of the PROJ CDN of gridshift files. By default,
+this is set to <a href='https://cdn.proj.org'>https://cdn.proj.org</a>.</p></td>
+    </tr>
+    </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_tempdir</span>()</div><div class='output co'>#&gt; <span class='error'>Error in libproj_tempdir(): could not find function "libproj_tempdir"</span></div><div class='input'><span class='fu'>libproj_configuration</span>()</div><div class='output co'>#&gt; $db_path
+    <pre class="examples"><div class='input'><span class='fu'>libproj_version</span>()</div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span>()</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_temp_dir</span>()</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpNWT1l2/filed6a506d8859"</div><div class='input'><span class='fu'>libproj_configuration</span>()</div><div class='output co'>#&gt; $db_path
 #&gt; character(0)
 #&gt; 
 #&gt; $search_path
@@ -147,7 +177,7 @@
 #&gt; [1] "https://cdn.proj.org"
 #&gt; 
 #&gt; $user_writable_dir
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpEB7BF7/filedb66fae169a"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpNWT1l2/filed6a506d8859"
 #&gt; </div><div class='input'>
 
 </div></pre>
