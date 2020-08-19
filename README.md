@@ -117,3 +117,59 @@ proj_coords(list(45, -64), "EPSG:4326", "EPSG:32620")
 #> $y
 #> [1] 4983437
 ```
+
+## Configuration
+
+Users can configure libproj to point at any compatible proj.db file
+and/or data directory they would like (either permanently or
+temporarily\!):
+
+``` r
+library(libproj)
+
+# will download a grid shift file from the PROJ CDN
+# to correct WGS84->NAD83
+with_libproj_configuration(list(network_enabled = TRUE), {
+  proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")
+})
+#> $x
+#> [1] 421184.9
+#> 
+#> $y
+#> [1] 4983437
+```
+
+If enabling network downloads, the cache is stored in a temporary
+directory (`libproj_temp_dir()`). You can configure this value to
+persist the cache between R sessions using
+`options(libproj.user_writable_dir = ...)` in your `.Renviron` or using
+`with_libproj_configuration()` or `libproj_configure()` to set this
+value temporarily. A useful user writable directory might be
+`rappdirs::user_data_dir("R-libproj")`.
+
+``` r
+# in .Renviron (`usethis::edit_r_environ()`):
+options(
+  libproj.user_writable_dir = rappdirs::user_data_dir("R-libproj")
+)
+```
+
+After R is restarted, libproj will use this value as the default:
+
+``` r
+libproj_configuration()
+#> $db_path
+#> [1] "/Library/Frameworks/R.framework/Versions/4.0/Resources/library/libproj/proj/proj.db"
+#> 
+#> $search_path
+#> [1] "/Library/Frameworks/R.framework/Versions/4.0/Resources/library/libproj/proj"
+#> 
+#> $network_endpoint
+#> [1] "https://cdn.proj.org"
+#> 
+#> $network_enabled
+#> [1] FALSE
+#> 
+#> $user_writable_dir
+#> [1] "/Users/dewey/Library/Application Support/R-libproj"
+```
