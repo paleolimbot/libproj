@@ -9,3 +9,4 @@
 ^windows$
 ^src/Makevars$
 ^LICENSE\.md$
+^cran-comments\.md$
