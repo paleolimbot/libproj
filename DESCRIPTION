@@ -23,7 +23,7 @@ Description: Provides a 'PROJ' <https://proj.org> C API that can be
   version of the 'PROJ' library to guarnatee the best possible 
   consistency on multiple platforms, and to provide a means by which
   'PROJ' can be used on platforms where it may be impractical
-  or impossible to install an binary version of the library.
+  or impossible to install a binary version of the library.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
