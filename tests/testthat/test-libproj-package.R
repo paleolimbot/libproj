@@ -6,7 +6,7 @@ test_that("libproj_version works", {
 test_that("libproj can be linked to", {
   # this test uses sourceRcpp that may generate some errors that are
   # outside the control of this package
-  # skip_on_cran()
+  skip_on_cran()
 
   cache <- source_rcpp_libproj('
     // [[Rcpp::export]]
