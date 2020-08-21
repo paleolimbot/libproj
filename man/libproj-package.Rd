@@ -32,6 +32,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Jeroen Ooms (configure script) [copyright holder]
   \item Evan Roualt [copyright holder]
   \item Thomas Knudsen [copyright holder]
   \item SDFE [copyright holder]
