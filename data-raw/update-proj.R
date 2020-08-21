@@ -105,6 +105,10 @@ print_next <- function() {
   cli::cat_bullet(
     "Replace random() with cpp_compat_random() (sqlite3.c)"
   )
+  cli::cat_bullet(
+    "Ensure the first argument to dladdr() is cast to (void*) and not (const void*) ",
+    "in filemanager.cpp (required for build to pass on Solaris)"
+  )
 
   cli::cat_bullet("Remove pragmas supressing diagnostics")
 
