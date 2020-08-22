@@ -32,7 +32,7 @@ typedefs_chr <- c(
 function_defs <- tibble(
   # move pointer spec to be with type to the left, remove extern
   def = function_defs_chr %>%
-    str_replace("\\s+PROJ_DLL\\s+\\*", "* PROJ_DLL "),
+    str_replace("\\s+PROJ_DLL\\s*\\*", "* PROJ_DLL "),
 
   name = def %>% str_extract("[A-Za-z0-9_]+\\s*\\(") %>% str_remove("\\($") %>% str_trim(),
 
