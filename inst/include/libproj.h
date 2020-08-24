@@ -1,4 +1,4 @@
-// generated automatically by data-raw/update-libgeos-api.R - do not edit by hand!
+// generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
 #ifndef LIBPROJ_H
 #define LIBPROJ_H
 
@@ -795,7 +795,7 @@ extern PJ* (*proj_coordoperation_create_inverse)(PJ_CONTEXT*, const PJ*);
 extern int (*proj_concatoperation_get_step_count)(PJ_CONTEXT*, const PJ*);
 extern PJ* (*proj_concatoperation_get_step)(PJ_CONTEXT*, const PJ*, int);
 
-void libgeos_init_api();
+void libproj_init_api();
 
 #ifdef __cplusplus
 }

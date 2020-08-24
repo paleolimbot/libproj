@@ -71,7 +71,7 @@ libproj_h <- with(
   ),
   glue::glue(
     '
-// generated automatically by data-raw/update-libgeos-api.R - do not edit by hand!
+// generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
 #ifndef LIBPROJ_H
 #define LIBPROJ_H
 
@@ -94,7 +94,7 @@ extern "C" {{
 
 { paste0(header_def, collapse = "\n") }
 
-void libgeos_init_api();
+void libproj_init_api();
 
 #ifdef __cplusplus
 }}
