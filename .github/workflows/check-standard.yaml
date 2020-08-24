@@ -85,9 +85,35 @@ jobs:
         run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
 
+      - name: Install package
+        run: |
+          remotes::install_cran("fs")
+          fs::dir_copy("check/libproj.Rcheck/libproj", file.path(.libPaths()[1], "libproj"))
+        shell: Rscript {0}
+
+      - name: Checkout hypertidy/PROJ
+        uses: actions/checkout@v2
+        with:
+          repository: hypertidy/PROJ
+          ref: libproj
+          path: 'PROJpkg'
+
+      - name: Check hypertidy/PROJ
+        env:
+          _R_CHECK_CRAN_INCOMING_: false
+          _R_CHECK_FORCE_SUGGESTS_: false
+        run: |
+          rcmdcheck::rcmdcheck("PROJpkg", args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check_PROJ")
+        shell: Rscript {0}
+
+      - name: Show testthat output (hypertidy/PROJ)
+        if: always()
+        run: find check_PROJ -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
         with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-${{ matrix.config.curl }}-geos-results
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-${{ matrix.config.curl }}-results
           path: check
