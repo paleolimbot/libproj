@@ -88,7 +88,9 @@ jobs:
       - name: Install package
         run: |
           remotes::install_cran("fs")
-          fs::dir_copy("check/libproj.Rcheck/libproj", file.path(.libPaths()[1], "libproj"))
+          if (!dir.exists(file.path(.libPaths()[1], "libproj"))) {
+            fs::dir_copy("check/libproj.Rcheck/libproj", file.path(.libPaths()[1], "libproj"))
+          }
         shell: Rscript {0}
 
       - name: Checkout hypertidy/PROJ
@@ -103,6 +105,7 @@ jobs:
           _R_CHECK_CRAN_INCOMING_: false
           _R_CHECK_FORCE_SUGGESTS_: false
         run: |
+          remotes::install_cran(c("knitr", "rmarkdown"))
           rcmdcheck::rcmdcheck("PROJpkg", args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check_PROJ")
         shell: Rscript {0}
 
