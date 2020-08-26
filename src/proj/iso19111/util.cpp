@@ -620,7 +620,9 @@ Exception::Exception(const std::string &message) : msg_(message) {}
 
 // ---------------------------------------------------------------------------
 
+#if !defined(__sun) && !defined(sun)
 Exception::Exception(const Exception &) = default;
+#endif
 
 // ---------------------------------------------------------------------------
 

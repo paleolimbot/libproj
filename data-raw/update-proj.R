@@ -112,6 +112,14 @@ print_next <- function() {
 
   cli::cat_bullet("Remove pragmas supressing diagnostics")
 
+  cli::cat_bullet(
+    "Remove explicitly deleted bool conversion on CRAN Solaris (nn.hpp:119)"
+  )
+
+  cli::cat_bullet(
+    "Use default ~Exception deleter on CRAN Solaris (util.hpp:714, util.cpp:623)"
+  )
+
   cli::cat_bullet("Update exported C API using update-libproj-api.R")
   cli::cat_bullet("Update OBJECTS in Makevars (copied to cliboard)")
   clipr::write_clip(objects)

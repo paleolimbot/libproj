@@ -711,7 +711,9 @@ class PROJ_GCC_DLL Exception : public std::exception {
     PROJ_INTERNAL explicit Exception(const char *message);
     PROJ_INTERNAL explicit Exception(const std::string &message);
     PROJ_DLL Exception(const Exception &other);
+#if !defined(__sun) && !defined(sun)
     PROJ_DLL ~Exception() override;
+#endif
     //! @endcond
     PROJ_DLL virtual const char *what() const noexcept override;
 };

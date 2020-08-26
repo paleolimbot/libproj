@@ -116,7 +116,9 @@ public:
   // "value of type 'nn<...>' is not contextually convertible to 'bool'", rather
   // than
   // "no viable conversion", which is a bit more clear.
+#if !defined(__sun) && !defined(sun)
   operator bool() const = delete;
+#endif
 
   // Explicitly deleted constructors. These help produce clearer error messages,
   // as trying
