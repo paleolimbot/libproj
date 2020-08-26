@@ -21,6 +21,19 @@ needs PROJ functionality (just `LinkingTo: libproj`).
 
 ## Installation
 
+You can install the released version of libproj from
+[CRAN](https://cran.r-project.org/) with:
+
+``` r
+install.packages("libproj")
+```
+
+To install a binary on supported Linux platforms, you can use [RStudio
+Package Manager’s public instance](https://packagemanager.rstudio.com/)
+(see
+[here](https://packagemanager.rstudio.com/client/#/repos/1/overview) for
+how to configure on your platform).
+
 You can install the development version from
 [GitHub](https://github.com/) with:
 
