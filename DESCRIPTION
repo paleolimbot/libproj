@@ -33,5 +33,5 @@ RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     Rcpp
-URL: https://github.com/paleolimbot/libproj
+URL: https://paleolimbot.github.io/libproj/, https://github.com/paleolimbot/libproj
 BugReports: https://github.com/paleolimbot/libproj/issues
