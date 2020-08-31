@@ -17,6 +17,7 @@ Provides a 'PROJ' <https://proj.org> C API that can be
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://paleolimbot.github.io/libproj/}
   \item \url{https://github.com/paleolimbot/libproj}
   \item Report bugs at \url{https://github.com/paleolimbot/libproj/issues}
 }
