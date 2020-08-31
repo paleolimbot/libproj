@@ -7,7 +7,6 @@ This update fixes CRAN check errors on MacOS, as requested by the CRAN team.
 * GitHub Actions (Windows/R-oldrel, Windows/R-release, MacOS/R-release,
   Ubuntu/R-release with curl, Ubuntu/R-release without curl)
 * win-builder (devel)
-* `rhub::check_for_cran()`
 * `rhub::check_on_macos()`
 
 ## R CMD check results
@@ -15,7 +14,7 @@ This update fixes CRAN check errors on MacOS, as requested by the CRAN team.
 * checking CRAN incoming feasibility ... NOTE
 Maintainer: ‘Dewey Dunnington <dewey@fishandwhistle.net>’
 
-New submission
+Days since last update: 5
 * checking installed package size ... NOTE
     installed size is 12.6Mb
     sub-directories of 1Mb or more:
