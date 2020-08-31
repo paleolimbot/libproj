@@ -1,5 +1,5 @@
 
-Please find enclosed the new submission 'libproj' for review and possible inclusion in the CRAN repository. I am aware that (1) there is one large file ('proj/proj.db'), which, if not included, would render the package unusable; and (2) that this package contains an internal copy of the 'PROJ' library. Even though there are older versions of the 'PROJ' library available on the CRAN build and check machines, the ability to install a recent version of 'PROJ' on many platforms is impractical or impossible (as described in the package Description), and makes it difficult to reproduce coordinate transformations between computing environments.
+This update fixes CRAN check errors on MacOS, as requested by the CRAN team.
 
 ## Test environments
 
@@ -8,7 +8,7 @@ Please find enclosed the new submission 'libproj' for review and possible inclus
   Ubuntu/R-release with curl, Ubuntu/R-release without curl)
 * win-builder (devel)
 * `rhub::check_for_cran()`
-* `rhub::check_on_solaris()`
+* `rhub::check_on_macos()`
 
 ## R CMD check results
 
