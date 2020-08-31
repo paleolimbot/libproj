@@ -45,7 +45,7 @@ jobs:
 
       - name: Install libtiff (Ubuntu 20.04)
         if: matrix.config.os == 'ubuntu-20.04'
-        run: sudo apt-get install libwebp-dev libzstd1
+        run: sudo apt-get install libwebp-dev libzstd-dev
 
       - name: Install curl (Linux)
         if: runner.os == 'Linux' && matrix.config.curl == 'curl'
