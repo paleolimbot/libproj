@@ -39,9 +39,13 @@ jobs:
           r-version: ${{ matrix.config.r }}
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Install system dependencies (Linux)
+      - name: Install libtiff (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install libtiff-dev libjpeg-dev zlib1g-dev
+
+      - name: Install curl (Linux)
         if: runner.os == 'Linux' && matrix.config.curl == 'curl'
-        run: sudo apt-get install libtiff-dev libcurl4-openssl-dev
+        run: sudo apt-get install libcurl4-openssl-dev
 
       - name: Query dependencies
         run: |

@@ -14,8 +14,8 @@
 
 # Library settings
 LIBTIFF_PKG_CONFIG_NAME="libtiff-4"
-LIBTIFF_PKG_DEB_NAME="libtiff-dev"
-LIBTIFF_PKG_RPM_NAME="libtiff-devel"
+LIBTIFF_PKG_DEB_NAME="libtiff-dev + libjpeg-dev + zlib1g-dev"
+LIBTIFF_PKG_RPM_NAME="libtiff-devel + libjpeg-turbo-devel + zlib-devel"
 LIBTIFF_PKG_BREW_NAME="libtiff"
 LIBTIFF_PKG_TEST_HEADER="<tiff.h>"
 LIBTIFF_PKG_LIBS="-ltiff -ljpeg -lz"
