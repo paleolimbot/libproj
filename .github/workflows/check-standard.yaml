@@ -103,6 +103,10 @@ jobs:
           ref: libproj
           path: 'PROJpkg'
 
+      - name: Install system dependencies (PROJ)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install libicu55
+
       - name: Check hypertidy/PROJ
         env:
           _R_CHECK_CRAN_INCOMING_: false
