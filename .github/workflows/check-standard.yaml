@@ -104,8 +104,8 @@ jobs:
           path: 'PROJpkg'
 
       - name: Install system dependencies (PROJ)
-        if: matrix.config.os == 'ubuntu-16.04'
-        run: sudo apt-get install libicu55
+        if: runner.os == 'Linux'
+        run: sudo apt-get install libicu-dev
 
       - name: Check hypertidy/PROJ
         env:
