@@ -48,6 +48,14 @@ elif [ "$PKGCONFIG_CFLAGS" ] && [ "$PKGCONFIG_LIBS" ]; then
   fi
 fi
 
+# pkg-config often says -ljbig is necessary but it seems not to be
+if [[ ${LIBTIFF_PKG_LIBS} == *"-ljbig "* ]]; then
+   LIBTIFF_PKG_LIBS=$(echo $LIBTIFF_PKG_LIBS | sed 's/-ljbig //')
+fi
+if [[ ${LIBTIFF_PKG_LIBS} == *" -ljbig"* ]]; then
+   LIBTIFF_PKG_LIBS=$(echo $LIBTIFF_PKG_LIBS | sed 's/ -ljbig//')
+fi
+
 # For debugging
 echo "Using LIBTIFF_PKG_CFLAGS=$LIBTIFF_PKG_CFLAGS"
 echo "Using LIBTIFF_PKG_LIBS=$LIBTIFF_PKG_LIBS"
