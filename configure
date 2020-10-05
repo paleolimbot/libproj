@@ -35,25 +35,8 @@ if [ "$LIBTIFF_INCLUDE_DIR" ] || [ "$LIBTIFF_LIB_DIR" ]; then
 elif [ "$PKGCONFIG_CFLAGS" ] && [ "$PKGCONFIG_LIBS" ]; then
   echo "Found libtiff pkg-config cflags and libs!"
   LIBTIFF_PKG_CFLAGS=${PKGCONFIG_CFLAGS}
-  # pkg-config may miss -ljpeg and -lz, in which case it needs static libs
-  if [[ ${LIBTIFF_PKGCONFIG_LIBS} != *"-ltiff"* ]] || \
-     [[ ${LIBTIFF_PKGCONFIG_LIBS} != *"-ljpeg"* ]] || \
-     [[ ${LIBTIFF_PKGCONFIG_LIBS} != *"-lz"* ]]; then
-    LIBTIFF_PKGCONFIG_LIBS=$(pkg-config --libs --static ${LIBTIFF_PKG_CONFIG_NAME})
-  fi
-  if [[ ${LIBTIFF_PKGCONFIG_LIBS} == *"-ltiff"* ]] && \
-     [[ ${LIBTIFF_PKGCONFIG_LIBS} == *"-ljpeg"* ]] && \
-     [[ ${LIBTIFF_PKGCONFIG_LIBS} == *"-lz"* ]]; then
-    LIBTIFF_PKG_LIBS=${LIBTIFF_PKGCONFIG_LIBS}
-  fi
-fi
-
-# pkg-config often says -ljbig is necessary but it seems not to be
-if [[ ${LIBTIFF_PKG_LIBS} == *"-ljbig "* ]]; then
-   LIBTIFF_PKG_LIBS=$(echo $LIBTIFF_PKG_LIBS | sed 's/-ljbig //')
-fi
-if [[ ${LIBTIFF_PKG_LIBS} == *" -ljbig"* ]]; then
-   LIBTIFF_PKG_LIBS=$(echo $LIBTIFF_PKG_LIBS | sed 's/ -ljbig//')
+  # pkg-config may miss -ljpeg and -lz
+  LIBTIFF_PKG_LIBS="-ltiff -ljpeg -lz"
 fi
 
 # For debugging
