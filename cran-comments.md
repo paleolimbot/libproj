@@ -1,4 +1,7 @@
 
+Fixed issues identified by CRAN reviewers (added "value" section
+for `libproj*_()` functions).
+
 On 2020-10-05 I was forwarded a notice that this package was archived 
 permanently, which included a copy of correspondence on 2020-09-16 
 with a list of installation issues and potential fixes. The email 

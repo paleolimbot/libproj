@@ -32,13 +32,23 @@ NULL
 #' @param expr An expression to evaluate with the specified state
 #' @export
 #'
+#' @return
+#' - `libproj_version()`: A character vector of the proj release.
+#' - `libproj_has_libtiff()`: `TRUE` if built against libtiff, `FALSE` otherwise.
+#' - `libproj_has_libcurl()`: `TRUE` if built against curl, `FALSE` otherwise.
+#' - `libproj_temp_dir()`: A character vector of the path where libproj-speecific
+#'   tempfiles are written.
+#' - `libproj_configuration()`: A `list()` of values that can be passed to
+#'   `libproj_configure()`.
+#' - `with_libproj_configuration()`: The value of `expr`.
+#' - `libproj_configure()`: `NULL`, invisibly.
+#'
 #' @examples
 #' libproj_version()
 #' libproj_has_libtiff()
 #' libproj_has_libcurl()
 #' libproj_temp_dir()
 #' libproj_configuration()
-#'
 #'
 libproj_version <- function() {
   .Call(libproj_c_version)
@@ -131,6 +141,8 @@ libproj_configure <- function(
   libproj_config$user_writable_dir <- user_writable_dir
   libproj_config$network_endpoint <- network_endpoint
   libproj_config$network_enabled <- network_enabled
+
+  invisible(NULL)
 }
 
 # by default, this setup makes sure that anybody using PJ_DEFAULT_CTX

@@ -59,6 +59,19 @@ this is set to \url{https://cdn.proj.org}.}
 \item{network_enabled}{Whether or not to download gridshift files on the fly.
 This defaults to \code{FALSE}.}
 }
+\value{
+\itemize{
+\item \code{libproj_version()}: A character vector of the proj release.
+\item \code{libproj_has_libtiff()}: \code{TRUE} if built against libtiff, \code{FALSE} otherwise.
+\item \code{libproj_has_libcurl()}: \code{TRUE} if built against curl, \code{FALSE} otherwise.
+\item \code{libproj_temp_dir()}: A character vector of the path where libproj-speecific
+tempfiles are written.
+\item \code{libproj_configuration()}: A \code{list()} of values that can be passed to
+\code{libproj_configure()}.
+\item \code{with_libproj_configuration()}: The value of \code{expr}.
+\item \code{libproj_configure()}: \code{NULL}, invisibly.
+}
+}
 \description{
 PROJ configuration
 }
@@ -68,6 +81,5 @@ libproj_has_libtiff()
 libproj_has_libcurl()
 libproj_temp_dir()
 libproj_configuration()
-
 
 }
