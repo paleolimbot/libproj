@@ -187,13 +187,28 @@ This defaults to <code>FALSE</code>.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+<ul>
+<li><p><code>libproj_version()</code>: A character vector of the proj release.</p></li>
+<li><p><code>libproj_has_libtiff()</code>: <code>TRUE</code> if built against libtiff, <code>FALSE</code> otherwise.</p></li>
+<li><p><code>libproj_has_libcurl()</code>: <code>TRUE</code> if built against curl, <code>FALSE</code> otherwise.</p></li>
+<li><p><code>libproj_temp_dir()</code>: A character vector of the path where libproj-speecific
+tempfiles are written.</p></li>
+<li><p><code>libproj_configuration()</code>: A <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code> of values that can be passed to
+<code>libproj_configure()</code>.</p></li>
+<li><p><code>with_libproj_configuration()</code>: The value of <code>expr</code>.</p></li>
+<li><p><code>libproj_configure()</code>: <code>NULL</code>, invisibly.</p></li>
+</ul>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>libproj_version</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "7.1.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_temp_dir</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaNPPmg/filef8972abfc87"</div><div class='input'><span class='fu'>libproj_configuration</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQSfxpE/file10731462cb0a"</div><div class='input'><span class='fu'>libproj_configuration</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $db_path
 #&gt; [1] "/Users/runner/work/_temp/Library/libproj/proj/proj.db"
 #&gt; 
@@ -207,9 +222,8 @@ This defaults to <code>FALSE</code>.</p></td>
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $user_writable_dir
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpaNPPmg/filef8972abfc87"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpQSfxpE/file10731462cb0a"
 #&gt; </div><div class='input'>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
