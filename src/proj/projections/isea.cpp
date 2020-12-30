@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /*
  * This code was entirely written by Nathan Wagner
  * and is in the public domain.
@@ -288,7 +289,7 @@ static struct isea_pt isea_triangle_xy(int triangle)
         break;
     default:
         /* should be impossible */
-        exit(EXIT_FAILURE);
+        cpp_compat_exit(EXIT_FAILURE);
     };
     c.x *= Rprime;
     c.y *= Rprime;
@@ -310,9 +311,9 @@ static double sph_azimuth(double f_lon, double f_lat,
 }
 
 #ifdef _MSC_VER
-#pragma warning( push )
+// #pragma warning( push )
 /* disable unreachable code warning for return 0 */
-#pragma warning( disable : 4702 )
+// #pragma warning( disable : 4702 )
 #endif
 
 /* coord needs to be in radians */

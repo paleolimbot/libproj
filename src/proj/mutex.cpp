@@ -103,12 +103,12 @@ void pj_cleanup_lock()
 
 #ifdef PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP
 #ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
 #endif
 static pthread_mutex_t core_lock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 #ifdef __GNUC__
-#pragma GCC diagnostic pop
+// #pragma GCC diagnostic pop
 #endif
 #else
 static pthread_mutex_t core_lock;

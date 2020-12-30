@@ -26,14 +26,14 @@
  *****************************************************************************/
 
 #ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 
 #include "sqlite3_utils.hpp"
 
 #ifdef __GNUC__
-#pragma GCC diagnostic pop
+// #pragma GCC diagnostic pop
 #endif
 
 #include <cstdlib>
