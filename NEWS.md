@@ -1,4 +1,4 @@
-# libproj 7.1.0-3
+# libproj (development version)
 
 * Fixed linking to libtiff on Solaris and Ubuntu 20.04.
 
