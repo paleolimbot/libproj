@@ -1,6 +1,6 @@
 
 test_that("libproj_version works", {
-  expect_identical(libproj_version(), "7.1.0")
+  expect_identical(libproj_version(), "7.2.0")
 })
 
 test_that("libproj can be linked to", {

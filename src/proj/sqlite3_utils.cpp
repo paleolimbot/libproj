@@ -25,16 +25,16 @@
  * DEALINGS IN THE SOFTWARE.
  *****************************************************************************/
 
-// #ifdef __GNUC__
-// #pragma GCC diagnostic push
-// #pragma GCC diagnostic ignored "-Weffc++"
-// #endif
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
 
 #include "sqlite3_utils.hpp"
 
-// #ifdef __GNUC__
-// #pragma GCC diagnostic pop
-// #endif
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 #include <cstdlib>
 #include <cstring>
@@ -135,7 +135,7 @@ static int VFSCustomAccess(sqlite3_vfs *vfs, const char *zName, int flags,
 
 // SQLite3 logging infrastructure
 static void projSqlite3LogCallback(void *, int iErrCode, const char *zMsg) {
-    cpp_compat_printerrf("SQLite3 message: (code %d) %s\n", iErrCode, zMsg);
+    fprintf(stderr, "SQLite3 message: (code %d) %s\n", iErrCode, zMsg);
 }
 
 std::unique_ptr<SQLite3VFS> SQLite3VFS::create(bool fakeSync, bool fakeLock,

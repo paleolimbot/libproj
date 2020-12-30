@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  Functionality related to network access and caching
@@ -409,7 +408,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("Rows in chunk_data not referenced by chunks.\n");
+        fprintf(stderr, "Rows in chunk_data not referenced by chunks.\n");
         return false;
     }
 
@@ -419,7 +418,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("Rows in chunks not referenced by linked_chunks.\n");
+        fprintf(stderr, "Rows in chunks not referenced by linked_chunks.\n");
         return false;
     }
 
@@ -430,7 +429,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("url values in chunks not referenced by properties.\n");
+        fprintf(stderr, "url values in chunks not referenced by properties.\n");
         return false;
     }
 
@@ -439,13 +438,13 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_ROW) {
-        cpp_compat_printerrf("linked_chunks_head_tail empty.\n");
+        fprintf(stderr, "linked_chunks_head_tail empty.\n");
         return false;
     }
     const auto head = stmt->getInt64();
     const auto tail = stmt->getInt64();
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("linked_chunks_head_tail has more than one row.\n");
+        fprintf(stderr, "linked_chunks_head_tail has more than one row.\n");
         return false;
     }
 
@@ -454,7 +453,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_ROW) {
-        cpp_compat_printerrf("linked_chunks_head_tail empty.\n");
+        fprintf(stderr, "linked_chunks_head_tail empty.\n");
         return false;
     }
     const auto count_linked_chunks = stmt->getInt64();
@@ -471,33 +470,33 @@ bool DiskChunkCache::checkConsistency() {
             stmt->reset();
             stmt->bindInt64(id);
             if (stmt->execute() != SQLITE_ROW) {
-                cpp_compat_printerrf("cannot find linked_chunks.id = %d.\n",
+                fprintf(stderr, "cannot find linked_chunks.id = %d.\n",
                         static_cast<int>(id));
                 return false;
             }
             auto next = stmt->getInt64();
             if (next == 0) {
                 if (id != tail) {
-                  cpp_compat_printerrf(
+                    fprintf(stderr,
                             "last item when following next is not tail.\n");
                     return false;
                 }
                 break;
             }
             if (visitedIds.find(next) != visitedIds.end()) {
-                cpp_compat_printerrf("found cycle on linked_chunks.next = %d.\n",
+                fprintf(stderr, "found cycle on linked_chunks.next = %d.\n",
                         static_cast<int>(next));
                 return false;
             }
             id = next;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-          cpp_compat_printerrf(
+            fprintf(stderr,
                     "ghost items in linked_chunks when following next.\n");
             return false;
         }
     } else if (count_linked_chunks) {
-        cpp_compat_printerrf("linked_chunks_head_tail.head = NULL but linked_chunks "
+        fprintf(stderr, "linked_chunks_head_tail.head = NULL but linked_chunks "
                         "not empty.\n");
         return false;
     }
@@ -514,38 +513,38 @@ bool DiskChunkCache::checkConsistency() {
             stmt->reset();
             stmt->bindInt64(id);
             if (stmt->execute() != SQLITE_ROW) {
-                cpp_compat_printerrf("cannot find linked_chunks.id = %d.\n",
+                fprintf(stderr, "cannot find linked_chunks.id = %d.\n",
                         static_cast<int>(id));
                 return false;
             }
             auto prev = stmt->getInt64();
             if (prev == 0) {
                 if (id != head) {
-                  cpp_compat_printerrf(
+                    fprintf(stderr,
                             "last item when following prev is not head.\n");
                     return false;
                 }
                 break;
             }
             if (visitedIds.find(prev) != visitedIds.end()) {
-                cpp_compat_printerrf("found cycle on linked_chunks.prev = %d.\n",
+                fprintf(stderr, "found cycle on linked_chunks.prev = %d.\n",
                         static_cast<int>(prev));
                 return false;
             }
             id = prev;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-          cpp_compat_printerrf(
+            fprintf(stderr,
                     "ghost items in linked_chunks when following prev.\n");
             return false;
         }
     } else if (count_linked_chunks) {
-        cpp_compat_printerrf("linked_chunks_head_tail.tail = NULL but linked_chunks "
+        fprintf(stderr, "linked_chunks_head_tail.tail = NULL but linked_chunks "
                         "not empty.\n");
         return false;
     }
 
-    cpp_compat_printerrf("check ok\n");
+    fprintf(stderr, "check ok\n");
     return true;
 }
 
@@ -1523,7 +1522,8 @@ struct CurlFileHandle {
     CurlFileHandle(const CurlFileHandle &) = delete;
     CurlFileHandle &operator=(const CurlFileHandle &) = delete;
 
-    explicit CurlFileHandle(const char *url, CURL *handle);
+    explicit CurlFileHandle(const char *url, CURL *handle,
+                            const char *ca_bundle_path);
     ~CurlFileHandle();
 
     static PROJ_NETWORK_HANDLE *
@@ -1595,7 +1595,8 @@ static std::string GetExecutableName() {
 
 // ---------------------------------------------------------------------------
 
-CurlFileHandle::CurlFileHandle(const char *url, CURL *handle)
+CurlFileHandle::CurlFileHandle(const char *url, CURL *handle,
+                               const char *ca_bundle_path)
     : m_url(url), m_handle(handle) {
     curl_easy_setopt(handle, CURLOPT_URL, m_url.c_str());
 
@@ -1614,6 +1615,23 @@ CurlFileHandle::CurlFileHandle(const char *url, CURL *handle)
     if (getenv("PROJ_UNSAFE_SSL")) {
         curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L);
         curl_easy_setopt(handle, CURLOPT_SSL_VERIFYHOST, 0L);
+    }
+
+    // Custom path to SSL certificates.
+    if (ca_bundle_path == nullptr) {
+        ca_bundle_path = getenv("PROJ_CURL_CA_BUNDLE");
+    }
+    if (ca_bundle_path == nullptr) {
+        // Name of environment variable used by the curl binary
+        ca_bundle_path = getenv("CURL_CA_BUNDLE");
+    }
+    if (ca_bundle_path == nullptr) {
+        // Name of environment variable used by the curl binary (tested
+        // after CURL_CA_BUNDLE
+        ca_bundle_path = getenv("SSL_CERT_FILE");
+    }
+    if (ca_bundle_path != nullptr) {
+        curl_easy_setopt(handle, CURLOPT_CAINFO, ca_bundle_path);
     }
 
     curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, m_szCurlErrBuf);
@@ -1662,7 +1680,7 @@ static double GetNewRetryDelay(int response_code, double dfOldDelay,
         // Use an exponential backoff factor of 2 plus some random jitter
         // We don't care about cryptographic quality randomness, hence:
         // coverity[dont_call]
-        return dfOldDelay * (2 + cpp_compat_random() * 0.5 / RAND_MAX);
+        return dfOldDelay * (2 + rand() * 0.5 / RAND_MAX);
     } else {
         return 0;
     }
@@ -1683,8 +1701,9 @@ PROJ_NETWORK_HANDLE *CurlFileHandle::open(PJ_CONTEXT *ctx, const char *url,
     if (!hCurlHandle)
         return nullptr;
 
-    auto file =
-        std::unique_ptr<CurlFileHandle>(new CurlFileHandle(url, hCurlHandle));
+    auto file = std::unique_ptr<CurlFileHandle>(new CurlFileHandle(
+        url, hCurlHandle,
+        ctx->ca_bundle_path.empty() ? nullptr : ctx->ca_bundle_path.c_str()));
 
     double oldDelay = MIN_RETRY_DELAY_MS;
     std::string headers;

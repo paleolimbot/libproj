@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /*
     __ _____ _____ _____
  __|  |   __|     |   | |  JSON for Modern C++
@@ -908,7 +907,7 @@ struct position_t
     #endif
     #define JSON_HEDLEY_UNREACHABLE_RETURN(value) return value
 #elif defined(EXIT_FAILURE)
-    #define JSON_HEDLEY_UNREACHABLE() cpp_compat_abort()
+    #define JSON_HEDLEY_UNREACHABLE() abort()
 #else
     #define JSON_HEDLEY_UNREACHABLE()
     #define JSON_HEDLEY_UNREACHABLE_RETURN(value) return value
@@ -947,11 +946,11 @@ JSON_HEDLEY_DIAGNOSTIC_PUSH
 #if \
     JSON_HEDLEY_HAS_WARNING("-Wvariadic-macros") || \
     JSON_HEDLEY_GCC_VERSION_CHECK(4,0,0)
-    // #if defined(__clang__)
-    //     #pragma clang diagnostic ignored "-Wvariadic-macros"
-    // #elif defined(JSON_HEDLEY_GCC_VERSION)
-    //     #pragma GCC diagnostic ignored "-Wvariadic-macros"
-    // #endif
+    #if defined(__clang__)
+        #pragma clang diagnostic ignored "-Wvariadic-macros"
+    #elif defined(JSON_HEDLEY_GCC_VERSION)
+        #pragma GCC diagnostic ignored "-Wvariadic-macros"
+    #endif
 #endif
 #if defined(JSON_HEDLEY_NON_NULL)
     #undef JSON_HEDLEY_NON_NULL
@@ -1643,16 +1642,16 @@ JSON_HEDLEY_DIAGNOSTIC_POP
 #endif
 
 // disable float-equal warnings on GCC/clang
-// #if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
-//     #pragma GCC diagnostic push
-//     #pragma GCC diagnostic ignored "-Wfloat-equal"
-// #endif
+#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
 
 // disable documentation warnings on clang
-// #if defined(__clang__)
-//     #pragma GCC diagnostic push
-//     #pragma GCC diagnostic ignored "-Wdocumentation"
-// #endif
+#if defined(__clang__)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdocumentation"
+#endif
 
 // allow to disable exceptions
 #if (defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND)) && !defined(JSON_NOEXCEPTION)
@@ -1662,7 +1661,7 @@ JSON_HEDLEY_DIAGNOSTIC_POP
     #define JSON_INTERNAL_CATCH(exception) catch(exception)
 #else
     #include <cstdlib>
-    #define JSON_THROW(exception) cpp_compat_abort()
+    #define JSON_THROW(exception) std::abort()
     #define JSON_TRY if(true)
     #define JSON_CATCH(exception) if(false)
     #define JSON_INTERNAL_CATCH(exception) if(false)
@@ -3322,11 +3321,11 @@ auto get(const nlohmann::detail::iteration_proxy_value<IteratorType>& i) -> decl
 // And see https://github.com/nlohmann/json/pull/1391
 namespace std
 {
-// #if defined(__clang__)
-//     // Fix: https://github.com/nlohmann/json/issues/1401
-//     #pragma clang diagnostic push
-//     #pragma clang diagnostic ignored "-Wmismatched-tags"
-// #endif
+#if defined(__clang__)
+    // Fix: https://github.com/nlohmann/json/issues/1401
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmismatched-tags"
+#endif
 template <typename IteratorType>
 class tuple_size<::nlohmann::detail::iteration_proxy_value<IteratorType>>
             : public std::integral_constant<std::size_t, 2> {};
@@ -3339,9 +3338,9 @@ class tuple_element<N, ::nlohmann::detail::iteration_proxy_value<IteratorType >>
                      get<N>(std::declval <
                             ::nlohmann::detail::iteration_proxy_value<IteratorType >> ()));
 };
-// #if defined(__clang__)
-//     #pragma clang diagnostic pop
-// #endif
+#if defined(__clang__)
+    #pragma clang diagnostic pop
+#endif
 } // namespace std
 
 // #include <nlohmann/detail/meta/cpp_future.hpp>
@@ -22540,12 +22539,12 @@ inline nlohmann::json::json_pointer operator "" _json_pointer(const char* s, std
 
 
 // restore GCC/clang diagnostic settings
-// #if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
-//     #pragma GCC diagnostic pop
-// #endif
-// #if defined(__clang__)
-//     #pragma GCC diagnostic pop
-// #endif
+#if defined(__clang__) || defined(__GNUC__) || defined(__GNUG__)
+    #pragma GCC diagnostic pop
+#endif
+#if defined(__clang__)
+    #pragma GCC diagnostic pop
+#endif
 
 // clean up
 #undef JSON_INTERNAL_CATCH

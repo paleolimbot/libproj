@@ -3,10 +3,9 @@ PKG_CPPFLAGS = -I../src/proj_include @cflags@
 PKG_LIBS = @libs@
 CXX_STD = CXX11
 
-OBJECTS = cpp-compat.o \
-     libproj-init.o \
+OBJECTS =      cpp-compat.o \
      libproj-config.o \
-     sqlite3.o \
+     libproj-init.o \
      proj/4D_api.o \
      proj/aasincos.o \
      proj/adjlon.o \
@@ -80,6 +79,7 @@ OBJECTS = cpp-compat.o \
      proj/projections/ccon.o \
      proj/projections/cea.o \
      proj/projections/chamb.o \
+     proj/projections/col_urban.o \
      proj/projections/collg.o \
      proj/projections/comill.o \
      proj/projections/crast.o \
@@ -187,6 +187,7 @@ OBJECTS = cpp-compat.o \
      proj/transformations/hgridshift.o \
      proj/transformations/horner.o \
      proj/transformations/molodensky.o \
+     proj/transformations/tinshift.o \
      proj/transformations/vgridshift.o \
      proj/transformations/xyzgridshift.o \
      proj/tsfn.o \
@@ -197,4 +198,5 @@ OBJECTS = cpp-compat.o \
      proj/wkt1_parser.o \
      proj/wkt2_generated_parser.o \
      proj/wkt2_parser.o \
-     proj/zpoly1.o
+     proj/zpoly1.o \
+     sqlite3.o
