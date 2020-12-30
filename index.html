@@ -45,7 +45,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -59,7 +59,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/paleolimbot/libproj/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -85,13 +85,13 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the released version of libproj from <a href="https://cran.r-project.org/">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"libproj"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"libproj"</span><span class="op">)</span></code></pre></div>
 <p>To install a binary on supported Linux platforms, you can use <a href="https://packagemanager.rstudio.com/">RStudio Package Manager’s public instance</a> (see <a href="https://packagemanager.rstudio.com/client/#/repos/1/overview">here</a> for how to configure on your platform).</p>
 <p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="co"># install.packages("remotes")</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"paleolimbot/libproj"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"paleolimbot/libproj"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
@@ -158,8 +158,8 @@
 <span id="cb3-59"><a href="#cb3-59"></a>  </span>
 <span id="cb3-60"><a href="#cb3-60"></a>  <span class="cf">return</span> List::create(_[<span class="st">"x"</span>] = xout, _[<span class="st">"y"</span>]  = yout);</span>
 <span id="cb3-61"><a href="#cb3-61"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu">cpp_libproj_init_api</span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">cpp_libproj_init_api</span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu">sf</span><span class="fu">::</span><span class="fu">st_transform</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu">st_sfc</span><span class="op">(</span><span class="fu">sf</span><span class="fu">::</span><span class="fu">st_point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">64</span>, <span class="fl">45</span><span class="op">)</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span>, <span class="fl">32620</span><span class="op">)</span>
 <span class="co">#&gt; Geometry set for 1 feature </span>
@@ -176,14 +176,14 @@
 <span class="co">#&gt; [1] 421184.7</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $y</span>
-<span class="co">#&gt; [1] 4983437</span></pre></div>
+<span class="co">#&gt; [1] 4983437</span></code></pre></div>
 </div>
 <div id="configuration" class="section level2">
 <h2 class="hasAnchor">
 <a href="#configuration" class="anchor"></a>Configuration</h2>
 <p>Users can configure libproj to point at any compatible proj.db file and/or data directory they would like (either permanently or temporarily!):</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/libproj/">libproj</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/libproj/">libproj</a></span><span class="op">)</span>
 
 <span class="co"># will download a grid shift file from the PROJ CDN</span>
 <span class="co"># to correct WGS84-&gt;NAD83</span>
@@ -194,16 +194,16 @@
 <span class="co">#&gt; [1] 421184.9</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $y</span>
-<span class="co">#&gt; [1] 4983437</span></pre></div>
+<span class="co">#&gt; [1] 4983437</span></code></pre></div>
 <p>If enabling network downloads, the cache is stored in a temporary directory (<code><a href="reference/libproj_version.html">libproj_temp_dir()</a></code>). You can configure this value to persist the cache between R sessions using <code><a href="https://rdrr.io/r/base/options.html">options(libproj.user_writable_dir = ...)</a></code> in your <code>.Renviron</code> or using <code><a href="reference/libproj_version.html">with_libproj_configuration()</a></code> or <code><a href="reference/libproj_version.html">libproj_configure()</a></code> to set this value temporarily. A useful user writable directory might be <code>rappdirs::user_data_dir("R-libproj")</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># in .Renviron (`usethis::edit_r_environ()`):</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># in .Renviron (`usethis::edit_r_environ()`):</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>
   libproj.user_writable_dir <span class="op">=</span> <span class="fu">rappdirs</span><span class="fu">::</span><span class="fu">user_data_dir</span><span class="op">(</span><span class="st">"R-libproj"</span><span class="op">)</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p>After R is restarted, libproj will use this value as the default:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="reference/libproj_version.html">libproj_configuration</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/libproj_version.html">libproj_configuration</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; $db_path</span>
 <span class="co">#&gt; [1] "/Library/Frameworks/R.framework/Versions/4.0/Resources/library/libproj/proj/proj.db"</span>
 <span class="co">#&gt; </span>
@@ -217,7 +217,7 @@
 <span class="co">#&gt; [1] FALSE</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $user_writable_dir</span>
-<span class="co">#&gt; [1] "/Users/dewey/Library/Application Support/R-libproj"</span></pre></div>
+<span class="co">#&gt; [1] "/Users/dewey/Library/Application Support/R-libproj"</span></code></pre></div>
 </div>
 </div>
   </div>
