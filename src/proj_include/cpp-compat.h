@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 int cpp_compat_putchar(int c);
+void cpp_compat_puts(const char* str);
 void cpp_compat_printf(const char* fmt, ...);
 void cpp_compat_printerrf(const char* fmt, ...);
 void cpp_compat_abort();

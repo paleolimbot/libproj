@@ -1,5 +1,5 @@
 /* print projection's list of parameters */
-
+#include "cpp-compat.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
@@ -13,38 +13,38 @@ pr_list(PJ *P, int not_used) {
 	paralist *t;
 	int l, n = 1, flag = 0;
 
-	(void)putchar('#');
+	cpp_compat_putchar('#');
 	for (t = P->params; t; t = t->next)
 		if ((!not_used && t->used) || (not_used && !t->used)) {
 			l = (int)strlen(t->param) + 1;
 			if (n + l > LINE_LEN) {
-				(void)fputs("\n#", stdout);
+				cpp_compat_puts("\n#");
 				n = 2;
 			}
-			(void)putchar(' ');
+			cpp_compat_putchar(' ');
 			if (*(t->param) != '+')
-				(void)putchar('+');
-			(void)fputs(t->param, stdout);
+				cpp_compat_putchar('+');
+			cpp_compat_puts(t->param);
 			n += l;
 		} else
 			flag = 1;
 	if (n > 1)
-		(void)putchar('\n');
+		cpp_compat_putchar('\n');
 	return flag;
 }
 	void /* print link list of projection parameters */
 pj_pr_list(PJ *P) {
 	char const *s;
 
-	(void)putchar('#');
+	cpp_compat_putchar('#');
 	for (s = P->descr; *s ; ++s) {
-		(void)putchar(*s);
+		cpp_compat_putchar(*s);
 		if (*s == '\n')
-			(void)putchar('#');
+			cpp_compat_putchar('#');
 	}
-	(void)putchar('\n');
+	cpp_compat_putchar('\n');
 	if (pr_list(P, 0)) {
-		(void)fputs("#--- following specified but NOT used\n", stdout);
+		cpp_compat_puts("#--- following specified but NOT used\n");
 		(void)pr_list(P, 1);
 	}
 }

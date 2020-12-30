@@ -109,3 +109,7 @@ int cpp_compat_putchar(int c) {
     return EOF;
   }
 }
+
+void cpp_compat_puts(const char* str) {
+  Rcout << str;
+}
