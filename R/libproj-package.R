@@ -23,6 +23,8 @@ NULL
 #' @param user_writable_dir A directory that can safely be written to
 #'   by this package. This contains a cache of grid shift files downloaded
 #'   from the PROJ CDN at `network_endpoint` if using `with_libproj_network()`.
+#' @param ca_bundle_path A directory that contains the certificate bundle when
+#'   network is enabled. Can be `NA`.
 #' @param network_endpoint A mirror of the PROJ CDN of gridshift files. By default,
 #'   this is set to <https://cdn.proj.org>.
 #' @param network_enabled Whether or not to download gridshift files on the fly.
@@ -101,21 +103,24 @@ libproj_configure <- function(
   search_path = c(system.file("proj", package = "libproj"), getOption("libproj.search_path", NULL)),
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package = "libproj")),
   user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
+  ca_bundle_path = NA,
   network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE)
 ) {
 
-  search_path <- as.character(search_path)
-  db_path <- as.character(db_path)
-  user_writable_dir <- as.character(user_writable_dir)
-  network_endpoint <- as.character(network_endpoint)
+  search_path <- enc2utf8(search_path)
+  db_path <- enc2utf8(db_path)
+  user_writable_dir <- enc2utf8(user_writable_dir)
+  ca_bundle_path <- enc2utf8(as.character(ca_bundle_path))
+  network_endpoint <- enc2utf8(network_endpoint)
   network_enabled <- as.logical(network_enabled)
 
   stopifnot(
     all(dir.exists(search_path)),
     length(db_path) >= 1, all(file.exists(db_path)), all(!dir.exists(db_path)),
     length(user_writable_dir) == 1, !is.na(user_writable_dir),
-    dir.exists(user_writable_dir) || (!file.exists(user_writable_dir)),
+      dir.exists(user_writable_dir) || (!file.exists(user_writable_dir)),
+    length(ca_bundle_path) == 1, is.na(ca_bundle_path) || dir.exists(ca_bundle_path),
     length(network_endpoint) == 1, !is.na(network_endpoint),
     length(network_enabled) == 1, !is.na(network_enabled)
   )
@@ -127,6 +132,7 @@ libproj_configure <- function(
     libproj_c_configure_default_context,
     search_path,
     db_path,
+    ca_bundle_path,
     network_endpoint,
     network_enabled
   )
@@ -136,9 +142,13 @@ libproj_configure <- function(
   Sys.setenv("PROJ_USER_WRITABLE_DIRECTORY" = user_writable_dir)
 
   # keep a copy of this, since it can't be accessed from C
+  # the ownership of const char* passed to the PROJ C API is also unclear to me
+  # and this ensures that any const char* that is passed remains valid while the
+  # configuration is being used.
   libproj_config$search_path <- search_path
   libproj_config$db_path <- db_path
   libproj_config$user_writable_dir <- user_writable_dir
+  libproj_config$ca_bundle_path <- ca_bundle_path
   libproj_config$network_endpoint <- network_endpoint
   libproj_config$network_enabled <- network_enabled
 

@@ -40,7 +40,8 @@ SEXP libproj_c_has_libcurl() {
 // a reasonable default and can be configured from R (e.g., if a user
 // wants to add additional data directories or aux database paths and have
 // these choices respected by the rest of the spatial stack).
-SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP networkEndpoint, SEXP networkEnabled) {
+SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPath,
+                                         SEXP networkEndpoint, SEXP networkEnabled) {
 
   // Set the search paths (this also includes the user-writable directory,
   // which is currently set by environment variable)
@@ -81,6 +82,16 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP netw
 
     proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, auxPaths, NULL);
   }
+
+  // Path to the certificates bundle (for https://)
+  const char* caPath0;
+  if (STRING_ELT(caPath, 0) == NA_STRING) {
+    caPath0 = NULL;
+  } else {
+    caPath0 = CHAR(STRING_ELT(caPath, 0));
+  }
+
+  proj_context_set_ca_bundle_path(PJ_DEFAULT_CTX, caPath0);
 
   // Allow this default to be set from R
   int networkEnabled0 = LOGICAL(networkEnabled)[0];

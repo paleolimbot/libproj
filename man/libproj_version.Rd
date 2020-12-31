@@ -28,6 +28,7 @@ libproj_configure(
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package =
     "libproj")),
   user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
+  ca_bundle_path = NA,
   network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE)
 )
@@ -52,6 +53,9 @@ do not rely on \code{search_path} to find this value for you.}
 \item{user_writable_dir}{A directory that can safely be written to
 by this package. This contains a cache of grid shift files downloaded
 from the PROJ CDN at \code{network_endpoint} if using \code{with_libproj_network()}.}
+
+\item{ca_bundle_path}{A directory that contains the certificate bundle when
+network is enabled. Can be \code{NA}.}
 
 \item{network_endpoint}{A mirror of the PROJ CDN of gridshift files. By default,
 this is set to \url{https://cdn.proj.org}.}
