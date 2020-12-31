@@ -479,17 +479,17 @@ static int isea_snyder_forward(struct isea_geo * ll, struct isea_pt * out)
      * any triangle
      */
 
-    fprintf(stderr, "impossible transform: %f %f is not on any triangle\n",
+    cpp_compat_printerrf("impossible transform: %f %f is not on any triangle\n",
             PJ_TODEG(ll->lon), PJ_TODEG(ll->lat));
 
-    exit(EXIT_FAILURE);
+    cpp_compat_exit(EXIT_FAILURE);
 
     /* not reached */
     return 0;       /* suppresses a warning */
 }
 
 #ifdef _MSC_VER
-#pragma warning( pop )
+// #pragma warning( pop )
 #endif
 
 /*
