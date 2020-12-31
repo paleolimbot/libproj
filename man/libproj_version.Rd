@@ -30,7 +30,8 @@ libproj_configure(
   user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
   ca_bundle_path = NA,
   network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org"),
-  network_enabled = getOption("libproj.network_enabled", FALSE)
+  network_enabled = getOption("libproj.network_enabled", FALSE),
+  restore_previous_on_error = TRUE
 )
 }
 \arguments{
@@ -62,6 +63,9 @@ this is set to \url{https://cdn.proj.org}.}
 
 \item{network_enabled}{Whether or not to download gridshift files on the fly.
 This defaults to \code{FALSE}.}
+
+\item{restore_previous_on_error}{Use \code{FALSE} to skip resetting the previous configuration
+if the configuration fails.}
 }
 \value{
 \itemize{

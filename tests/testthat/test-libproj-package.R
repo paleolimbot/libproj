@@ -83,6 +83,8 @@ test_that("libproj can be linked to", {
       proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")
     })
     expect_identical(list.files(libproj_temp_dir()), "cache.db")
+  } else if (!libproj_has_libcurl()) {
+    expect_error(libproj_configure(network_enabled = TRUE), "Error enabling network")
   }
 
   unlink(cache, recursive = TRUE)

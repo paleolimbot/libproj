@@ -32,6 +32,8 @@ NULL
 #' @param config A named `list()` with elements used to temporarily override elements of the
 #'   current [libproj_configuration()].
 #' @param expr An expression to evaluate with the specified state
+#' @param restore_previous_on_error Use `FALSE` to skip resetting the previous configuration
+#'   if the configuration fails.
 #' @export
 #'
 #' @return
@@ -105,7 +107,8 @@ libproj_configure <- function(
   user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
   ca_bundle_path = NA,
   network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),
-  network_enabled = getOption("libproj.network_enabled", FALSE)
+  network_enabled = getOption("libproj.network_enabled", FALSE),
+  restore_previous_on_error = TRUE
 ) {
 
   search_path <- enc2utf8(search_path)
@@ -125,17 +128,33 @@ libproj_configure <- function(
     length(network_enabled) == 1, !is.na(network_enabled)
   )
 
-  # TODO: handle case where this errors (it shouldn't since we've
-  # already checked that the files and directories exist, but we don't
-  # check the return values)
-  .Call(
-    libproj_c_configure_default_context,
-    search_path,
-    db_path,
-    ca_bundle_path,
-    network_endpoint,
-    network_enabled
-  )
+  # handle case where this errors (it shouldn't since we've
+  # already checked that the files and directories exist, but we also check
+  # return values at the C level
+  old_config <- as.list(libproj_config)
+
+  tryCatch({
+    .Call(
+      libproj_c_configure_default_context,
+      search_path,
+      db_path,
+      ca_bundle_path,
+      network_endpoint,
+      network_enabled
+    )
+  }, error = function(e) {
+    if (restore_previous_on_error) {
+      tryCatch(
+        do.call(libproj_configure, c(old_config, list(restore_previous_on_error = FALSE))),
+        error = function(e) {
+          warning("Failed to restore previous configuration after error in libproj_configure()")
+        }
+      )
+    }
+
+    stop(e)
+  })
+
 
   # this currently has to be set by env var, as there is no
   # proj_set_user_writable_dir() at the C level
@@ -168,7 +187,7 @@ libproj_config <- new.env(parent = emptyenv())
   dir.create(libproj_tempdir_)
 
   # safely apply default configuration
-  if (inherits(try(libproj_configure()), "try-error")) {
+  if (inherits(try(libproj_configure(restore_previous_on_error = FALSE)), "try-error")) {
     warning(
       paste0(
         "`libproj_configure()` failed, likely as a result of invalid options().\n",

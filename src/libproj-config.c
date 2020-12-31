@@ -66,11 +66,17 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
     // surprisingly, this doesn't seem to "unset" the default database
     // for this reason, this branch is never called because we check length >= 1
     // from `libproj_configure()`
-    proj_context_set_database_path(PJ_DEFAULT_CTX, NULL, NULL, NULL);
+    int setDbSuccess = proj_context_set_database_path(PJ_DEFAULT_CTX, NULL, NULL, NULL);
+    if (setDbSuccess == 0) {
+      Rf_error("Can't set database path to NULL");
+    }
 
   } else if (nDbPaths == 1) {
     const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
-    proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
+    int setDbSuccess = proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
+    if (setDbSuccess == 0) {
+      Rf_error("Can't set database path to '%s'", dbPath0);
+    }
 
   } else {
     const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
@@ -80,7 +86,10 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
     }
     auxPaths[nDbPaths - 1] = NULL;
 
-    proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, auxPaths, NULL);
+    int setDbSuccess = proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, auxPaths, NULL);
+    if (setDbSuccess == 0) {
+      Rf_error("Can't set database path to '%s' (or error with one or more aux database paths)", dbPath0);
+    }
   }
 
   // Path to the certificates bundle (for https://)
@@ -95,7 +104,10 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
 
   // Allow this default to be set from R
   int networkEnabled0 = LOGICAL(networkEnabled)[0];
-  proj_context_set_enable_network(PJ_DEFAULT_CTX, networkEnabled0);
+  int enableNetworkSuccess = proj_context_set_enable_network(PJ_DEFAULT_CTX, networkEnabled0);
+  if (enableNetworkSuccess == 0 && networkEnabled0) {
+    Rf_error("Can't enable PROJ network access where network access is not available.");
+  }
 
   // The CDN endpoint isn't set by default, and is needed for
   // networking to work out of the box (when enabled by
