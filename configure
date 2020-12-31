@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 
 # PROJ needs libtiff to do grid shifts, and libcurl to use the CDN
 # technically it doesn't need either, and because these are relatively
