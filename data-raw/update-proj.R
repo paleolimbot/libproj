@@ -4,7 +4,8 @@ library(tidyverse)
 # ---- PROJ -----
 
 # download PROJ
-source_url <- "https://download.osgeo.org/proj/proj-7.1.0.tar.gz"
+# check latest release here: https://proj.org/download.html
+source_url <- "https://download.osgeo.org/proj/proj-7.2.0.tar.gz"
 curl::curl_download(source_url, "data-raw/proj-source.tar.gz")
 untar("data-raw/proj-source.tar.gz", exdir = "data-raw")
 
@@ -16,8 +17,12 @@ stopifnot(dir.exists(proj_dir), length(proj_dir) == 1)
 withr::with_dir(proj_dir, system("./configure"))
 withr::with_dir(proj_dir, system("make"))
 
+# save files in the proj directory that we actually need
+temp_compat_h <- tempfile()
+file.copy("src/proj_include/cpp-compat.h", temp_compat_h)
+
 # remove current inst/proj
-unlink("inst/proj", recursive = TRUE)
+unlink("src/proj", recursive = TRUE)
 dir.create("inst/proj")
 
 # copy the resource files into inst/
@@ -63,12 +68,15 @@ stopifnot(
   file.copy(source_files$path, source_files$final_path)
 )
 
+# add back the files we actually needed
+file.copy("src/proj_include/cpp-compat.h", temp_compat_h)
 
 # ---- SQLite ----
 
 # also need SQLite3 sources (this is how RSQLite does it)
+# check latest release here: https://www.sqlite.org/download.html
 curl::curl_download(
-  "https://www.sqlite.org/2020/sqlite-amalgamation-3320300.zip",
+  "https://www.sqlite.org/2020/sqlite-amalgamation-3340000.zip",
   "data-raw/sqlite-source.zip"
 )
 unzip("data-raw/sqlite-source.zip", exdir = "data-raw")
@@ -76,6 +84,7 @@ sqlite_dir <- list.files("data-raw", "^sqlite-amalgamation", include.dirs = TRUE
 stopifnot(dir.exists(sqlite_dir), length(sqlite_dir) == 1)
 
 # only two files!
+unlink(c("src/proj_include/sqlite3.h", "src/sqlite3.c"))
 file.copy(file.path(sqlite_dir, "sqlite3.h"), "src/proj_include/sqlite3.h")
 file.copy(file.path(sqlite_dir, "sqlite3.c"), "src/sqlite3.c")
 
@@ -85,36 +94,33 @@ file.copy(file.path(sqlite_dir, "sqlite3.c"), "src/sqlite3.c")
 objects <- list.files("src", pattern = "\\.(cpp|c)$", recursive = TRUE, full.names = TRUE) %>%
   gsub("\\.(cpp|c)$", ".o", .) %>%
   gsub("src/", "", .) %>%
-  paste("    ", ., "\\", collapse = "\n")
+  paste(collapse = " \\\n    ")
 
-print_next <- function() {
-  cli::cat_rule("Manual modifications")
+clipr::write_clip(objects)
 
-  cli::cat_bullet(
-    "Replace stderr/stdout with cpp_compat_printf()/cpp_compat_printerrf()"
-  )
-  cli::cat_bullet(
-    "Replace abort() with cpp_compat_abort()"
-  )
-  cli::cat_bullet(
-    "Replace exit() with cpp_compat_exit()"
-  )
-  cli::cat_bullet(
-    "Replace putchar() with cpp_compat_"
-  )
-  cli::cat_bullet(
-    "Replace random() with cpp_compat_random() (sqlite3.c)"
-  )
-  cli::cat_bullet(
-    "Ensure the first argument to dladdr() is cast to (void*) and not (const void*) ",
-    "in filemanager.cpp (required for build to pass on Solaris)"
-  )
-
-  cli::cat_bullet("Remove pragmas supressing diagnostics")
-
-  cli::cat_bullet("Update exported C API using update-libproj-api.R")
-  cli::cat_bullet("Update OBJECTS in Makevars (copied to cliboard)")
-  clipr::write_clip(objects)
-}
-
-print_next()
+#' Manual modifications
+#'
+#' * Replace stderr/stdout with cpp_compat_printf()/cpp_compat_printerrf()/
+#'   cpp_compat_puts()
+#'   grep "stdout|stderr" $(find src -name "*.cpp")
+#'   grep "stdout|stderr" $(find src -name "*.c")
+#'
+#' * Replace exit() with cpp_compat_exit()
+#'   grep "exit" $(find src -name "*.cpp")
+#'   grep "exit" $(find src -name "*.c")
+#'
+#'  * Replace assert() with cpp_compat_assert()
+#'    grep "assert" $(find src -name "*.cpp")
+#'    grep "assert" $(find src -name "*.c")
+#'
+#' * Replace putchar() with cpp_compat_putchar()
+#'   grep "putchar" $(find src -name "*.cpp")
+#'   grep "putchar" $(find src -name "*.c")
+#'
+#' * Ensure the first argument to dladdr() is cast to (void\*) and not (const void\*) ",
+#'   in filemanager.cpp (required for build to pass on Solaris)"
+#'
+#' * Remove pragmas supressing diagnostics
+#'   grep "pragma" $(find src -name "*.cpp")
+#'   grep "pragma" $(find src -name "*.c")
+#'
