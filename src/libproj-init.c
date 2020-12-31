@@ -24,8 +24,10 @@ void R_init_libproj(DllInfo *dll) {
   /* used by external packages linking to libproj from C */
     R_RegisterCCallable("libproj", "proj_context_create", (DL_FUNC) &proj_context_create);
     R_RegisterCCallable("libproj", "proj_context_destroy", (DL_FUNC) &proj_context_destroy);
+    R_RegisterCCallable("libproj", "proj_context_clone", (DL_FUNC) &proj_context_clone);
     R_RegisterCCallable("libproj", "proj_context_set_file_finder", (DL_FUNC) &proj_context_set_file_finder);
     R_RegisterCCallable("libproj", "proj_context_set_search_paths", (DL_FUNC) &proj_context_set_search_paths);
+    R_RegisterCCallable("libproj", "proj_context_set_ca_bundle_path", (DL_FUNC) &proj_context_set_ca_bundle_path);
     R_RegisterCCallable("libproj", "proj_context_use_proj4_init_rules", (DL_FUNC) &proj_context_use_proj4_init_rules);
     R_RegisterCCallable("libproj", "proj_context_get_use_proj4_init_rules", (DL_FUNC) &proj_context_get_use_proj4_init_rules);
     R_RegisterCCallable("libproj", "proj_context_set_fileapi", (DL_FUNC) &proj_context_set_fileapi);
@@ -148,6 +150,12 @@ void R_init_libproj(DllInfo *dll) {
     R_RegisterCCallable("libproj", "proj_crs_get_horizontal_datum", (DL_FUNC) &proj_crs_get_horizontal_datum);
     R_RegisterCCallable("libproj", "proj_crs_get_sub_crs", (DL_FUNC) &proj_crs_get_sub_crs);
     R_RegisterCCallable("libproj", "proj_crs_get_datum", (DL_FUNC) &proj_crs_get_datum);
+    R_RegisterCCallable("libproj", "proj_crs_get_datum_ensemble", (DL_FUNC) &proj_crs_get_datum_ensemble);
+    R_RegisterCCallable("libproj", "proj_crs_get_datum_forced", (DL_FUNC) &proj_crs_get_datum_forced);
+    R_RegisterCCallable("libproj", "proj_datum_ensemble_get_member_count", (DL_FUNC) &proj_datum_ensemble_get_member_count);
+    R_RegisterCCallable("libproj", "proj_datum_ensemble_get_accuracy", (DL_FUNC) &proj_datum_ensemble_get_accuracy);
+    R_RegisterCCallable("libproj", "proj_datum_ensemble_get_member", (DL_FUNC) &proj_datum_ensemble_get_member);
+    R_RegisterCCallable("libproj", "proj_dynamic_datum_get_frame_reference_epoch", (DL_FUNC) &proj_dynamic_datum_get_frame_reference_epoch);
     R_RegisterCCallable("libproj", "proj_crs_get_coordinate_system", (DL_FUNC) &proj_crs_get_coordinate_system);
     R_RegisterCCallable("libproj", "proj_cs_get_type", (DL_FUNC) &proj_cs_get_type);
     R_RegisterCCallable("libproj", "proj_cs_get_axis_count", (DL_FUNC) &proj_cs_get_axis_count);

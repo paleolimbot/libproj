@@ -21,12 +21,12 @@ function_defs_chr <- capi_header %>%
 typedefs_chr <- c(
   read_lines(capi_header)[182:345],
   read_lines(capi_header)[357:361],
-  read_lines(capi_header)[365:366],
-  read_lines(capi_header)[378:429],
-  read_lines(capi_header)[434:498],
-  read_lines(capi_header)[565:570],
-  read_lines(capi_header)[665:995],
-  read_lines(capi_header)[1152]
+  read_lines(capi_header)[366:367],
+  read_lines(capi_header)[379:429],
+  read_lines(capi_header)[436:499],
+  read_lines(capi_header)[565:571],
+  read_lines(capi_header)[665:1000],
+  read_lines(capi_header)[1157]
 )
 
 function_defs <- tibble(

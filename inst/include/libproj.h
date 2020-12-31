@@ -16,7 +16,7 @@ extern "C" {
 #define PROJ_DLL
 
 #define PROJ_VERSION_MAJOR 7
-#define PROJ_VERSION_MINOR 1
+#define PROJ_VERSION_MINOR 2
 #define PROJ_VERSION_PATCH 0
 
 union PJ_COORD;
@@ -241,8 +241,6 @@ typedef struct PROJ_FILE_API
     /** Return TRUE if file could be renamed  */
     int (*rename_cbk)(PJ_CONTEXT *ctx, const char *oldPath, const char *newPath, void* user_data);
 } PROJ_FILE_API;
-
-
 /** Opaque structure for PROJ for a network handle. Implementations might cast it to their
  * structure/class of choice. */
 typedef struct PROJ_NETWORK_HANDLE PROJ_NETWORK_HANDLE;
@@ -307,12 +305,14 @@ typedef size_t (*proj_network_read_range_type)(
                                             size_t error_string_max_size,
                                             char* out_error_string,
                                             void* user_data);
+/* Apply transformation to observation - in forward or inverse direction */
 enum PJ_DIRECTION {
     PJ_FWD   =  1,   /* Forward    */
     PJ_IDENT =  0,   /* Do nothing */
     PJ_INV   = -1    /* Inverse    */
 };
 typedef enum PJ_DIRECTION PJ_DIRECTION;
+/** \brief Type representing a NULL terminated list of NULL-terminate strings. */
 typedef char **PROJ_STRING_LIST;
 
 /** \brief Guessed WKT "dialect". */
@@ -386,6 +386,10 @@ typedef enum
     PJ_TYPE_TRANSFORMATION,
     PJ_TYPE_CONCATENATED_OPERATION,
     PJ_TYPE_OTHER_COORDINATE_OPERATION,
+
+    PJ_TYPE_TEMPORAL_DATUM,
+    PJ_TYPE_ENGINEERING_DATUM,
+    PJ_TYPE_PARAMETRIC_DATUM,
 } PJ_TYPE;
 
 /** Comparison criterion. */
@@ -648,8 +652,10 @@ typedef struct PJ_OPERATION_FACTORY_CONTEXT PJ_OPERATION_FACTORY_CONTEXT;
 
 extern PJ_CONTEXT* (*proj_context_create)(void);
 extern PJ_CONTEXT* (*proj_context_destroy)(PJ_CONTEXT*);
+extern PJ_CONTEXT* (*proj_context_clone)(PJ_CONTEXT*);
 extern void (*proj_context_set_file_finder)(PJ_CONTEXT*, proj_file_finder, void*);
 extern void (*proj_context_set_search_paths)(PJ_CONTEXT*, int, const char* const*);
+extern void (*proj_context_set_ca_bundle_path)(PJ_CONTEXT*, const char*);
 extern void (*proj_context_use_proj4_init_rules)(PJ_CONTEXT*, int);
 extern int (*proj_context_get_use_proj4_init_rules)(PJ_CONTEXT*, int);
 extern int (*proj_context_set_fileapi)( PJ_CONTEXT*, const PROJ_FILE_API*, void*);
@@ -772,6 +778,12 @@ extern PJ* (*proj_crs_get_geodetic_crs)(PJ_CONTEXT*, const PJ*);
 extern PJ* (*proj_crs_get_horizontal_datum)(PJ_CONTEXT*, const PJ*);
 extern PJ* (*proj_crs_get_sub_crs)(PJ_CONTEXT*, const PJ*, int);
 extern PJ* (*proj_crs_get_datum)(PJ_CONTEXT*, const PJ*);
+extern PJ* (*proj_crs_get_datum_ensemble)(PJ_CONTEXT*, const PJ*);
+extern PJ* (*proj_crs_get_datum_forced)(PJ_CONTEXT*, const PJ*);
+extern int (*proj_datum_ensemble_get_member_count)(PJ_CONTEXT*, const PJ*);
+extern double (*proj_datum_ensemble_get_accuracy)(PJ_CONTEXT*, const PJ*);
+extern PJ* (*proj_datum_ensemble_get_member)(PJ_CONTEXT*, const PJ*, int);
+extern double (*proj_dynamic_datum_get_frame_reference_epoch)(PJ_CONTEXT*, const PJ*);
 extern PJ* (*proj_crs_get_coordinate_system)(PJ_CONTEXT*, const PJ*);
 extern PJ_COORDINATE_SYSTEM_TYPE (*proj_cs_get_type)(PJ_CONTEXT*, const PJ*);
 extern int (*proj_cs_get_axis_count)(PJ_CONTEXT*, const PJ*);

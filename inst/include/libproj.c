@@ -5,8 +5,10 @@
 
 PJ_CONTEXT* (*proj_context_create)(void) = NULL;
 PJ_CONTEXT* (*proj_context_destroy)(PJ_CONTEXT*) = NULL;
+PJ_CONTEXT* (*proj_context_clone)(PJ_CONTEXT*) = NULL;
 void (*proj_context_set_file_finder)(PJ_CONTEXT*, proj_file_finder, void*) = NULL;
 void (*proj_context_set_search_paths)(PJ_CONTEXT*, int, const char* const*) = NULL;
+void (*proj_context_set_ca_bundle_path)(PJ_CONTEXT*, const char*) = NULL;
 void (*proj_context_use_proj4_init_rules)(PJ_CONTEXT*, int) = NULL;
 int (*proj_context_get_use_proj4_init_rules)(PJ_CONTEXT*, int) = NULL;
 int (*proj_context_set_fileapi)( PJ_CONTEXT*, const PROJ_FILE_API*, void*) = NULL;
@@ -129,6 +131,12 @@ PJ* (*proj_crs_get_geodetic_crs)(PJ_CONTEXT*, const PJ*) = NULL;
 PJ* (*proj_crs_get_horizontal_datum)(PJ_CONTEXT*, const PJ*) = NULL;
 PJ* (*proj_crs_get_sub_crs)(PJ_CONTEXT*, const PJ*, int) = NULL;
 PJ* (*proj_crs_get_datum)(PJ_CONTEXT*, const PJ*) = NULL;
+PJ* (*proj_crs_get_datum_ensemble)(PJ_CONTEXT*, const PJ*) = NULL;
+PJ* (*proj_crs_get_datum_forced)(PJ_CONTEXT*, const PJ*) = NULL;
+int (*proj_datum_ensemble_get_member_count)(PJ_CONTEXT*, const PJ*) = NULL;
+double (*proj_datum_ensemble_get_accuracy)(PJ_CONTEXT*, const PJ*) = NULL;
+PJ* (*proj_datum_ensemble_get_member)(PJ_CONTEXT*, const PJ*, int) = NULL;
+double (*proj_dynamic_datum_get_frame_reference_epoch)(PJ_CONTEXT*, const PJ*) = NULL;
 PJ* (*proj_crs_get_coordinate_system)(PJ_CONTEXT*, const PJ*) = NULL;
 PJ_COORDINATE_SYSTEM_TYPE (*proj_cs_get_type)(PJ_CONTEXT*, const PJ*) = NULL;
 int (*proj_cs_get_axis_count)(PJ_CONTEXT*, const PJ*) = NULL;
@@ -155,8 +163,10 @@ PJ* (*proj_concatoperation_get_step)(PJ_CONTEXT*, const PJ*, int) = NULL;
 void libproj_init_api() {
   proj_context_create = (PJ_CONTEXT* (*)(void)) R_GetCCallable("libproj", "proj_context_create");
   proj_context_destroy = (PJ_CONTEXT* (*)(PJ_CONTEXT*)) R_GetCCallable("libproj", "proj_context_destroy");
+  proj_context_clone = (PJ_CONTEXT* (*)(PJ_CONTEXT*)) R_GetCCallable("libproj", "proj_context_clone");
   proj_context_set_file_finder = (void (*)(PJ_CONTEXT*, proj_file_finder, void*)) R_GetCCallable("libproj", "proj_context_set_file_finder");
   proj_context_set_search_paths = (void (*)(PJ_CONTEXT*, int, const char* const*)) R_GetCCallable("libproj", "proj_context_set_search_paths");
+  proj_context_set_ca_bundle_path = (void (*)(PJ_CONTEXT*, const char*)) R_GetCCallable("libproj", "proj_context_set_ca_bundle_path");
   proj_context_use_proj4_init_rules = (void (*)(PJ_CONTEXT*, int)) R_GetCCallable("libproj", "proj_context_use_proj4_init_rules");
   proj_context_get_use_proj4_init_rules = (int (*)(PJ_CONTEXT*, int)) R_GetCCallable("libproj", "proj_context_get_use_proj4_init_rules");
   proj_context_set_fileapi = (int (*)( PJ_CONTEXT*, const PROJ_FILE_API*, void*)) R_GetCCallable("libproj", "proj_context_set_fileapi");
@@ -279,6 +289,12 @@ void libproj_init_api() {
   proj_crs_get_horizontal_datum = (PJ* (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_crs_get_horizontal_datum");
   proj_crs_get_sub_crs = (PJ* (*)(PJ_CONTEXT*, const PJ*, int)) R_GetCCallable("libproj", "proj_crs_get_sub_crs");
   proj_crs_get_datum = (PJ* (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_crs_get_datum");
+  proj_crs_get_datum_ensemble = (PJ* (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_crs_get_datum_ensemble");
+  proj_crs_get_datum_forced = (PJ* (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_crs_get_datum_forced");
+  proj_datum_ensemble_get_member_count = (int (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_datum_ensemble_get_member_count");
+  proj_datum_ensemble_get_accuracy = (double (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_datum_ensemble_get_accuracy");
+  proj_datum_ensemble_get_member = (PJ* (*)(PJ_CONTEXT*, const PJ*, int)) R_GetCCallable("libproj", "proj_datum_ensemble_get_member");
+  proj_dynamic_datum_get_frame_reference_epoch = (double (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_dynamic_datum_get_frame_reference_epoch");
   proj_crs_get_coordinate_system = (PJ* (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_crs_get_coordinate_system");
   proj_cs_get_type = (PJ_COORDINATE_SYSTEM_TYPE (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_cs_get_type");
   proj_cs_get_axis_count = (int (*)(PJ_CONTEXT*, const PJ*)) R_GetCCallable("libproj", "proj_cs_get_axis_count");
