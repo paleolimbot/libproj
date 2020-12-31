@@ -1,5 +1,5 @@
 RWINLIB_TIFF = ../windows/libtiff-4.1.0/mingw$(WIN)
-PKG_CPPFLAGS = -I../src/proj_include -DTIFF_ENABLED -I$(RWINLIB_TIFF)/include -I../windows/libcurl-7.64.1/include -DCURL_STATICLIB
+PKG_CPPFLAGS = -I../src/proj_include -DTIFF_ENABLED -DCURL_ENABLED -I$(RWINLIB_TIFF)/include -I../windows/libcurl-7.64.1/include -DCURL_STATICLIB
 PKG_LIBS = -L$(RWINLIB_TIFF)/lib -ltiff -ljpeg -lz -L../windows/libcurl-7.64.1/lib${R_ARCH} -lcurl -lssl
 CXX_STD = CXX11
 

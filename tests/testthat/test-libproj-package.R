@@ -84,7 +84,7 @@ test_that("libproj can be linked to", {
     })
     expect_identical(list.files(libproj_temp_dir()), "cache.db")
   } else if (!libproj_has_libcurl()) {
-    expect_error(libproj_configure(network_enabled = TRUE), "Error enabling network")
+    expect_error(libproj_configure(network_enabled = TRUE), "Can't enable PROJ network access")
   }
 
   unlink(cache, recursive = TRUE)
