@@ -130,10 +130,10 @@ with_libproj_configuration(list(network_enabled = TRUE), {
 })
 ```
 
-If enabling network downloads, the cache is stored in a temporary directory (`libproj_temp_dir()`). You can configure this value to persist the cache between R sessions using `options(libproj.user_writable_dir = ...)` in your `.Renviron` or using `with_libproj_configuration()` or `libproj_configure()` to set this value temporarily. A useful user writable directory might be `rappdirs::user_data_dir("R-libproj")`.
+If enabling network downloads, the cache is stored in a temporary directory (`libproj_temp_dir()`). You can configure this value to persist the cache between R sessions using `options(libproj.user_writable_dir = ...)` in your `.Rprofile` or using `with_libproj_configuration()` or `libproj_configure()` to set this value temporarily. A useful user writable directory might be `rappdirs::user_data_dir("R-libproj")`.
 
 ```{r}
-# in .Renviron (`usethis::edit_r_environ()`):
+# in .Rprofile (`usethis::edit_r_profile()`):
 options(
   libproj.user_writable_dir = rappdirs::user_data_dir("R-libproj")
 )

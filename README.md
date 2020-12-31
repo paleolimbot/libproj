@@ -118,7 +118,7 @@ sf::st_transform(sf::st_sfc(sf::st_point(c(-64, 45)), crs = 4326), 32620)
 #> geometry type:  POINT
 #> dimension:      XY
 #> bbox:           xmin: 421184.7 ymin: 4983437 xmax: 421184.7 ymax: 4983437
-#> CRS:            EPSG:32620
+#> projected CRS:  WGS 84 / UTM zone 20N
 #> POINT (421184.7 4983437)
 
 # Note that the PROJ default axis ordering (at the C level)
@@ -155,13 +155,13 @@ with_libproj_configuration(list(network_enabled = TRUE), {
 If enabling network downloads, the cache is stored in a temporary
 directory (`libproj_temp_dir()`). You can configure this value to
 persist the cache between R sessions using
-`options(libproj.user_writable_dir = ...)` in your `.Renviron` or using
+`options(libproj.user_writable_dir = ...)` in your `.Rprofile` or using
 `with_libproj_configuration()` or `libproj_configure()` to set this
 value temporarily. A useful user writable directory might be
 `rappdirs::user_data_dir("R-libproj")`.
 
 ``` r
-# in .Renviron (`usethis::edit_r_environ()`):
+# in .Rprofile (`usethis::edit_r_profile()`):
 options(
   libproj.user_writable_dir = rappdirs::user_data_dir("R-libproj")
 )
