@@ -167,7 +167,7 @@
 <span class="co">#&gt; geometry type:  POINT</span>
 <span class="co">#&gt; dimension:      XY</span>
 <span class="co">#&gt; bbox:           xmin: 421184.7 ymin: 4983437 xmax: 421184.7 ymax: 4983437</span>
-<span class="co">#&gt; CRS:            EPSG:32620</span>
+<span class="co">#&gt; projected CRS:  WGS 84 / UTM zone 20N</span>
 <span class="co">#&gt; POINT (421184.7 4983437)</span>
 
 <span class="co"># Note that the PROJ default axis ordering (at the C level)</span>
@@ -196,9 +196,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $y</span>
 <span class="co">#&gt; [1] 4983437</span></code></pre></div>
-<p>If enabling network downloads, the cache is stored in a temporary directory (<code><a href="reference/libproj_version.html">libproj_temp_dir()</a></code>). You can configure this value to persist the cache between R sessions using <code><a href="https://rdrr.io/r/base/options.html">options(libproj.user_writable_dir = ...)</a></code> in your <code>.Renviron</code> or using <code><a href="reference/libproj_version.html">with_libproj_configuration()</a></code> or <code><a href="reference/libproj_version.html">libproj_configure()</a></code> to set this value temporarily. A useful user writable directory might be <code>rappdirs::user_data_dir("R-libproj")</code>.</p>
+<p>If enabling network downloads, the cache is stored in a temporary directory (<code><a href="reference/libproj_version.html">libproj_temp_dir()</a></code>). You can configure this value to persist the cache between R sessions using <code><a href="https://rdrr.io/r/base/options.html">options(libproj.user_writable_dir = ...)</a></code> in your <code>.Rprofile</code> or using <code><a href="reference/libproj_version.html">with_libproj_configuration()</a></code> or <code><a href="reference/libproj_version.html">libproj_configure()</a></code> to set this value temporarily. A useful user writable directory might be <code>rappdirs::user_data_dir("R-libproj")</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># in .Renviron (`usethis::edit_r_environ()`):</span>
+<code class="sourceCode R"><span class="co"># in .Rprofile (`usethis::edit_r_profile()`):</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>
   libproj.user_writable_dir <span class="op">=</span> <span class="fu">rappdirs</span><span class="fu">::</span><span class="fu">user_data_dir</span><span class="op">(</span><span class="st">"R-libproj"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
