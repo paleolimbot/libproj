@@ -1,23 +1,23 @@
 
 Fixed issues identified by CRAN reviewers (added "value" section
-for `libproj*_()` functions).
+for `libproj*_()` functions). As I did not receive any correspondence
+after the previous submission, I assumed that there were further 
+unresolved issues. I have updated the submission to comply with 
+updated R-devel and updated the underlying version of PROJ; I look
+forward to fixing any additional issues identified by reviewers.
 
 On 2020-10-05 I was forwarded a notice that this package was archived 
 permanently, which included a copy of correspondence on 2020-09-16 
 with a list of installation issues and potential fixes. The email 
 address listed was correct; however, I have no record of any 
 correspondence from CRAN (Inbox, Trash, Spam, or otherwise). 
-I don't have any intention of wasting CRAN's volunteer time,
-and was surprised that this was the reaction of a missed email
-as I have fixed many problems noted by CRAN promptly.
-This release fixes the issues noted and was tested using
-GitHub Actions, RHub, and several local installs. The test
-suite on GitHub Actions also includes a reverse dependecy 
-check of the 'PROJ' package (as does CRAN's submission process).
+I have since received notifications from CRAN at this email for
+other packages and have no reason to believe that this will
+be a problem in the future.
 
 ## Test environments
 
-* local R installation, R 4.0.1
+* local R installation, R 4.0.3
 * GitHub Actions (Windows/R-oldrel, Windows/R-release, MacOS/R-release,
   Ubuntu 16.04, Ubuntu 18.04, Ubuntu 20.04/R-release with curl,
   Ubuntu 20.04/R-release without curl)
