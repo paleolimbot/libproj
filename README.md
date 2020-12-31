@@ -180,6 +180,9 @@ libproj_configuration()
 #> $network_endpoint
 #> [1] "https://cdn.proj.org"
 #> 
+#> $ca_bundle_path
+#> [1] NA
+#> 
 #> $network_enabled
 #> [1] FALSE
 #> 
