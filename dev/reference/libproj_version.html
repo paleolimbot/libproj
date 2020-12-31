@@ -138,6 +138,7 @@
   db_path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"libproj.db_path"</span>, <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"proj/proj.db"</span>, package <span class='op'>=</span>
     <span class='st'>"libproj"</span><span class='op'>)</span><span class='op'>)</span>,
   user_writable_dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"libproj.user_writable_dir"</span>, <span class='fu'>libproj_temp_dir</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>,
+  ca_bundle_path <span class='op'>=</span> <span class='cn'>NA</span>,
   network_endpoint <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"libproj.network_endpoint"</span>, <span class='st'>"https://cdn.proj.org"</span><span class='op'>)</span>,
   network_enabled <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"libproj.network_enabled"</span>, <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
@@ -176,6 +177,11 @@ by this package. This contains a cache of grid shift files downloaded
 from the PROJ CDN at <code>network_endpoint</code> if using <code>with_libproj_network()</code>.</p></td>
     </tr>
     <tr>
+      <th>ca_bundle_path</th>
+      <td><p>A directory that contains the certificate bundle when
+network is enabled. Can be <code>NA</code>.</p></td>
+    </tr>
+    <tr>
       <th>network_endpoint</th>
       <td><p>A mirror of the PROJ CDN of gridshift files. By default,
 this is set to <a href='https://cdn.proj.org'>https://cdn.proj.org</a>.</p></td>
@@ -208,7 +214,7 @@ tempfiles are written.</p></li>
 </div><div class='output co'>#&gt; [1] "7.2.0"</div><div class='input'><span class='fu'>libproj_has_libtiff</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_has_libcurl</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>libproj_temp_dir</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpY3u4um/filec0d66b855b0"</div><div class='input'><span class='fu'>libproj_configuration</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpLQgnV5/filec3d560bab80"</div><div class='input'><span class='fu'>libproj_configuration</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $db_path
 #&gt; [1] "/Users/runner/work/_temp/Library/libproj/proj/proj.db"
 #&gt; 
@@ -218,11 +224,14 @@ tempfiles are written.</p></li>
 #&gt; $network_endpoint
 #&gt; [1] "https://cdn.proj.org"
 #&gt; 
+#&gt; $ca_bundle_path
+#&gt; [1] NA
+#&gt; 
 #&gt; $network_enabled
 #&gt; [1] FALSE
 #&gt; 
 #&gt; $user_writable_dir
-#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpY3u4um/filec0d66b855b0"
+#&gt; [1] "/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T//RtmpLQgnV5/filec3d560bab80"
 #&gt; </div><div class='input'>
 </div></pre>
   </div>
