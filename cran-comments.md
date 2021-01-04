@@ -42,9 +42,9 @@ be a problem in the future.
       And multiple broken submissions.
       
     * checking installed package size ... NOTE
-      installed size is 49.8Mb
+      installed size is 14.5Mb
       sub-directories of 1Mb or more:
-        libs  43.0Mb
-        proj   6.6Mb
+        libs   5.6Mb
+        proj   8.8Mb
     
     0 errors | 0 warnings | 2 notes
