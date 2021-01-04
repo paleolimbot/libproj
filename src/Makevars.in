@@ -1,6 +1,5 @@
 
 PKG_CPPFLAGS = -I../src/proj_include @cflags@
-PKG_CXXFLAGS = -fvisibility=hidden
 PKG_LIBS = @libs@
 CXX_STD = CXX11
 

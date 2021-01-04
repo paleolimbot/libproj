@@ -75,7 +75,10 @@ namespace proj {}
 #define PROJ_MSVC_DLL
 #define PROJ_GCC_DLL PROJ_DLL
 #if !defined(__MINGW32__)
-#define PROJ_INTERNAL __attribute__((visibility("hidden")))
+// dd: this causes a number of noisy compiler warnings
+// and we do not interact with the C++ API
+// #define PROJ_INTERNAL __attribute__((visibility("hidden")))
+#define PROJ_INTERNAL
 #else
 #define PROJ_INTERNAL
 #endif
