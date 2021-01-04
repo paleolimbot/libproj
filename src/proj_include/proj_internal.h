@@ -572,13 +572,12 @@ struct PJconsts {
 struct ARG_list {
     paralist *next;
     char used;
-#if (defined(__GNUC__) && __GNUC__ >= 8) || (defined(__clang__) && __clang_major__ >= 9)
-    __extension__ char param[]; /* variable-length member */
     /* Safer to use [] for gcc 8. See https://github.com/OSGeo/proj.4/pull/1087 */
     /* and https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86914 */
-#else
+    /* DD: however, CRAN does not provide a means by which to silence this and */
+    /* stay accepted. The fix has been backported to gcc-8 and it is unlikely this */
+    /* particular version of gcc-8 will be used to compile this R package */
     char param[1]; /* variable-length member */
-#endif
 };
 
 

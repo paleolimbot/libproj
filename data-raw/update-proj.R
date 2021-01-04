@@ -124,3 +124,6 @@ clipr::write_clip(objects)
 #'   grep "pragma" $(find src -name "*.cpp")
 #'   grep "pragma" $(find src -name "*.c")
 #'
+#' * Make sure the variable-length array in proj_internal.h ARG_list does not have
+#'   warnings about a flexible-legth member using gcc or clang.s
+#'
