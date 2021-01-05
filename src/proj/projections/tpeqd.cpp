@@ -1,8 +1,8 @@
 #define PJ_LIB__
 #include <errno.h>
-#include "proj.h"
+#include "R-libproj/proj.h"
 #include <math.h>
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 
 
 PROJ_HEAD(tpeqd, "Two Point Equidistant")

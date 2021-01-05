@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ.4
  * Purpose:  Implementation of pj_log() function.
@@ -31,8 +31,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 /************************************************************************/
 /*                          pj_stderr_logger()                          */

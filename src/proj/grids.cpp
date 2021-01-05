@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  Grid management
@@ -32,11 +32,11 @@
 #endif
 #define LRU11_DO_NOT_DEFINE_OUT_OF_CLASS_METHODS
 
-#include "grids.hpp"
-#include "filemanager.hpp"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/lru_cache.hpp"
-#include "proj_internal.h"
+#include "R-libproj/grids.hpp"
+#include "R-libproj/filemanager.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/lru_cache.hpp"
+#include "R-libproj/proj_internal.h"
 
 #ifdef TIFF_ENABLED
 #include "tiffio.h"

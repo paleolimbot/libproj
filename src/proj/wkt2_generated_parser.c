@@ -97,7 +97,7 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#include "wkt2_parser.h"
+#include "R-libproj/wkt2_parser.h"
 
 
 
@@ -119,7 +119,7 @@
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "wkt2_generated_parser.h".  */
+   by #include "R-libproj/wkt2_generated_parser.h".  */
 #ifndef YY_PJ_WKT2_SRC_WKT2_GENERATED_PARSER_H_INCLUDED
 # define YY_PJ_WKT2_SRC_WKT2_GENERATED_PARSER_H_INCLUDED
 /* Debug traces.  */

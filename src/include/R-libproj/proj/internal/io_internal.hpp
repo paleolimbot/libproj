@@ -36,8 +36,8 @@
 #include <string>
 #include <vector>
 
-#include "proj/io.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/util.hpp"
 
 //! @cond Doxygen_Suppress
 

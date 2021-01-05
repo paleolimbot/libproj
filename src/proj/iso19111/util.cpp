@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -31,10 +31,10 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "proj/util.hpp"
-#include "proj/io.hpp"
+#include "R-libproj/proj/util.hpp"
+#include "R-libproj/proj/io.hpp"
 
-#include "proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
 
 #include <map>
 #include <memory>

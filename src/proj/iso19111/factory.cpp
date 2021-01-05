@@ -30,22 +30,22 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "proj/common.hpp"
-#include "proj/coordinateoperation.hpp"
-#include "proj/coordinatesystem.hpp"
-#include "proj/crs.hpp"
-#include "proj/datum.hpp"
-#include "proj/io.hpp"
-#include "proj/metadata.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/coordinatesystem.hpp"
+#include "R-libproj/proj/crs.hpp"
+#include "R-libproj/proj/datum.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/metadata.hpp"
+#include "R-libproj/proj/util.hpp"
 
-#include "proj/internal/coordinateoperation_internal.hpp"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/io_internal.hpp"
-#include "proj/internal/lru_cache.hpp"
-#include "proj/internal/tracing.hpp"
+#include "R-libproj/proj/internal/coordinateoperation_internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/io_internal.hpp"
+#include "R-libproj/proj/internal/lru_cache.hpp"
+#include "R-libproj/proj/internal/tracing.hpp"
 
-#include "sqlite3_utils.hpp"
+#include "R-libproj/sqlite3_utils.hpp"
 
 #include <cmath>
 #include <cstdlib>
@@ -59,13 +59,13 @@
 #include <stdexcept>
 #include <string>
 
-#include "proj_constants.h"
+#include "R-libproj/proj_constants.h"
 
 // PROJ include order is sensitive
 // clang-format off
-#include "proj.h"
-#include "proj_internal.h"
-#include "proj_api.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/proj_api.h"
 // clang-format on
 
 #include <sqlite3.h>

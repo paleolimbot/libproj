@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 static const double TOL = 1.0e-10;
 static const int N_ITER = 15;

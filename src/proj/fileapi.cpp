@@ -32,9 +32,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_internal.h"
-#include "filemanager.hpp"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/filemanager.hpp"
 
 static PAFile stdio_fopen(projCtx ctx, const char *filename,
                              const char *access);

@@ -37,7 +37,7 @@
 #define DEFMODEL_HPP
 
 #ifdef PROJ_COMPILATION
-#include "proj/internal/include_nlohmann_json.hpp"
+#include "R-libproj/proj/internal/include_nlohmann_json.hpp"
 #else
 #include "nlohmann/json.hpp"
 #endif

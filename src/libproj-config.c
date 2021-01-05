@@ -1,6 +1,6 @@
 
 #include <Rinternals.h>
-#include "proj.h"
+#include "R-libproj/proj.h"
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)

@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /*
  * This code was entirely written by Nathan Wagner
  * and is in the public domain.
@@ -14,8 +14,8 @@
 #include <limits>
 
 #define PJ_LIB__
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 #define DEG36 0.62831853071795864768

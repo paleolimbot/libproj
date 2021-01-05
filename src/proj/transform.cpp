@@ -31,9 +31,9 @@
 #include <math.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_internal.h"
-#include "grids.hpp"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/grids.hpp"
 
 using namespace NS_PROJ;
 
@@ -298,7 +298,7 @@ void pj_Convert_Geocentric_To_Geodetic (GeocentricInfo *gi,
  *                               INCLUDES
  */
 #include <math.h>
-//#include "geocent.h"
+//#include "R-libproj/geocent.h"
 /*
  *    math.h     - is needed for calls to sin, cos, tan and sqrt.
  *    geocent.h  - is needed for Error codes and prototype error checking.

@@ -1,5 +1,5 @@
 #pragma once
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /*
  * Copyright (c) 2015 Dropbox, Inc.
  *

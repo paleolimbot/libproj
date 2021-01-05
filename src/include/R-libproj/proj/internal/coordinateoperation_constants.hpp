@@ -34,7 +34,7 @@
 #define COORDINATEOPERATION_CONSTANTS_HH_INCLUDED
 
 #include "coordinateoperation_internal.hpp"
-#include "proj_constants.h"
+#include "R-libproj/proj_constants.h"
 
 //! @cond Doxygen_Suppress
 // ---------------------------------------------------------------------------

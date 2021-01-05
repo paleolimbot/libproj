@@ -34,8 +34,8 @@
 
 #include <stdlib.h>
 
-#include "proj/internal/internal.hpp"
-#include "proj/internal/tracing.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/tracing.hpp"
 
 //! @cond Doxygen_Suppress
 

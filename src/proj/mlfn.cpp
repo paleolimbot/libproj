@@ -1,8 +1,8 @@
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
-#include "mlfn.hpp"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/mlfn.hpp"
 
 /* meridional distance for ellipsoid and inverse
 **	8th degree - accurate to < 1e-5 meters when used in conjunction

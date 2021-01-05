@@ -5,8 +5,8 @@
 #include <stddef.h>
 #include <time.h>
 
-#include "proj_internal.h"
-#include "grids.hpp"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/grids.hpp"
 
 PROJ_HEAD(hgridshift, "Horizontal grid shift");
 

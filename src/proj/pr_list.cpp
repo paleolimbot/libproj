@@ -1,11 +1,11 @@
 /* print projection's list of parameters */
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 #define LINE_LEN 72
 	static int

@@ -42,18 +42,18 @@
 #include <algorithm>
 #include <limits>
 
-#include "proj.h"
-#include "proj_experimental.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_experimental.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
-#include "geodesic.h"
-#include "grids.hpp"
-#include "filemanager.hpp"
+#include "R-libproj/geodesic.h"
+#include "R-libproj/grids.hpp"
+#include "R-libproj/filemanager.hpp"
 
-#include "proj/common.hpp"
-#include "proj/coordinateoperation.hpp"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/io_internal.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/io_internal.hpp"
 
 using namespace NS_PROJ::internal;
 

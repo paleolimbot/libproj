@@ -31,7 +31,7 @@
 #include <vector>
 #include <string>
 
-#include "proj_json_streaming_writer.hpp"
+#include "R-libproj/proj_json_streaming_writer.hpp"
 
 #include <string.h>
 #include <sqlite3.h>

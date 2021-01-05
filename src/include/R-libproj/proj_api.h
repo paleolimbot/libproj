@@ -42,7 +42,7 @@
 #endif
 
 #ifdef PROJ_RENAME_SYMBOLS
-#include "proj_symbol_rename.h"
+#include "R-libproj/proj_symbol_rename.h"
 #endif
 
 

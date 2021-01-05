@@ -133,7 +133,7 @@ libproj_init_c <- with(
 // generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-#include "proj.h"
+#include "R-libproj.h"
 
 // defined in libproj-config.c
 SEXP libproj_c_version();

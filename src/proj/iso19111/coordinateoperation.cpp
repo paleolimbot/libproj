@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -32,24 +32,24 @@
 #endif
 #define FROM_COORDINATE_OPERATION_CPP
 
-#include "proj/coordinateoperation.hpp"
-#include "proj/common.hpp"
-#include "proj/crs.hpp"
-#include "proj/io.hpp"
-#include "proj/metadata.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/crs.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/metadata.hpp"
+#include "R-libproj/proj/util.hpp"
 
-#include "proj/internal/internal.hpp"
-#include "proj/internal/io_internal.hpp"
-#include "proj/internal/tracing.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/io_internal.hpp"
+#include "R-libproj/proj/internal/tracing.hpp"
 
 // PROJ include order is sensitive
 // clang-format off
-#include "proj.h"
-#include "proj_internal.h" // M_PI
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h" // M_PI
 // clang-format on
 
-#include "proj_json_streaming_writer.hpp"
+#include "R-libproj/proj_json_streaming_writer.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -88,9 +88,9 @@ template<> nn<std::unique_ptr<NS_PROJ::operation::CoordinateOperationContext, st
 }}
 #endif
 
-#include "proj/internal/coordinateoperation_constants.hpp"
-#include "proj/internal/coordinateoperation_internal.hpp"
-#include "proj/internal/esri_projection_mappings.hpp"
+#include "R-libproj/proj/internal/coordinateoperation_constants.hpp"
+#include "R-libproj/proj/internal/coordinateoperation_internal.hpp"
+#include "R-libproj/proj/internal/esri_projection_mappings.hpp"
 
 #if 0
 namespace dropbox{ namespace oxygen {

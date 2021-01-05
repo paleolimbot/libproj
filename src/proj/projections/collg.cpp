@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(collg, "Collignon") "\n\tPCyl, Sph";
 #define FXC 1.12837916709551257390

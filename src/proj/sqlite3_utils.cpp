@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  SQLite3 related utilities
@@ -31,7 +31,7 @@
 // #pragma GCC diagnostic ignored "-Weffc++"
 #endif
 
-#include "sqlite3_utils.hpp"
+#include "R-libproj/sqlite3_utils.hpp"
 
 #ifdef __GNUC__
 // #pragma GCC diagnostic pop

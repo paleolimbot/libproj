@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ.4
  * Purpose:  Mutex (thread lock) functions.
@@ -31,15 +31,15 @@
 #define _GNU_SOURCE
 #endif
 
-#include "proj.h"
+#include "R-libproj/proj.h"
 #ifndef _WIN32
-#include "proj_config.h"
-#include "proj_internal.h"
+#include "R-libproj/proj_config.h"
+#include "R-libproj/proj_internal.h"
 #else
 #ifndef ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
 #define ACCEPT_USE_OF_DEPRECATED_PROJ_API_H
 #endif
-#include "proj_api.h"
+#include "R-libproj/proj_api.h"
 #endif
 
 /* on win32 we always use win32 mutexes, even if pthreads are available */
@@ -99,7 +99,7 @@ void pj_cleanup_lock()
 
 #ifdef MUTEX_pthread
 
-#include "pthread.h"
+#include "R-libproj/pthread.h"
 
 #ifdef PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP
 #ifdef __GNUC__

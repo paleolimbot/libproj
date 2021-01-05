@@ -58,20 +58,20 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "proj/common.hpp"
-#include "proj/coordinateoperation.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
 
 #include <string>
 #include <vector>
 
-#include "proj.h"
+#include "R-libproj/proj.h"
 
 #ifdef PROJ_API_H
 #error proj_internal.h must be included before proj_api.h
 #endif
 
 #ifdef PROJ_RENAME_SYMBOLS
-#include "proj_symbol_rename.h"
+#include "R-libproj/proj_symbol_rename.h"
 #endif
 
 #define STATIC_ASSERT(COND) ((void)sizeof(char[(COND) ? 1 : -1]))
@@ -909,6 +909,6 @@ void pj_clear_vgridshift_knowngrids_cache();
 PJ_LP pj_generic_inverse_2d(PJ_XY xy, PJ *P, PJ_LP lpInitial);
 
 /* classic public API */
-#include "proj_api.h"
+#include "R-libproj/proj_api.h"
 
 #endif /* ndef PROJ_INTERNAL_H */

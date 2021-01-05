@@ -32,8 +32,8 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 #define MAX_ITER 20
 #define TOL 1e-14

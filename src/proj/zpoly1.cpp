@@ -1,6 +1,6 @@
 /* evaluate complex polynomial */
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 /* note: coefficients are always from C_1 to C_n
 **	i.e. C_0 == (0., 0)
 **	n should always be >= 1 though no checks are made

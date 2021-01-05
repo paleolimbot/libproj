@@ -2,9 +2,9 @@
 
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
-#include "proj_api.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/proj_api.h"
 
 PROJ_HEAD(calcofi,
     "Cal Coop Ocean Fish Invest Lines/Stations") "\n\tCyl, Sph&Ell";

@@ -29,8 +29,8 @@
 
 #include <algorithm>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(guyou, "Guyou") "\n\tMisc Sph No inv";
 PROJ_HEAD(peirce_q, "Peirce Quincuncial") "\n\tMisc Sph No inv";

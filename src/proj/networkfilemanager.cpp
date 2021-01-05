@@ -1,4 +1,4 @@
-#include "cpp-compat.h"
+#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  Functionality related to network access and caching
@@ -37,12 +37,12 @@
 #include <limits>
 #include <string>
 
-#include "filemanager.hpp"
-#include "proj.h"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/lru_cache.hpp"
-#include "proj_internal.h"
-#include "sqlite3_utils.hpp"
+#include "R-libproj/filemanager.hpp"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/lru_cache.hpp"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/sqlite3_utils.hpp"
 
 #ifdef __MINGW32__
 // mingw32-win32 doesn't implement std::mutex

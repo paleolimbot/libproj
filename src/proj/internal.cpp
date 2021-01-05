@@ -39,10 +39,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "geodesic.h"
-#include "proj_internal.h"
+#include "R-libproj/geodesic.h"
+#include "R-libproj/proj_internal.h"
 
-#include "proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
 
 using namespace NS_PROJ::internal;
 
