@@ -68,7 +68,7 @@
 #include "R-libproj/proj_api.h"
 // clang-format on
 
-#include <sqlite3.h>
+#include "R-libproj/sqlite3.h"
 
 // Custom SQLite VFS as our database is not supposed to be modified in
 // parallel. This is slightly faster
