@@ -34,9 +34,9 @@
 #include <utility>
 #include <vector>
 
-#include "common.hpp"
-#include "io.hpp"
-#include "metadata.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/metadata.hpp"
 
 NS_PROJ_START
 

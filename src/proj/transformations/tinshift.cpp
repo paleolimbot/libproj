@@ -28,9 +28,9 @@
 #define PJ_LIB__
 #define PROJ_COMPILATION
 
-#include "tinshift.hpp"
-#include "filemanager.hpp"
-#include "proj_internal.h"
+#include "R-libproj/transformations/tinshift.hpp"
+#include "R-libproj/filemanager.hpp"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(tinshift, "Triangulation based transformation");
 

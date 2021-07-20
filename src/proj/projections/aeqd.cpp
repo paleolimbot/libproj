@@ -26,10 +26,10 @@
  *****************************************************************************/
 
 #define PJ_LIB__
-#include "geodesic.h"
-#include "proj.h"
+#include "R-libproj/geodesic.h"
+#include "R-libproj/proj.h"
 #include <errno.h>
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 namespace { // anonymous namespace

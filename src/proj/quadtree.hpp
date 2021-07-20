@@ -30,7 +30,7 @@
 #ifndef QUADTREE_HPP
 #define QUADTREE_HPP
 
-#include "proj/util.hpp"
+#include "R-libproj/proj/util.hpp"
 
 #include <functional>
 #include <vector>

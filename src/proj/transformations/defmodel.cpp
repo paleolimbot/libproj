@@ -28,10 +28,10 @@
 #define PJ_LIB__
 #define PROJ_COMPILATION
 
-#include "defmodel.hpp"
-#include "filemanager.hpp"
-#include "grids.hpp"
-#include "proj_internal.h"
+#include "R-libproj/transformations/defmodel.hpp"
+#include "R-libproj/filemanager.hpp"
+#include "R-libproj/grids.hpp"
+#include "R-libproj/proj_internal.h"
 
 #include <assert.h>
 

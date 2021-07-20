@@ -36,17 +36,17 @@
 #include <limits>
 #include <string>
 
-#include "filemanager.hpp"
-#include "proj.h"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/lru_cache.hpp"
-#include "proj/internal/mutex.hpp"
-#include "proj_internal.h"
-#include "sqlite3_utils.hpp"
+#include "R-libproj/filemanager.hpp"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/lru_cache.hpp"
+#include "R-libproj/proj/internal/mutex.hpp"
+#include "R-libproj/proj_internal.h"
+#include "R-libproj/sqlite3_utils.hpp"
 
 #ifdef CURL_ENABLED
 #include <curl/curl.h>
-#include <sqlite3.h> // for sqlite3_snprintf
+#include "R-libproj/sqlite3.h" // for sqlite3_snprintf
 #endif
 
 #include <sys/stat.h>

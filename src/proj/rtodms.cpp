@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 /*
 ** RES is fractional second figures

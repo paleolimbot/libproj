@@ -1,7 +1,7 @@
 #define PJ_LIB__
 #include <errno.h>
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 /* Note: EPSG Guidance 7-2 describes a Vertical Perspective method (EPSG::9838),

@@ -1,5 +1,5 @@
 
-#include "R-libproj/cpp-compat.h"
+#include "cpp-compat.h"
 #include <stdexcept>
 #include <stdarg.h>
 #include <Rinternals.h>

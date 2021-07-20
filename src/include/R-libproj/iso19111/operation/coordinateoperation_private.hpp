@@ -29,8 +29,8 @@
 #ifndef COORDINATEROPERATION_PRIVATE_HPP
 #define COORDINATEROPERATION_PRIVATE_HPP
 
-#include "proj/coordinateoperation.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/util.hpp"
 
 // ---------------------------------------------------------------------------
 

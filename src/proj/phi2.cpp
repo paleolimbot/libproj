@@ -4,8 +4,8 @@
 #include <limits>
 #include <algorithm>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 double pj_sinhpsi2tanphi(PJ_CONTEXT *ctx, const double taup, const double e) {
   /****************************************************************************

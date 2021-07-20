@@ -30,7 +30,7 @@
 #include <errno.h>
 #include <math.h>
 
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 #define INPUT_UNITS  P->right

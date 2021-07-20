@@ -1,7 +1,7 @@
 /* determine small q */
 #include <math.h>
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 # define EPSILON 1.0e-7
 

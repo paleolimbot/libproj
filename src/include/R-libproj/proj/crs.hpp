@@ -33,12 +33,12 @@
 #include <string>
 #include <vector>
 
-#include "common.hpp"
-#include "coordinateoperation.hpp"
-#include "coordinatesystem.hpp"
-#include "datum.hpp"
-#include "io.hpp"
-#include "util.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/coordinatesystem.hpp"
+#include "R-libproj/proj/datum.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/util.hpp"
 
 NS_PROJ_START
 

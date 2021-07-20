@@ -89,7 +89,7 @@ namespace proj {}
 
 #endif
 
-#include "nn.hpp"
+#include "R-libproj/proj/nn.hpp"
 
 /* To allow customizing the base namespace of PROJ */
 #ifdef PROJ_INTERNAL_CPP_NAMESPACE

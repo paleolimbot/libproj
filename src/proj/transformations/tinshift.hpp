@@ -29,9 +29,9 @@
 #define TINSHIFT_HPP
 
 #ifdef PROJ_COMPILATION
-#include "proj/internal/include_nlohmann_json.hpp"
+#include "R-libproj/proj/internal/include_nlohmann_json.hpp"
 #else
-#include "nlohmann/json.hpp"
+#include "R-libproj/nlohmann/json.hpp"
 #endif
 
 #include <algorithm>
@@ -43,13 +43,13 @@
 #include <string>
 #include <vector>
 
-#include "quadtree.hpp"
+#include "R-libproj/proj/quadtree.hpp"
 
 #ifndef TINSHIFT_NAMESPACE
 #define TINSHIFT_NAMESPACE TINShift
 #endif
 
-#include "tinshift_exceptions.hpp"
+#include "R-libproj/tinshift_exceptions.hpp"
 
 namespace TINSHIFT_NAMESPACE {
 
@@ -252,6 +252,6 @@ class Evaluator {
 
 // ---------------------------------------------------------------------------
 
-#include "tinshift_impl.hpp"
+#include "R-libproj/tinshift_impl.hpp"
 
 #endif // TINSHIFT_HPP

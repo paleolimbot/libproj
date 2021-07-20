@@ -1,8 +1,8 @@
 #define PJ_LIB__
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(crast, "Craster Parabolic (Putnins P4)") "\n\tPCyl, Sph";
 

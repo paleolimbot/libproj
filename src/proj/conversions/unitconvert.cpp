@@ -70,7 +70,7 @@ Last update: 2017-05-16
 #include <string.h>
 #include <time.h>
 
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 PROJ_HEAD(unitconvert, "Unit conversion");

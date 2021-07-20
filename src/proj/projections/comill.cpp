@@ -10,8 +10,8 @@ Port to PROJ.4 by Bojan Savric, 4 April 2016
 
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(comill, "Compact Miller") "\n\tCyl, Sph";
 

@@ -2,8 +2,8 @@
 
 #include <stddef.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 static const struct PJ_ELLPS
 pj_ellps[] = {

@@ -54,16 +54,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "proj/common.hpp"
-#include "proj/coordinateoperation.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
 
 #include <string>
 #include <vector>
 
-#include "proj.h"
+#include "R-libproj/proj.h"
 
 #ifdef PROJ_RENAME_SYMBOLS
-#include "proj_symbol_rename.h"
+#include "R-libproj/proj_symbol_rename.h"
 #endif
 
 #define STATIC_ASSERT(COND) ((void)sizeof(char[(COND) ? 1 : -1]))

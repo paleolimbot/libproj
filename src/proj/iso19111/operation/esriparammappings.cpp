@@ -33,10 +33,10 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "esriparammappings.hpp"
-#include "proj_constants.h"
+#include "R-libproj/iso19111/operation/esriparammappings.hpp"
+#include "R-libproj/proj_constants.h"
 
-#include "proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
 
 NS_PROJ_START
 

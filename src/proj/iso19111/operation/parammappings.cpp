@@ -26,11 +26,11 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#include "parammappings.hpp"
-#include "oputils.hpp"
-#include "proj_constants.h"
+#include "R-libproj/iso19111/operation/parammappings.hpp"
+#include "R-libproj/iso19111/operation/oputils.hpp"
+#include "R-libproj/proj_constants.h"
 
-#include "proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
 
 NS_PROJ_START
 

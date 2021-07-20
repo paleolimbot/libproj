@@ -29,10 +29,10 @@
 #ifndef ESRIPARAMMAPPINGS_HPP
 #define ESRIPARAMMAPPINGS_HPP
 
-#include "proj/coordinateoperation.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/util.hpp"
 
-#include "esriparammappings.hpp"
+
 #include <vector>
 
 // ---------------------------------------------------------------------------
