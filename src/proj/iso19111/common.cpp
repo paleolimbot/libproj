@@ -30,18 +30,18 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/common.hpp"
+#include "proj/io.hpp"
+#include "proj/metadata.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/internal.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj/internal/internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_json_streaming_writer.hpp"
 
 #include <cmath> // M_PI
 #include <cstdlib>
@@ -112,6 +112,16 @@ UnitOfMeasure &UnitOfMeasure::operator=(const UnitOfMeasure &other) {
     if (this != &other) {
         *d = *(other.d);
     }
+    return *this;
+}
+//! @endcond
+
+// ---------------------------------------------------------------------------
+
+//! @cond Doxygen_Suppress
+UnitOfMeasure &UnitOfMeasure::operator=(UnitOfMeasure &&other) {
+    BaseObject::operator=(std::move(static_cast<BaseObject &&>(other)));
+    *d = std::move(*(other.d));
     return *this;
 }
 //! @endcond

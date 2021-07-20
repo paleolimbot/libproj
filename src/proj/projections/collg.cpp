@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(collg, "Collignon") "\n\tPCyl, Sph";
 #define FXC 1.12837916709551257390
@@ -32,7 +32,7 @@ static PJ_LP collg_s_inverse (PJ_XY xy, PJ *P) {           /* Spheroidal, invers
     if (fabs(lp.phi) < 1.)
         lp.phi = asin(lp.phi);
     else if (fabs(lp.phi) > ONEEPS) {
-        proj_errno_set(P, PJD_ERR_TOLERANCE_CONDITION);
+        proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
         return lp;
     } else {
         lp.phi = lp.phi < 0. ? -M_HALFPI : M_HALFPI;

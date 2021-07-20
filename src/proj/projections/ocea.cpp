@@ -3,8 +3,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(ocea, "Oblique Cylindrical Equal Area") "\n\tCyl, Sph"
     "lonc= alpha= or\n\tlat_1= lat_2= lon_1= lon_2=";
@@ -52,9 +52,9 @@ static PJ_LP ocea_s_inverse (PJ_XY xy, PJ *P) {           /* Spheroidal, inverse
 PJ *PROJECTION(ocea) {
     double phi_1, phi_2, lam_1, lam_2, lonz, alpha;
 
-    struct pj_opaque *Q = static_cast<struct pj_opaque*>(pj_calloc (1, sizeof (struct pj_opaque)));
+    struct pj_opaque *Q = static_cast<struct pj_opaque*>(calloc (1, sizeof (struct pj_opaque)));
     if (nullptr==Q)
-        return pj_default_destructor (P, ENOMEM);
+        return pj_default_destructor (P, PROJ_ERR_OTHER /*ENOMEM*/);
     P->opaque = Q;
 
     Q->rok = 1. / P->k0;

@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(mbtfpp, "McBride-Thomas Flat-Polar Parabolic") "\n\tCyl, Sph";
 
@@ -32,7 +32,7 @@ static PJ_LP mbtfpp_s_inverse (PJ_XY xy, PJ *P) {           /* Spheroidal, inver
     lp.phi = xy.y / FYC;
     if (fabs(lp.phi) >= 1.) {
         if (fabs(lp.phi) > ONEEPS) {
-            proj_errno_set(P, PJD_ERR_TOLERANCE_CONDITION);
+            proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
             return lp;
         } else {
             lp.phi = (lp.phi < 0.) ? -M_HALFPI : M_HALFPI;
@@ -45,7 +45,7 @@ static PJ_LP mbtfpp_s_inverse (PJ_XY xy, PJ *P) {           /* Spheroidal, inver
     lp.phi = sin(lp.phi) / CSy;
     if (fabs(lp.phi) >= 1.) {
         if (fabs(lp.phi) > ONEEPS) {
-            proj_errno_set(P, PJD_ERR_TOLERANCE_CONDITION);
+            proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
             return lp;
         } else {
             lp.phi = (lp.phi < 0.) ? -M_HALFPI : M_HALFPI;

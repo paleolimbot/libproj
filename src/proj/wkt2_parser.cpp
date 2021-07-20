@@ -29,15 +29,15 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/internal/internal.hpp"
+#include "proj/internal/internal.hpp"
 
 #include <algorithm>
 #include <cctype>
 #include <cstring>
 #include <string>
 
-#include "R-libproj/wkt2_parser.h"
-#include "R-libproj/wkt_parser.hpp"
+#include "wkt2_parser.h"
+#include "wkt_parser.hpp"
 
 using namespace NS_PROJ::internal;
 

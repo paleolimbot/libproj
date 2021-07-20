@@ -30,17 +30,17 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/coordinatesystem.hpp"
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/coordinatesystem.hpp"
+#include "proj/common.hpp"
+#include "proj/io.hpp"
+#include "proj/metadata.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/coordinatesystem_internal.hpp"
-#include "R-libproj/proj/internal/internal.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj/internal/coordinatesystem_internal.hpp"
+#include "proj/internal/internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_json_streaming_writer.hpp"
 
 #include <map>
 #include <memory>
@@ -1108,7 +1108,7 @@ CartesianCSNNPtr CartesianCS::createSouthPoleEastingNorthNorthingNorth(
 
 /** \brief Instantiate a CartesianCS with the three geocentric axes.
  *
- * @param unit Liinear unit of the axes.
+ * @param unit Linear unit of the axes.
  * @return a new CartesianCS.
  */
 CartesianCSNNPtr

@@ -43,8 +43,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 /* The six cube faces. */
 namespace { // anonymous namespace
@@ -377,9 +377,9 @@ static PJ_LP qsc_e_inverse (PJ_XY xy, PJ *P) {          /* Ellipsoidal, inverse 
 
 
 PJ *PROJECTION(qsc) {
-    struct pj_opaque *Q = static_cast<struct pj_opaque*>(pj_calloc (1, sizeof (struct pj_opaque)));
+    struct pj_opaque *Q = static_cast<struct pj_opaque*>(calloc (1, sizeof (struct pj_opaque)));
     if (nullptr==Q)
-        return pj_default_destructor (P, ENOMEM);
+        return pj_default_destructor (P, PROJ_ERR_OTHER /*ENOMEM*/);
     P->opaque = Q;
 
     P->inv = qsc_e_inverse;

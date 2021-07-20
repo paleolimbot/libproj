@@ -31,10 +31,10 @@
 #include <vector>
 #include <string>
 
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_json_streaming_writer.hpp"
 
 #include <string.h>
-#include "R-libproj/sqlite3.h"
+#include <sqlite3.h>
 #include <stdarg.h>
 #include <cmath>
 #define CPLAssert(x) do {} while(0)

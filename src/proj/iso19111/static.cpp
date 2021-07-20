@@ -30,17 +30,18 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/coordinatesystem.hpp"
-#include "R-libproj/proj/crs.hpp"
-#include "R-libproj/proj/datum.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/common.hpp"
+#include "proj/coordinateoperation.hpp"
+#include "proj/coordinatesystem.hpp"
+#include "proj/crs.hpp"
+#include "proj/datum.hpp"
+#include "proj/io.hpp"
+#include "proj/metadata.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/coordinatesystem_internal.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "operation/oputils.hpp"
+#include "proj/internal/coordinatesystem_internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
 #include <map>
 #include <set>
@@ -316,6 +317,17 @@ const UnitOfMeasure UnitOfMeasure::METRE("metre", 1.0,
                                          UnitOfMeasure::Type::LINEAR,
                                          Identifier::EPSG, "9001");
 
+/** \brief Foot, unit of measure of type LINEAR. */
+const UnitOfMeasure UnitOfMeasure::FOOT("foot", 0.3048,
+                                        UnitOfMeasure::Type::LINEAR,
+                                        Identifier::EPSG, "9002");
+
+/** \brief US survey foot, unit of measure of type LINEAR. */
+const UnitOfMeasure UnitOfMeasure::US_FOOT("US survey foot",
+                                           0.304800609601219241184,
+                                           UnitOfMeasure::Type::LINEAR,
+                                           Identifier::EPSG, "9003");
+
 /** \brief Degree, unit of measure of type ANGULAR. */
 const UnitOfMeasure UnitOfMeasure::DEGREE("degree", M_PI / 180.,
                                           UnitOfMeasure::Type::ANGULAR,
@@ -362,7 +374,7 @@ const UnitOfMeasure UnitOfMeasure::ARC_SECOND_PER_YEAR(
     "arc-seconds per year", M_PI / 180. / 3600. / 31556925.445,
     UnitOfMeasure::Type::ANGULAR, Identifier::EPSG, "1043");
 
-/** \brief Part-sper-million per year, unit of measure of type SCALE. */
+/** \brief Parts-per-million per year, unit of measure of type SCALE. */
 const UnitOfMeasure UnitOfMeasure::PPM_PER_YEAR("parts per million per year",
                                                 1e-6 / 31556925.445,
                                                 UnitOfMeasure::Type::SCALE,
@@ -652,6 +664,17 @@ const GeographicCRSNNPtr
  */
 const std::string
     operation::CoordinateOperation::OPERATION_VERSION_KEY("operationVersion");
+
+//! @cond Doxygen_Suppress
+const common::Measure operation::nullMeasure{};
+
+const std::string operation::INVERSE_OF = "Inverse of ";
+
+const std::string operation::AXIS_ORDER_CHANGE_2D_NAME =
+    "axis order change (2D)";
+const std::string operation::AXIS_ORDER_CHANGE_3D_NAME =
+    "axis order change (geographic3D horizontal)";
+//! @endcond
 
 // ---------------------------------------------------------------------------
 

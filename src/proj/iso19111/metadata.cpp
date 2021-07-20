@@ -30,15 +30,15 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/metadata.hpp"
+#include "proj/common.hpp"
+#include "proj/io.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/internal.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj/internal/internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_json_streaming_writer.hpp"
 
 #include <algorithm>
 #include <memory>
@@ -1124,7 +1124,7 @@ void Identifier::_exportToJSON(JSONFormatter *formatter) const {
 //! @cond Doxygen_Suppress
 static bool isIgnoredChar(char ch) {
     return ch == ' ' || ch == '_' || ch == '-' || ch == '/' || ch == '(' ||
-           ch == ')' || ch == '.' || ch == '&';
+           ch == ')' || ch == '.' || ch == '&' || ch == ',';
 }
 //! @endcond
 

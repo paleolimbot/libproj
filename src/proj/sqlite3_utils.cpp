@@ -1,4 +1,3 @@
-#include "R-libproj/cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  SQLite3 related utilities
@@ -27,14 +26,14 @@
  *****************************************************************************/
 
 #ifdef __GNUC__
-// #pragma GCC diagnostic push
-// #pragma GCC diagnostic ignored "-Weffc++"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 #endif
 
-#include "R-libproj/sqlite3_utils.hpp"
+#include "sqlite3_utils.hpp"
 
 #ifdef __GNUC__
-// #pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
 #endif
 
 #include <cstdlib>
@@ -104,7 +103,7 @@ static int VFSCustomOpen(sqlite3_vfs *vfs, const char *name, sqlite3_file *file,
         if (realVFS->fakeSync) {
             // Disable xSync because it can be significantly slow and we don't
             // need
-            // that level of data integrity garanty for the cache.
+            // that level of data integrity guarantee for the cache.
             methods->xSync = VSFNoOpLockUnlockSync;
         }
         if (realVFS->fakeLock) {
@@ -136,7 +135,7 @@ static int VFSCustomAccess(sqlite3_vfs *vfs, const char *zName, int flags,
 
 // SQLite3 logging infrastructure
 static void projSqlite3LogCallback(void *, int iErrCode, const char *zMsg) {
-    cpp_compat_printerrf("SQLite3 message: (code %d) %s\n", iErrCode, zMsg);
+    fprintf(stderr, "SQLite3 message: (code %d) %s\n", iErrCode, zMsg);
 }
 
 std::unique_ptr<SQLite3VFS> SQLite3VFS::create(bool fakeSync, bool fakeLock,

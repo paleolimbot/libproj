@@ -33,7 +33,7 @@
 extern "C" {
 #endif
 
-#include "R-libproj/proj.h"
+#include "proj.h"
 
 /**
  * \file proj_experimental.h

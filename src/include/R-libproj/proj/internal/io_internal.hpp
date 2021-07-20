@@ -36,8 +36,8 @@
 #include <string>
 #include <vector>
 
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/io.hpp"
+#include "proj/util.hpp"
 
 //! @cond Doxygen_Suppress
 
@@ -173,7 +173,6 @@ struct projCppContext {
     PJ_CONTEXT *ctx_ = nullptr;
     std::string dbPath_{};
     std::vector<std::string> auxDbPaths_{};
-    bool autoCloseDb_ = false;
 
     projCppContext(const projCppContext &) = delete;
     projCppContext &operator=(const projCppContext &) = delete;
@@ -201,15 +200,9 @@ struct projCppContext {
         return auxDbPaths_;
     }
 
-    void setAutoCloseDb(bool autoClose) { autoCloseDb_ = autoClose; }
-    inline bool getAutoCloseDb() const { return autoCloseDb_; }
-
-    // cppcheck-suppress functionStatic
-    void closeDb();
-
-    void autoCloseDbIfNeeded();
-
     NS_PROJ::io::DatabaseContextNNPtr getDatabaseContext();
+
+    void closeDb() { databaseContext_ = nullptr; }
 };
 
 //! @endcond

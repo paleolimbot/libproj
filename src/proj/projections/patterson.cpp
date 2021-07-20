@@ -42,8 +42,8 @@
 
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(patterson, "Patterson Cylindrical") "\n\tCyl";
 
@@ -100,7 +100,7 @@ static PJ_LP patterson_s_inverse (PJ_XY xy, PJ *P) {           /* Spheroidal, in
         }
     }
     if( i == 0 )
-        pj_ctx_set_errno( P->ctx, PJD_ERR_NON_CONVERGENT );
+        proj_context_errno_set( P->ctx, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN );
     lp.phi = yc;
 
     /* longitude */

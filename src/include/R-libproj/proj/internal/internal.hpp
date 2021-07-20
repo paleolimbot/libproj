@@ -46,7 +46,7 @@
 #endif
 #include <vector>
 
-#include "R-libproj/proj/util.hpp"
+#include "proj/util.hpp"
 
 //! @cond Doxygen_Suppress
 

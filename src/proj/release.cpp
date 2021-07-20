@@ -1,7 +1,7 @@
 /* <<< Release Notice for library >>> */
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
@@ -11,7 +11,7 @@ char const pj_release[] =
     STR(PROJ_VERSION_MAJOR)"."
     STR(PROJ_VERSION_MINOR)"."
     STR(PROJ_VERSION_PATCH)", "
-    "November 1st, 2020";
+    "July 1st, 2021";
 
 const char *pj_get_release() {
     return pj_release;

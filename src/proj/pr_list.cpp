@@ -1,11 +1,11 @@
 /* print projection's list of parameters */
-#include "R-libproj/cpp-compat.h"
+
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 #define LINE_LEN 72
 	static int
@@ -13,38 +13,38 @@ pr_list(PJ *P, int not_used) {
 	paralist *t;
 	int l, n = 1, flag = 0;
 
-	cpp_compat_putchar('#');
+	(void)putchar('#');
 	for (t = P->params; t; t = t->next)
 		if ((!not_used && t->used) || (not_used && !t->used)) {
 			l = (int)strlen(t->param) + 1;
 			if (n + l > LINE_LEN) {
-				cpp_compat_puts("\n#");
+				(void)fputs("\n#", stdout);
 				n = 2;
 			}
-			cpp_compat_putchar(' ');
+			(void)putchar(' ');
 			if (*(t->param) != '+')
-				cpp_compat_putchar('+');
-			cpp_compat_puts(t->param);
+				(void)putchar('+');
+			(void)fputs(t->param, stdout);
 			n += l;
 		} else
 			flag = 1;
 	if (n > 1)
-		cpp_compat_putchar('\n');
+		(void)putchar('\n');
 	return flag;
 }
 	void /* print link list of projection parameters */
 pj_pr_list(PJ *P) {
 	char const *s;
 
-	cpp_compat_putchar('#');
+	(void)putchar('#');
 	for (s = P->descr; *s ; ++s) {
-		cpp_compat_putchar(*s);
+		(void)putchar(*s);
 		if (*s == '\n')
-			cpp_compat_putchar('#');
+			(void)putchar('#');
 	}
-	cpp_compat_putchar('\n');
+	(void)putchar('\n');
 	if (pr_list(P, 0)) {
-		cpp_compat_puts("#--- following specified but NOT used\n");
+		(void)fputs("#--- following specified but NOT used\n", stdout);
 		(void)pr_list(P, 1);
 	}
 }
@@ -66,7 +66,7 @@ char *pj_get_def( PJ *P, int options )
     size_t def_max = 10;
     (void) options;
 
-    definition = (char *) pj_malloc(def_max);
+    definition = (char *) malloc(def_max);
     if (!definition)
         return nullptr;
     definition[0] = '\0';
@@ -84,14 +84,14 @@ char *pj_get_def( PJ *P, int options )
             char *def2;
 
             def_max = def_max * 2 + l + 5;
-            def2 = (char *) pj_malloc(def_max);
+            def2 = (char *) malloc(def_max);
             if (def2) {
                 strcpy( def2, definition );
-                pj_dalloc( definition );
+                free( definition );
                 definition = def2;
             }
             else {
-                pj_dalloc( definition );
+                free( definition );
                 return nullptr;
             }
         }

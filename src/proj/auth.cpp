@@ -3,8 +3,8 @@
 #include <math.h>
 #include <stddef.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 # define P00 .33333333333333333333 /*   1 /     3 */
 # define P01 .17222222222222222222 /*  31 /   180 */
@@ -18,7 +18,7 @@
 pj_authset(double es) {
 	double t, *APA;
 
-	if ((APA = (double *)pj_malloc(APA_SIZE * sizeof(double))) != nullptr) {
+	if ((APA = (double *)malloc(APA_SIZE * sizeof(double))) != nullptr) {
 		APA[0] = es * P00;
 		t = es * es;
 		APA[0] += t * P01;

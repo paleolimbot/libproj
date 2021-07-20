@@ -3,8 +3,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(kav5,    "Kavraisky V")         "\n\tPCyl, Sph";
 PROJ_HEAD(qua_aut, "Quartic Authalic")    "\n\tPCyl, Sph";
@@ -70,9 +70,9 @@ static PJ *setup(PJ *P, double p, double q, int mode) {
 
 
 PJ *PROJECTION(fouc) {
-    struct pj_opaque *Q = static_cast<struct pj_opaque*>(pj_calloc (1, sizeof (struct pj_opaque)));
+    struct pj_opaque *Q = static_cast<struct pj_opaque*>(calloc (1, sizeof (struct pj_opaque)));
     if (nullptr==Q)
-        return pj_default_destructor(P, ENOMEM);
+        return pj_default_destructor(P, PROJ_ERR_OTHER /*ENOMEM*/);
     P->opaque = Q;
     return setup(P, 2., 2., 1);
 }
@@ -80,9 +80,9 @@ PJ *PROJECTION(fouc) {
 
 
 PJ *PROJECTION(kav5) {
-    struct pj_opaque *Q = static_cast<struct pj_opaque*>(pj_calloc (1, sizeof (struct pj_opaque)));
+    struct pj_opaque *Q = static_cast<struct pj_opaque*>(calloc (1, sizeof (struct pj_opaque)));
     if (nullptr==Q)
-        return pj_default_destructor(P, ENOMEM);
+        return pj_default_destructor(P, PROJ_ERR_OTHER /*ENOMEM*/);
     P->opaque = Q;
 
     return setup(P, 1.50488, 1.35439, 0);
@@ -91,9 +91,9 @@ PJ *PROJECTION(kav5) {
 
 
 PJ *PROJECTION(qua_aut) {
-    struct pj_opaque *Q = static_cast<struct pj_opaque*>(pj_calloc (1, sizeof (struct pj_opaque)));
+    struct pj_opaque *Q = static_cast<struct pj_opaque*>(calloc (1, sizeof (struct pj_opaque)));
     if (nullptr==Q)
-        return pj_default_destructor(P, ENOMEM);
+        return pj_default_destructor(P, PROJ_ERR_OTHER /*ENOMEM*/);
     P->opaque = Q;
     return setup(P, 2., 2., 0);
 }
@@ -101,9 +101,9 @@ PJ *PROJECTION(qua_aut) {
 
 
 PJ *PROJECTION(mbt_s) {
-    struct pj_opaque *Q = static_cast<struct pj_opaque*>(pj_calloc (1, sizeof (struct pj_opaque)));
+    struct pj_opaque *Q = static_cast<struct pj_opaque*>(calloc (1, sizeof (struct pj_opaque)));
     if (nullptr==Q)
-        return pj_default_destructor(P, ENOMEM);
+        return pj_default_destructor(P, PROJ_ERR_OTHER /*ENOMEM*/);
     P->opaque = Q;
     return setup(P, 1.48875, 1.36509, 0);
 }

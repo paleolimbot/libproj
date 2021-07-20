@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(cc, "Central Cylindrical") "\n\tCyl, Sph";
 #define EPS10 1.e-10
@@ -12,7 +12,7 @@ PROJ_HEAD(cc, "Central Cylindrical") "\n\tCyl, Sph";
 static PJ_XY cc_s_forward (PJ_LP lp, PJ *P) {           /* Spheroidal, forward */
     PJ_XY xy = {0.0,0.0};
     if (fabs (fabs(lp.phi) - M_HALFPI) <= EPS10) {
-        proj_errno_set(P, PJD_ERR_TOLERANCE_CONDITION);
+        proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
         return xy;
     }
     xy.x = lp.lam;
