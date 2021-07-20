@@ -32,7 +32,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 SystemRequirements: libcurl (optional), libtiff + libjpeg + zlib (optional)
 Suggests: 
-    testthat,
-    Rcpp
+    testthat
 URL: https://paleolimbot.github.io/libproj/, https://github.com/paleolimbot/libproj
 BugReports: https://github.com/paleolimbot/libproj/issues
