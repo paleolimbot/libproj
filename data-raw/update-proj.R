@@ -83,8 +83,9 @@ file.copy(file.path(sqlite_dir, "sqlite3.c"), "src/sqlite3.c")
 
 # I've used a custom include path to keep anything from confusing some system
 # PROJ with internal PROJ. This shouldn't be a problem because of the ordering
-# of the -I flags but is easy to do automaatically and was the source of at least
-# one hard-to-track-down bug in the past.
+# of the -I flags but is easy to do automatically and was the source of at least
+# one hard-to-track-down bug in the past. This doesn't cover everything
+# but is a good start.
 replace_includes <- . %>%
   str_replace_all('#include\\s+"', '#include "R-libproj/') %>%
   str_replace_all(fixed("<sqlite3.h>"), '"R-libproj/sqlite3.h"')
