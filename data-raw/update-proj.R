@@ -69,7 +69,7 @@ stopifnot(
 # also need SQLite3 sources (this is how RSQLite does it)
 # check latest release here: https://www.sqlite.org/download.html
 curl::curl_download(
-  "https://www.sqlite.org/2020/sqlite-amalgamation-3340000.zip",
+  "https://www.sqlite.org/2021/sqlite-amalgamation-3360000.zip",
   "data-raw/sqlite-source.zip"
 )
 unzip("data-raw/sqlite-source.zip", exdir = "data-raw")
@@ -77,8 +77,8 @@ sqlite_dir <- list.files("data-raw", "^sqlite-amalgamation", include.dirs = TRUE
 stopifnot(dir.exists(sqlite_dir), length(sqlite_dir) == 1)
 
 # only two files!
-unlink(c("src/proj_include/sqlite3.h", "src/sqlite3.c"))
-file.copy(file.path(sqlite_dir, "sqlite3.h"), "src/proj_include/sqlite3.h")
+unlink(c("src/include/R-libproj/sqlite3.h", "src/sqlite3.c"))
+file.copy(file.path(sqlite_dir, "sqlite3.h"), "src/include/R-libproj/sqlite3.h")
 file.copy(file.path(sqlite_dir, "sqlite3.c"), "src/sqlite3.c")
 
 # ---- final steps ----
