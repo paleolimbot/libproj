@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  Functionality related to network access and caching
@@ -393,7 +394,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        fprintf(stderr, "Rows in chunk_data not referenced by chunks.\n");
+        cpp_compat_printerrf("Rows in chunk_data not referenced by chunks.\n");
         return false;
     }
 
@@ -403,7 +404,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        fprintf(stderr, "Rows in chunks not referenced by linked_chunks.\n");
+        cpp_compat_printerrf("Rows in chunks not referenced by linked_chunks.\n");
         return false;
     }
 
@@ -414,7 +415,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        fprintf(stderr, "url values in chunks not referenced by properties.\n");
+        cpp_compat_printerrf("url values in chunks not referenced by properties.\n");
         return false;
     }
 
@@ -423,13 +424,13 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_ROW) {
-        fprintf(stderr, "linked_chunks_head_tail empty.\n");
+        cpp_compat_printerrf("linked_chunks_head_tail empty.\n");
         return false;
     }
     const auto head = stmt->getInt64();
     const auto tail = stmt->getInt64();
     if (stmt->execute() != SQLITE_DONE) {
-        fprintf(stderr, "linked_chunks_head_tail has more than one row.\n");
+        cpp_compat_printerrf("linked_chunks_head_tail has more than one row.\n");
         return false;
     }
 
@@ -438,7 +439,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_ROW) {
-        fprintf(stderr, "linked_chunks_head_tail empty.\n");
+        cpp_compat_printerrf("linked_chunks_head_tail empty.\n");
         return false;
     }
     const auto count_linked_chunks = stmt->getInt64();
@@ -455,33 +456,33 @@ bool DiskChunkCache::checkConsistency() {
             stmt->reset();
             stmt->bindInt64(id);
             if (stmt->execute() != SQLITE_ROW) {
-                fprintf(stderr, "cannot find linked_chunks.id = %d.\n",
+                cpp_compat_printerrf("cannot find linked_chunks.id = %d.\n",
                         static_cast<int>(id));
                 return false;
             }
             auto next = stmt->getInt64();
             if (next == 0) {
                 if (id != tail) {
-                    fprintf(stderr,
+                    cpp_compat_printerrf(
                             "last item when following next is not tail.\n");
                     return false;
                 }
                 break;
             }
             if (visitedIds.find(next) != visitedIds.end()) {
-                fprintf(stderr, "found cycle on linked_chunks.next = %d.\n",
+                cpp_compat_printerrf("found cycle on linked_chunks.next = %d.\n",
                         static_cast<int>(next));
                 return false;
             }
             id = next;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            fprintf(stderr,
+            cpp_compat_printerrf(
                     "ghost items in linked_chunks when following next.\n");
             return false;
         }
     } else if (count_linked_chunks) {
-        fprintf(stderr, "linked_chunks_head_tail.head = NULL but linked_chunks "
+        cpp_compat_printerrf("linked_chunks_head_tail.head = NULL but linked_chunks "
                         "not empty.\n");
         return false;
     }
@@ -498,38 +499,38 @@ bool DiskChunkCache::checkConsistency() {
             stmt->reset();
             stmt->bindInt64(id);
             if (stmt->execute() != SQLITE_ROW) {
-                fprintf(stderr, "cannot find linked_chunks.id = %d.\n",
+                cpp_compat_printerrf("cannot find linked_chunks.id = %d.\n",
                         static_cast<int>(id));
                 return false;
             }
             auto prev = stmt->getInt64();
             if (prev == 0) {
                 if (id != head) {
-                    fprintf(stderr,
+                    cpp_compat_printerrf(
                             "last item when following prev is not head.\n");
                     return false;
                 }
                 break;
             }
             if (visitedIds.find(prev) != visitedIds.end()) {
-                fprintf(stderr, "found cycle on linked_chunks.prev = %d.\n",
+                cpp_compat_printerrf("found cycle on linked_chunks.prev = %d.\n",
                         static_cast<int>(prev));
                 return false;
             }
             id = prev;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            fprintf(stderr,
+            cpp_compat_printerrf(
                     "ghost items in linked_chunks when following prev.\n");
             return false;
         }
     } else if (count_linked_chunks) {
-        fprintf(stderr, "linked_chunks_head_tail.tail = NULL but linked_chunks "
+        cpp_compat_printerrf("linked_chunks_head_tail.tail = NULL but linked_chunks "
                         "not empty.\n");
         return false;
     }
 
-    fprintf(stderr, "check ok\n");
+    cpp_compat_printerrf("check ok\n");
     return true;
 }
 

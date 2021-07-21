@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /* put parameters in linked list and retrieve */
 
 #include <ctype.h>
@@ -163,8 +164,8 @@ PROJVALUE pj_param (PJ_CONTEXT *ctx, paralist *pl, const char *opt) {
     type = *opt++;
 
     if (nullptr==strchr ("tbirds", type)) {
-        fprintf(stderr, "invalid request to pj_param, fatal\n");
-        exit(1);
+        cpp_compat_printerrf("invalid request to pj_param, fatal\n");
+        cpp_compat_exit(1);
     }
 
     pl = pj_param_exists (pl, opt);

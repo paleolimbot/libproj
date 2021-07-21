@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /*
  * This code was entirely written by Nathan Wagner
  * and is in the public domain.
@@ -288,7 +289,7 @@ static struct isea_pt isea_triangle_xy(int triangle)
         break;
     default:
         /* should be impossible */
-        exit(EXIT_FAILURE);
+        cpp_compat_exit(EXIT_FAILURE);
     };
     c.x *= Rprime;
     c.y *= Rprime;
@@ -478,10 +479,10 @@ static int isea_snyder_forward(struct isea_geo * ll, struct isea_pt * out)
      * any triangle
      */
 
-    fprintf(stderr, "impossible transform: %f %f is not on any triangle\n",
+    cpp_compat_printerrf("impossible transform: %f %f is not on any triangle\n",
             PJ_TODEG(ll->lon), PJ_TODEG(ll->lat));
 
-    exit(EXIT_FAILURE);
+    cpp_compat_exit(EXIT_FAILURE);
 
     /* not reached */
     return 0;       /* suppresses a warning */
