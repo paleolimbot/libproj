@@ -23,12 +23,6 @@ void cpp_compat_abort() {
   throw std::runtime_error("abort() called");
 }
 
-void cpp_compat_assert(int value) {
-  if (!value) {
-    throw std::runtime_error("assert() failed");
-  }
-}
-
 void cpp_compat_exit(int code) {
   throw std::runtime_error("exit() called");
 }
