@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -728,9 +729,9 @@ struct SortFunction {
     bool compare(const CoordinateOperationNNPtr &a,
                  const CoordinateOperationNNPtr &b) const {
         auto iterA = map.find(a.get());
-        assert(iterA != map.end());
+        cpp_compat_assert(iterA != map.end());
         auto iterB = map.find(b.get());
-        assert(iterB != map.end());
+        cpp_compat_assert(iterB != map.end());
 
         // CAUTION: the order of the comparisons is extremely important
         // to get the intended result.
@@ -1257,7 +1258,7 @@ struct FilterResults {
                                   << res[j]->nameStr() << ")" << std::endl;
 #endif
                         if (assertIfIssue) {
-                            assert(false);
+                            cpp_compat_assert(false);
                         }
                     }
                 }
@@ -1440,8 +1441,8 @@ applyInverse(const std::vector<CoordinateOperationNNPtr> &list) {
     for (auto &op : res) {
 #ifdef DEBUG
         auto opNew = op->inverse();
-        assert(opNew->targetCRS()->isEquivalentTo(op->sourceCRS().get()));
-        assert(opNew->sourceCRS()->isEquivalentTo(op->targetCRS().get()));
+        cpp_compat_assert(opNew->targetCRS()->isEquivalentTo(op->sourceCRS().get()));
+        cpp_compat_assert(opNew->sourceCRS()->isEquivalentTo(op->targetCRS().get()));
         op = opNew;
 #else
         op = op->inverse();
@@ -1459,7 +1460,7 @@ void CoordinateOperationFactory::Private::buildCRSIds(
     const crs::CRSNNPtr &crs, Private::Context &context,
     std::list<std::pair<std::string, std::string>> &ids) {
     const auto &authFactory = context.context->getAuthorityFactory();
-    assert(authFactory);
+    cpp_compat_assert(authFactory);
     for (const auto &id : crs->identifiers()) {
         const auto &authName = *(id->codeSpace());
         const auto &code = id->code();
@@ -1566,7 +1567,7 @@ CoordinateOperationFactory::Private::findOpsInRegistryDirect(
     const crs::CRSNNPtr &sourceCRS, const crs::CRSNNPtr &targetCRS,
     Private::Context &context, bool &resNonEmptyBeforeFiltering) {
     const auto &authFactory = context.context->getAuthorityFactory();
-    assert(authFactory);
+    cpp_compat_assert(authFactory);
 
 #ifdef TRACE_CREATE_OPERATIONS
     ENTER_BLOCK("findOpsInRegistryDirect(" + objectAsStr(sourceCRS.get()) +
@@ -1646,7 +1647,7 @@ CoordinateOperationFactory::Private::findOpsInRegistryDirectTo(
 #endif
 
     const auto &authFactory = context.context->getAuthorityFactory();
-    assert(authFactory);
+    cpp_compat_assert(authFactory);
 
     std::list<std::pair<std::string, std::string>> ids;
     buildCRSIds(targetCRS, context, ids);
@@ -1714,7 +1715,7 @@ CoordinateOperationFactory::Private::findsOpsInRegistryWithIntermediate(
 #endif
 
     const auto &authFactory = context.context->getAuthorityFactory();
-    assert(authFactory);
+    cpp_compat_assert(authFactory);
 
     std::list<std::pair<std::string, std::string>> sourceIds;
     std::list<std::pair<std::string, std::string>> targetIds;
@@ -1731,7 +1732,7 @@ CoordinateOperationFactory::Private::findsOpsInRegistryWithIntermediate(
 
             const auto authorities(getCandidateAuthorities(
                 authFactory, srcAuthName, targetAuthName));
-            assert(!authorities.empty());
+            cpp_compat_assert(!authorities.empty());
 
             const auto tmpAuthFactory = io::AuthorityFactory::create(
                 authFactory->databaseContext(),
@@ -2196,7 +2197,7 @@ static CoordinateOperationNNPtr createHorizVerticalPROJBased(
     bool checkExtent) {
 
     auto geogDst = util::nn_dynamic_pointer_cast<crs::GeographicCRS>(targetCRS);
-    assert(geogDst);
+    cpp_compat_assert(geogDst);
 
     auto exportable = util::nn_make_shared<MyPROJStringExportableHorizVertical>(
         horizTransform, verticalTransform, geogDst);
@@ -2335,8 +2336,8 @@ CoordinateOperationFactory::Private::createOperationsGeogToGeog(
     const crs::CRSNNPtr &targetCRS, Private::Context &context,
     const crs::GeographicCRS *geogSrc, const crs::GeographicCRS *geogDst) {
 
-    assert(sourceCRS.get() == geogSrc);
-    assert(targetCRS.get() == geogDst);
+    cpp_compat_assert(sourceCRS.get() == geogSrc);
+    cpp_compat_assert(targetCRS.get() == geogDst);
 
     const auto &src_pm = geogSrc->primeMeridian()->longitude();
     const auto &dst_pm = geogDst->primeMeridian()->longitude();
@@ -2536,7 +2537,7 @@ findCandidateGeodCRSForDatum(const io::AuthorityFactoryPtr &authFactory,
                              const crs::GeodeticCRS *crs,
                              const datum::GeodeticReferenceFrame *datum) {
     std::vector<crs::CRSNNPtr> candidates;
-    assert(datum);
+    cpp_compat_assert(datum);
     const auto &ids = datum->identifiers();
     const auto &datumName = datum->nameStr();
     if (!ids.empty()) {
@@ -2661,7 +2662,7 @@ void CoordinateOperationFactory::Private::createOperationsWithDatumPivot(
 
         explicit CreateOperationsWithDatumPivotAntiRecursion(Context &contextIn)
             : context(contextIn) {
-            assert(!context.inCreateOperationsWithDatumPivotAntiRecursion);
+            cpp_compat_assert(!context.inCreateOperationsWithDatumPivotAntiRecursion);
             context.inCreateOperationsWithDatumPivotAntiRecursion = true;
         }
 
@@ -2696,7 +2697,7 @@ void CoordinateOperationFactory::Private::createOperationsWithDatumPivot(
                 ? candidateDstGeod->promoteTo3D(std::string(), dbContext)
                 : candidateDstGeod,
             targetCRS, context);
-        assert(!opsThird.empty());
+        cpp_compat_assert(!opsThird.empty());
         const CoordinateOperationNNPtr &opThird(opsThird[0]);
 
         for (auto &opSecond : opsSecond) {
@@ -2839,7 +2840,7 @@ void CoordinateOperationFactory::Private::createOperationsWithDatumPivot(
 #endif
                     const auto opsFirst = createOperations(
                         sourceCRS, sourceSrcGeodModified, context);
-                    assert(!opsFirst.empty());
+                    cpp_compat_assert(!opsFirst.empty());
                     const bool isNullFirst =
                         isNullTransformation(opsFirst[0]->nameStr());
                     createTransformations(candidateSrcGeod, candidateDstGeod,
@@ -2867,7 +2868,7 @@ void CoordinateOperationFactory::Private::createOperationsWithDatumPivot(
                 : candidateSrcGeod);
         const auto opsFirst =
             createOperations(sourceCRS, sourceSrcGeodModified, context);
-        assert(!opsFirst.empty());
+        cpp_compat_assert(!opsFirst.empty());
         const bool isNullFirst = isNullTransformation(opsFirst[0]->nameStr());
 
         for (const auto &candidateDstGeod : candidatesDstGeod) {
@@ -3324,7 +3325,7 @@ static std::vector<crs::CRSNNPtr>
 findCandidateVertCRSForDatum(const io::AuthorityFactoryPtr &authFactory,
                              const datum::VerticalReferenceFrame *datum) {
     std::vector<crs::CRSNNPtr> candidates;
-    assert(datum);
+    cpp_compat_assert(datum);
     const auto &ids = datum->identifiers();
     const auto &datumName = datum->nameStr();
     if (!ids.empty()) {
@@ -3376,7 +3377,7 @@ CoordinateOperationFactory::Private::createOperationsGeogToVertFromGeoid(
         // of the source of the operation
         const auto geogCRS =
             dynamic_cast<const crs::GeographicCRS *>(sourceCRS.get());
-        assert(geogCRS);
+        cpp_compat_assert(geogCRS);
         const auto &srcAxisList = geogCRS->coordinateSystem()->axisList();
         CoordinateOperationPtr opPtr;
         const auto opSourceCRSGeog =
@@ -3398,7 +3399,7 @@ CoordinateOperationFactory::Private::createOperationsGeogToVertFromGeoid(
                 context,
                 dynamic_cast<const crs::GeographicCRS *>(tmpCRSWithSrcZ.get()),
                 opSourceCRSGeog);
-            assert(opsUnitConvert.size() == 1);
+            cpp_compat_assert(opsUnitConvert.size() == 1);
             opPtr = opsUnitConvert.front().as_nullable();
         }
 
@@ -3409,7 +3410,7 @@ CoordinateOperationFactory::Private::createOperationsGeogToVertFromGeoid(
 
         const auto targetOp =
             dynamic_cast<const crs::VerticalCRS *>(op->targetCRS().get());
-        assert(targetOp);
+        cpp_compat_assert(targetOp);
         if (targetOp->_isEquivalentTo(
                 vertDst, util::IComparable::Criterion::EQUIVALENT)) {
             auto ret = ConcatenatedOperation::createComputeMetadata(
@@ -3419,7 +3420,7 @@ CoordinateOperationFactory::Private::createOperationsGeogToVertFromGeoid(
         std::vector<CoordinateOperationNNPtr> tmp;
         createOperationsVertToVert(NN_NO_CHECK(op->targetCRS()), targetCRS,
                                    context, targetOp, vertDst, tmp);
-        assert(!tmp.empty());
+        cpp_compat_assert(!tmp.empty());
         ops.emplace_back(tmp.front());
         auto ret = ConcatenatedOperation::createComputeMetadata(
             ops, disallowEmptyIntersection);
@@ -3555,7 +3556,7 @@ std::vector<CoordinateOperationNNPtr> CoordinateOperationFactory::Private::
         Context &context;
 
         explicit AntiRecursionGuard(Context &contextIn) : context(contextIn) {
-            assert(!context.inCreateOperationsGeogToVertWithIntermediateVert);
+            cpp_compat_assert(!context.inCreateOperationsGeogToVertWithIntermediateVert);
             context.inCreateOperationsGeogToVertWithIntermediateVert = true;
         }
 
@@ -3617,7 +3618,7 @@ std::vector<CoordinateOperationNNPtr> CoordinateOperationFactory::Private::
         Context &context;
 
         explicit AntiRecursionGuard(Context &contextIn) : context(contextIn) {
-            assert(!context.inCreateOperationsGeogToVertWithAlternativeGeog);
+            cpp_compat_assert(!context.inCreateOperationsGeogToVertWithAlternativeGeog);
             context.inCreateOperationsGeogToVertWithAlternativeGeog = true;
         }
 
@@ -3632,7 +3633,7 @@ std::vector<CoordinateOperationNNPtr> CoordinateOperationFactory::Private::
 
     const auto geogCRS =
         dynamic_cast<const crs::GeographicCRS *>(sourceCRS.get());
-    assert(geogCRS);
+    cpp_compat_assert(geogCRS);
     const auto &srcAxisList = geogCRS->coordinateSystem()->axisList();
     for (const auto &op : ops) {
         const auto tmpCRS =
@@ -3656,7 +3657,7 @@ std::vector<CoordinateOperationNNPtr> CoordinateOperationFactory::Private::
                     dynamic_cast<const crs::GeographicCRS *>(
                         tmpCRSWithSrcZ.get()),
                     tmpCRS);
-                assert(opsUnitConvert.size() == 1);
+                cpp_compat_assert(opsUnitConvert.size() == 1);
                 auto concat = ConcatenatedOperation::createComputeMetadata(
                     {opsUnitConvert.front(), op}, disallowEmptyIntersection);
                 res.emplace_back(concat);
@@ -3824,7 +3825,7 @@ void CoordinateOperationFactory::Private::createOperationsGeodToGeod(
             std::vector<CoordinateOperationNNPtr> resTmp;
             createOperationsGeodToGeod(targetCRS, sourceCRS, context, geodDst,
                                        geodSrc, resTmp);
-            assert(resTmp.size() == 1);
+            cpp_compat_assert(resTmp.size() == 1);
             res.emplace_back(resTmp.front()->inverse());
         }
 
@@ -3948,7 +3949,7 @@ void CoordinateOperationFactory::Private::createOperationsBoundToGeog(
             auto opsIntermediate = createOperations(
                 NN_NO_CHECK(geogCRSOfBaseOfBoundSrc),
                 boundSrc->transformation()->sourceCRS(), context);
-            assert(!opsIntermediate.empty());
+            cpp_compat_assert(!opsIntermediate.empty());
             opIntermediate = opsIntermediate.front();
         }
 
@@ -4006,7 +4007,7 @@ void CoordinateOperationFactory::Private::createOperationsBoundToGeog(
                 auto opsIntermediate = createOperations(
                     NN_NO_CHECK(geogCRSOfBaseOfBoundSrc),
                     boundSrc->transformation()->sourceCRS(), context);
-                assert(!opsIntermediate.empty());
+                cpp_compat_assert(!opsIntermediate.empty());
                 opIntermediate = opsIntermediate.front();
             }
             for (const auto &opFirst : opsFirst) {
@@ -4666,7 +4667,7 @@ void CoordinateOperationFactory::Private::createOperationsCompoundToGeog(
                     crs::CompoundCRS::create(properties, intermComponents);
                 auto opsFirst =
                     createOperations(sourceCRS, intermCompound, context);
-                assert(!opsFirst.empty());
+                cpp_compat_assert(!opsFirst.empty());
                 auto opsLast =
                     createOperations(intermCompound, targetCRS, context);
                 for (const auto &opLast : opsLast) {
@@ -4701,7 +4702,7 @@ void CoordinateOperationFactory::Private::createOperationsCompoundToGeog(
 
                 explicit SetSkipHorizontalTransform(Context &contextIn)
                     : context(contextIn) {
-                    assert(!context.skipHorizontalTransformation);
+                    cpp_compat_assert(!context.skipHorizontalTransformation);
                     context.skipHorizontalTransformation = true;
                 }
 

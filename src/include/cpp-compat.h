@@ -16,6 +16,7 @@ void cpp_compat_puts(const char* str);
 void cpp_compat_printf(const char* fmt, ...);
 void cpp_compat_printerrf(const char* fmt, ...);
 void cpp_compat_abort();
+void cpp_compat_assert(int value);
 void cpp_compat_exit(int code);
 long int cpp_compat_random();
 void cpp_compat_srandom(int seed);
