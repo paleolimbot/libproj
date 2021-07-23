@@ -5,7 +5,7 @@ library(tidyverse)
 
 # download PROJ
 # check latest release here: https://proj.org/download.html
-source_url <- "https://download.osgeo.org/proj/proj-7.2.0.tar.gz"
+source_url <- "https://download.osgeo.org/proj/proj-8.1.0.tar.gz"
 curl::curl_download(source_url, "data-raw/proj-source.tar.gz")
 untar("data-raw/proj-source.tar.gz", exdir = "data-raw")
 
@@ -17,16 +17,12 @@ stopifnot(dir.exists(proj_dir), length(proj_dir) == 1)
 withr::with_dir(proj_dir, system("./configure"))
 withr::with_dir(proj_dir, system("make"))
 
-# save files in the proj directory that we actually need
-temp_compat_h <- tempfile()
-file.copy("src/proj_include/cpp-compat.h", temp_compat_h)
-
 # remove current inst/proj
-unlink("src/proj", recursive = TRUE)
+unlink("inst/proj", recursive = TRUE)
 dir.create("inst/proj")
 
 # copy the resource files into inst/
-resource_files <- c("proj.db", "GL27", "ITRF2000", "ITRF2008", "ITRF2014", "nad27", "nad83")
+resource_files <- c("proj.db", "GL27", "ITRF2000", "ITRF2008", "ITRF2014", "nad27", "nad83", "world", "other.extra", "CH", "nad.lst")
 file.copy(
   file.path(proj_dir, "data", resource_files),
   file.path("inst/proj", resource_files)
@@ -39,7 +35,7 @@ headers <- tibble(
     list.files(file.path(proj_dir, "include"), "\\.(h|hpp)$", full.names = TRUE, recursive = TRUE),
     list.files(file.path(proj_dir, "src"), "\\.(h|hpp)$", full.names = TRUE, recursive = TRUE)
   ),
-  final_path = str_replace(path, ".*?(include|src)/", "src/proj_include/")
+  final_path = str_replace(path, ".*?(include|src)/", "src/include/R-libproj/")
 )
 
 # put sources in src/proj
@@ -51,7 +47,7 @@ source_files <- tibble(
 
 # clean source dir
 unlink("src/proj/", recursive = TRUE)
-unlink("src/proj_include/", recursive = TRUE)
+unlink("src/include/R-libproj", recursive = TRUE)
 
 # create destination dirs
 dest_dirs <- c(
@@ -68,15 +64,12 @@ stopifnot(
   file.copy(source_files$path, source_files$final_path)
 )
 
-# add back the files we actually needed
-file.copy("src/proj_include/cpp-compat.h", temp_compat_h)
-
 # ---- SQLite ----
 
 # also need SQLite3 sources (this is how RSQLite does it)
 # check latest release here: https://www.sqlite.org/download.html
 curl::curl_download(
-  "https://www.sqlite.org/2020/sqlite-amalgamation-3340000.zip",
+  "https://www.sqlite.org/2021/sqlite-amalgamation-3360000.zip",
   "data-raw/sqlite-source.zip"
 )
 unzip("data-raw/sqlite-source.zip", exdir = "data-raw")
@@ -84,9 +77,27 @@ sqlite_dir <- list.files("data-raw", "^sqlite-amalgamation", include.dirs = TRUE
 stopifnot(dir.exists(sqlite_dir), length(sqlite_dir) == 1)
 
 # only two files!
-unlink(c("src/proj_include/sqlite3.h", "src/sqlite3.c"))
-file.copy(file.path(sqlite_dir, "sqlite3.h"), "src/proj_include/sqlite3.h")
+unlink(c("src/include/R-libproj/sqlite3.h", "src/sqlite3.c"))
+file.copy(file.path(sqlite_dir, "sqlite3.h"), "src/include/R-libproj/sqlite3.h")
 file.copy(file.path(sqlite_dir, "sqlite3.c"), "src/sqlite3.c")
+
+# I've used a custom include path to keep anything from confusing some system
+# PROJ with internal PROJ. This shouldn't be a problem because of the ordering
+# of the -I flags but is easy to do automatically and was the source of at least
+# one hard-to-track-down bug in the past. This doesn't cover everything
+# but is a good start.
+replace_includes <- . %>%
+  str_replace_all('#include\\s+"', '#include "R-libproj/') %>%
+  str_replace_all(fixed("<sqlite3.h>"), '"R-libproj/sqlite3.h"')
+
+replace_includes_file <- function(f) {
+  content <- read_file(f)
+  new_content <- replace_includes(content)
+  write_file(new_content, f)
+}
+
+c(headers$final_path, source_files$final_path) %>%
+  walk(replace_includes_file)
 
 # ---- final steps ----
 
@@ -99,6 +110,8 @@ objects <- list.files("src", pattern = "\\.(cpp|c)$", recursive = TRUE, full.nam
 clipr::write_clip(objects)
 
 #' Manual modifications
+#'
+#' Modifications for PROJ 8.1.0: https://github.com/paleolimbot/libproj/compare/2fefbcd...86d1246
 #'
 #' * Replace stderr/stdout with cpp_compat_printf()/cpp_compat_printerrf()/
 #'   cpp_compat_puts()

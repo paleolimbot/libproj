@@ -1,4 +1,4 @@
-#include "R-libproj/cpp-compat.h"
+#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  SQLite3 related utilities
@@ -104,7 +104,7 @@ static int VFSCustomOpen(sqlite3_vfs *vfs, const char *name, sqlite3_file *file,
         if (realVFS->fakeSync) {
             // Disable xSync because it can be significantly slow and we don't
             // need
-            // that level of data integrity garanty for the cache.
+            // that level of data integrity guarantee for the cache.
             methods->xSync = VSFNoOpLockUnlockSync;
         }
         if (realVFS->fakeLock) {

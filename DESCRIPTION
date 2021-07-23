@@ -1,6 +1,6 @@
 Package: libproj
 Title: Generic Coordinate Transformation Library ('PROJ') C API
-Version: 7.2.0-1
+Version: 8.1.0-0.9000
 Authors@R: 
     c(
       person(given = "Dewey",
@@ -32,7 +32,6 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 SystemRequirements: libcurl (optional), libtiff + libjpeg + zlib (optional)
 Suggests: 
-    testthat,
-    Rcpp
+    testthat
 URL: https://paleolimbot.github.io/libproj/, https://github.com/paleolimbot/libproj
 BugReports: https://github.com/paleolimbot/libproj/issues

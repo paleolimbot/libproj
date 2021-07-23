@@ -33,6 +33,7 @@
 #endif
 
 #include <stdlib.h>
+#include <exception.h>
 
 #include "R-libproj/proj/internal/internal.hpp"
 #include "R-libproj/proj/internal/tracing.hpp"
@@ -93,9 +94,8 @@ Singleton::Singleton() {
     const char *traceFile = getenv("PROJ_TRACE_FILE");
     if (traceFile)
         f = fopen(traceFile, "wb");
-    if (!f) {
-        throw std::runtime_error("environment variable PROJ_TRACE_FILE is required when debugging from R");
-    }
+    if (!f)
+        throw std::runtime_error("Can't log to stderr from within R")
 
     const char *minDelay = getenv("PROJ_TRACE_MIN_DELAY");
     if (minDelay) {
@@ -126,6 +126,8 @@ Singleton::~Singleton() {
     --callLevel;
     logTraceRaw("</log>");
     fflush(f);
+
+    fclose(f);
 }
 
 // ---------------------------------------------------------------------------

@@ -33,9 +33,9 @@
 #include <string>
 #include <vector>
 
-#include "io.hpp"
-#include "metadata.hpp"
-#include "util.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/metadata.hpp"
+#include "R-libproj/proj/util.hpp"
 
 NS_PROJ_START
 
@@ -86,6 +86,7 @@ class PROJ_GCC_DLL UnitOfMeasure : public util::BaseObject {
     PROJ_DLL UnitOfMeasure(const UnitOfMeasure &other);
     PROJ_DLL ~UnitOfMeasure() override;
     PROJ_DLL UnitOfMeasure &operator=(const UnitOfMeasure &other);
+    PROJ_DLL UnitOfMeasure &operator=(UnitOfMeasure &&other);
     PROJ_INTERNAL static UnitOfMeasureNNPtr create(const UnitOfMeasure &other);
     //! @endcond
 
@@ -124,6 +125,8 @@ class PROJ_GCC_DLL UnitOfMeasure : public util::BaseObject {
 
     PROJ_DLL static const UnitOfMeasure METRE;
     PROJ_DLL static const UnitOfMeasure METRE_PER_YEAR;
+    PROJ_DLL static const UnitOfMeasure FOOT;
+    PROJ_DLL static const UnitOfMeasure US_FOOT;
 
     PROJ_DLL static const UnitOfMeasure RADIAN;
     PROJ_DLL static const UnitOfMeasure MICRORADIAN;
@@ -291,7 +294,7 @@ using IdentifiedObjectPtr = std::shared_ptr<IdentifiedObject>;
 /** Non-null shared pointer of IdentifiedObject. */
 using IdentifiedObjectNNPtr = util::nn<IdentifiedObjectPtr>;
 
-/** \brief Abstract class representating a CRS-related object that has an
+/** \brief Abstract class representing a CRS-related object that has an
  * identification.
  *
  * \remark Implements IdentifiedObject from \ref ISO_19111_2019
@@ -344,8 +347,9 @@ class PROJ_GCC_DLL IdentifiedObject : public util::BaseObject,
         const io::DatabaseContextPtr &dbContext = nullptr) const override;
 
     PROJ_INTERNAL bool _isEquivalentTo(
-        const IdentifiedObject *other, util::IComparable::Criterion criterion =
-                                           util::IComparable::Criterion::STRICT,
+        const IdentifiedObject *other,
+        util::IComparable::Criterion criterion =
+            util::IComparable::Criterion::STRICT,
         const io::DatabaseContextPtr &dbContext = nullptr) PROJ_PURE_DECL;
     //! @endcond
 

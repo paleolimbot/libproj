@@ -1,9 +1,9 @@
 
 library(tidyverse)
 
-capi_header <- read_file("src/proj_include/proj.h")
+capi_header <- read_file("src/include/R-libproj/proj.h")
 
-version_defs_chr <- read_lines(capi_header)[173:175]
+version_defs_chr <- read_lines(capi_header)[173:188]
 
 function_defs_chr <- capi_header %>%
   str_extract_all(
@@ -18,15 +18,19 @@ function_defs_chr <- capi_header %>%
 
 
 # too complex for a regex...also includes enums
+
 typedefs_chr <- c(
-  read_lines(capi_header)[182:345],
-  read_lines(capi_header)[357:361],
-  read_lines(capi_header)[366:367],
-  read_lines(capi_header)[379:429],
-  read_lines(capi_header)[436:499],
-  read_lines(capi_header)[565:571],
-  read_lines(capi_header)[665:1000],
-  read_lines(capi_header)[1157]
+  read_lines(capi_header)[194:357], # major typedefs to PJ_CONTEXT
+  read_lines(capi_header)[369:373], # default context
+  read_lines(capi_header)[379:379], # typedef proj_file_finder
+  read_lines(capi_header)[389:441], # PROJ_FILE_API
+  read_lines(capi_header)[448:511], # PROJ_NETWORK_HANDLE to read range type
+  read_lines(capi_header)[577:583], # PJ_DIRECTION
+  read_lines(capi_header)[627:651], # error codes
+  read_lines(capi_header)[705:1045], # Data types for ISO19111 C API
+  read_lines(capi_header)[1068], # PJ_OBJ_LIST
+  read_lines(capi_header)[1239], # PJ_INSERT_SESSION
+  read_lines(capi_header)[1266] # PJ_OPERATION_FACTORY_CONTEXT
 )
 
 function_defs <- tibble(
@@ -133,7 +137,7 @@ libproj_init_c <- with(
 // generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-#include "R-libproj.h"
+#include "R-libproj/proj.h"
 
 // defined in libproj-config.c
 SEXP libproj_c_version();
@@ -161,6 +165,36 @@ void R_init_libproj(DllInfo *dll) {{
 '
   )
 )
+
+# check generated code for valid C
+tmp <- tempfile()
+dir.create(tmp)
+write_file(libproj_h, file.path(tmp, "libproj.h"))
+write_file(libproj_c, file.path(tmp, "libproj.c"))
+write_file(libproj_init_c, file.path(tmp, "libproj-init.c"))
+
+processx::run(
+  "clang",
+  args = c(
+    "-I", "/Library/Frameworks/R.framework/Resources/include",
+    "-c",
+    "-o", file.path(tmp, "libproj.o"),
+    file.path(tmp, "libproj.c")
+  )
+)
+
+processx::run(
+  "clang",
+  args = c(
+    "-I", "/Library/Frameworks/R.framework/Resources/include",
+    "-I", "src/include",
+    "-c",
+    "-o", file.path(tmp, "libproj-init.o"),
+    file.path(tmp, "libproj-init.c")
+  )
+)
+
+unlink(tmp, recursive = TRUE)
 
 # write auto-generated files!
 write_file(libproj_h, "inst/include/libproj.h")

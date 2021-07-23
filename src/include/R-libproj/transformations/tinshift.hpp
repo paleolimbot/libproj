@@ -31,7 +31,7 @@
 #ifdef PROJ_COMPILATION
 #include "R-libproj/proj/internal/include_nlohmann_json.hpp"
 #else
-#include "nlohmann/json.hpp"
+#include "R-libproj/proj/internal/vendor/nlohmann/json.hpp"
 #endif
 
 #include <algorithm>
@@ -49,7 +49,7 @@
 #define TINSHIFT_NAMESPACE TINShift
 #endif
 
-#include "tinshift_exceptions.hpp"
+#include "R-libproj/transformations/tinshift_exceptions.hpp"
 
 namespace TINSHIFT_NAMESPACE {
 
@@ -252,6 +252,6 @@ class Evaluator {
 
 // ---------------------------------------------------------------------------
 
-#include "tinshift_impl.hpp"
+#include "R-libproj/transformations/tinshift_impl.hpp"
 
 #endif // TINSHIFT_HPP

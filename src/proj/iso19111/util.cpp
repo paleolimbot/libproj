@@ -1,4 +1,4 @@
-#include "R-libproj/cpp-compat.h"
+#include "cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -78,6 +78,17 @@ BaseObject::~BaseObject() = default;
 // ---------------------------------------------------------------------------
 
 BaseObjectNNPtr::~BaseObjectNNPtr() = default;
+//! @endcond
+
+// ---------------------------------------------------------------------------
+
+//! @cond Doxygen_Suppress
+// cppcheck-suppress operatorEqVarError
+BaseObject &BaseObject::operator=(BaseObject &&) {
+    d->self_.reset();
+    return *this;
+}
+
 //! @endcond
 
 // ---------------------------------------------------------------------------
