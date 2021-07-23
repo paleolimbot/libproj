@@ -104,31 +104,6 @@ jobs:
           fs::dir_copy("check/libproj.Rcheck/libproj", file.path(.libPaths()[1], "libproj"))
         shell: Rscript {0}
 
-      - name: Checkout hypertidy/PROJ
-        uses: actions/checkout@v2
-        with:
-          repository: hypertidy/PROJ
-          ref: libproj
-          path: 'PROJpkg'
-
-      - name: Install system dependencies (PROJ)
-        if: runner.os == 'Linux'
-        run: sudo apt-get install libicu-dev
-
-      - name: Check hypertidy/PROJ
-        env:
-          _R_CHECK_CRAN_INCOMING_: false
-          _R_CHECK_FORCE_SUGGESTS_: false
-        run: |
-          remotes::install_cran(c("knitr", "rmarkdown", "spelling"))
-          rcmdcheck::rcmdcheck("PROJpkg", args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check_PROJ")
-        shell: Rscript {0}
-
-      - name: Show testthat output (hypertidy/PROJ)
-        if: always()
-        run: find check_PROJ -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
-
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
