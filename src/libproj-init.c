@@ -1,7 +1,7 @@
 // generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-#include "libproj.h"
+#include "R-libproj/proj.h"
 
 // defined in libproj-config.c
 SEXP libproj_c_version();

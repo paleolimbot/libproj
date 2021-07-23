@@ -23,13 +23,13 @@ typedefs_chr <- c(
   read_lines(capi_header)[194:357], # major typedefs to PJ_CONTEXT
   read_lines(capi_header)[369:373], # default context
   read_lines(capi_header)[379:379], # typedef proj_file_finder
-  read_lines(capi_header)[390:441], # PROJ_FILE_API
+  read_lines(capi_header)[389:441], # PROJ_FILE_API
   read_lines(capi_header)[448:511], # PROJ_NETWORK_HANDLE to read range type
   read_lines(capi_header)[577:583], # PJ_DIRECTION
   read_lines(capi_header)[627:651], # error codes
   read_lines(capi_header)[705:1045], # Data types for ISO19111 C API
-  read_lines(capi_header)[1168], # PJ_OBJ_LIST
-  read_lines(capi_header)[1242], # PJ_INSERT_SESSION
+  read_lines(capi_header)[1068], # PJ_OBJ_LIST
+  read_lines(capi_header)[1239], # PJ_INSERT_SESSION
   read_lines(capi_header)[1266] # PJ_OPERATION_FACTORY_CONTEXT
 )
 
@@ -137,7 +137,7 @@ libproj_init_c <- with(
 // generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-#include "libproj.h"
+#include "R-libproj/proj.h"
 
 // defined in libproj-config.c
 SEXP libproj_c_version();
@@ -165,6 +165,36 @@ void R_init_libproj(DllInfo *dll) {{
 '
   )
 )
+
+# check generated code for valid C
+tmp <- tempfile()
+dir.create(tmp)
+write_file(libproj_h, file.path(tmp, "libproj.h"))
+write_file(libproj_c, file.path(tmp, "libproj.c"))
+write_file(libproj_init_c, file.path(tmp, "libproj-init.c"))
+
+processx::run(
+  "clang",
+  args = c(
+    "-I", "/Library/Frameworks/R.framework/Resources/include",
+    "-c",
+    "-o", file.path(tmp, "libproj.o"),
+    file.path(tmp, "libproj.c")
+  )
+)
+
+processx::run(
+  "clang",
+  args = c(
+    "-I", "/Library/Frameworks/R.framework/Resources/include",
+    "-I", "src/include",
+    "-c",
+    "-o", file.path(tmp, "libproj-init.o"),
+    file.path(tmp, "libproj-init.c")
+  )
+)
+
+unlink(tmp, recursive = TRUE)
 
 # write auto-generated files!
 write_file(libproj_h, "inst/include/libproj.h")

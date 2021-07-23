@@ -202,6 +202,7 @@ typedef struct pj_ctx PJ_CONTEXT;
 #define PJ_DEFAULT_CTX 0
 #endif
 typedef const char* (*proj_file_finder) (PJ_CONTEXT *ctx, const char*, void* user_data);
+/** Opaque structure for PROJ for a file handle. Implementations might cast it to their
  * structure/class of choice. */
 typedef struct PROJ_FILE_HANDLE PROJ_FILE_HANDLE;
 
@@ -691,8 +692,8 @@ typedef struct
     char* name;
 
 } PROJ_CELESTIAL_BODY_INFO;
-                                     const char* const *options);
-PJ_INSERT_SESSION PROJ_DLL *proj_insert_object_session_create(PJ_CONTEXT *ctx);
+typedef struct PJ_OBJ_LIST PJ_OBJ_LIST;
+typedef struct PJ_INSERT_SESSION PJ_INSERT_SESSION;
 typedef struct PJ_OPERATION_FACTORY_CONTEXT PJ_OPERATION_FACTORY_CONTEXT;
 
 extern PJ_CONTEXT* (*proj_context_create)(void);
