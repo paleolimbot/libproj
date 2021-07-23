@@ -1,12 +1,12 @@
 // generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
-#include "R-libproj/proj.h"
+#include "R-libproj.h"
 
 // defined in libproj-config.c
 SEXP libproj_c_version();
 SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPath,
-                                         SEXP networkEndpoint, SEXP networkEnabled);
+                                        SEXP networkEndpoint, SEXP networkEnabled);
 SEXP libproj_c_has_libtiff();
 SEXP libproj_c_has_libcurl();
 
@@ -76,6 +76,7 @@ void R_init_libproj(DllInfo *dll) {
     R_RegisterCCallable("libproj", "proj_errno_reset", (DL_FUNC) &proj_errno_reset);
     R_RegisterCCallable("libproj", "proj_errno_restore", (DL_FUNC) &proj_errno_restore);
     R_RegisterCCallable("libproj", "proj_errno_string", (DL_FUNC) &proj_errno_string);
+    R_RegisterCCallable("libproj", "proj_context_errno_string", (DL_FUNC) &proj_context_errno_string);
     R_RegisterCCallable("libproj", "proj_log_level", (DL_FUNC) &proj_log_level);
     R_RegisterCCallable("libproj", "proj_log_func", (DL_FUNC) &proj_log_func);
     R_RegisterCCallable("libproj", "proj_factors", (DL_FUNC) &proj_factors);
@@ -96,6 +97,7 @@ void R_init_libproj(DllInfo *dll) {
     R_RegisterCCallable("libproj", "proj_context_set_database_path", (DL_FUNC) &proj_context_set_database_path);
     R_RegisterCCallable("libproj", "proj_context_get_database_path", (DL_FUNC) &proj_context_get_database_path);
     R_RegisterCCallable("libproj", "proj_context_get_database_metadata", (DL_FUNC) &proj_context_get_database_metadata);
+    R_RegisterCCallable("libproj", "proj_context_get_database_structure", (DL_FUNC) &proj_context_get_database_structure);
     R_RegisterCCallable("libproj", "proj_context_guess_wkt_dialect", (DL_FUNC) &proj_context_guess_wkt_dialect);
     R_RegisterCCallable("libproj", "proj_create_from_wkt", (DL_FUNC) &proj_create_from_wkt);
     R_RegisterCCallable("libproj", "proj_create_from_database", (DL_FUNC) &proj_create_from_database);
@@ -121,15 +123,23 @@ void R_init_libproj(DllInfo *dll) {
     R_RegisterCCallable("libproj", "proj_get_source_crs", (DL_FUNC) &proj_get_source_crs);
     R_RegisterCCallable("libproj", "proj_get_target_crs", (DL_FUNC) &proj_get_target_crs);
     R_RegisterCCallable("libproj", "proj_identify", (DL_FUNC) &proj_identify);
+    R_RegisterCCallable("libproj", "proj_get_geoid_models_from_database", (DL_FUNC) &proj_get_geoid_models_from_database);
     R_RegisterCCallable("libproj", "proj_int_list_destroy", (DL_FUNC) &proj_int_list_destroy);
     R_RegisterCCallable("libproj", "proj_get_authorities_from_database", (DL_FUNC) &proj_get_authorities_from_database);
     R_RegisterCCallable("libproj", "proj_get_codes_from_database", (DL_FUNC) &proj_get_codes_from_database);
+    R_RegisterCCallable("libproj", "proj_get_celestial_body_list_from_database", (DL_FUNC) &proj_get_celestial_body_list_from_database);
+    R_RegisterCCallable("libproj", "proj_celestial_body_list_destroy", (DL_FUNC) &proj_celestial_body_list_destroy);
     R_RegisterCCallable("libproj", "proj_get_crs_list_parameters_create", (DL_FUNC) &proj_get_crs_list_parameters_create);
     R_RegisterCCallable("libproj", "proj_get_crs_list_parameters_destroy", (DL_FUNC) &proj_get_crs_list_parameters_destroy);
     R_RegisterCCallable("libproj", "proj_get_crs_info_list_from_database", (DL_FUNC) &proj_get_crs_info_list_from_database);
     R_RegisterCCallable("libproj", "proj_crs_info_list_destroy", (DL_FUNC) &proj_crs_info_list_destroy);
     R_RegisterCCallable("libproj", "proj_get_units_from_database", (DL_FUNC) &proj_get_units_from_database);
     R_RegisterCCallable("libproj", "proj_unit_list_destroy", (DL_FUNC) &proj_unit_list_destroy);
+    R_RegisterCCallable("libproj", "proj_insert_object_session_create", (DL_FUNC) &proj_insert_object_session_create);
+    R_RegisterCCallable("libproj", "proj_insert_object_session_destroy", (DL_FUNC) &proj_insert_object_session_destroy);
+    R_RegisterCCallable("libproj", "proj_get_insert_statements", (DL_FUNC) &proj_get_insert_statements);
+    R_RegisterCCallable("libproj", "proj_suggests_code_for", (DL_FUNC) &proj_suggests_code_for);
+    R_RegisterCCallable("libproj", "proj_string_destroy", (DL_FUNC) &proj_string_destroy);
     R_RegisterCCallable("libproj", "proj_create_operation_factory_context", (DL_FUNC) &proj_create_operation_factory_context);
     R_RegisterCCallable("libproj", "proj_operation_factory_context_destroy", (DL_FUNC) &proj_operation_factory_context_destroy);
     R_RegisterCCallable("libproj", "proj_operation_factory_context_set_desired_accuracy", (DL_FUNC) &proj_operation_factory_context_set_desired_accuracy);
@@ -147,6 +157,7 @@ void R_init_libproj(DllInfo *dll) {
     R_RegisterCCallable("libproj", "proj_list_get", (DL_FUNC) &proj_list_get);
     R_RegisterCCallable("libproj", "proj_list_destroy", (DL_FUNC) &proj_list_destroy);
     R_RegisterCCallable("libproj", "proj_get_suggested_operation", (DL_FUNC) &proj_get_suggested_operation);
+    R_RegisterCCallable("libproj", "proj_crs_is_derived", (DL_FUNC) &proj_crs_is_derived);
     R_RegisterCCallable("libproj", "proj_crs_get_geodetic_crs", (DL_FUNC) &proj_crs_get_geodetic_crs);
     R_RegisterCCallable("libproj", "proj_crs_get_horizontal_datum", (DL_FUNC) &proj_crs_get_horizontal_datum);
     R_RegisterCCallable("libproj", "proj_crs_get_sub_crs", (DL_FUNC) &proj_crs_get_sub_crs);
@@ -163,6 +174,7 @@ void R_init_libproj(DllInfo *dll) {
     R_RegisterCCallable("libproj", "proj_cs_get_axis_info", (DL_FUNC) &proj_cs_get_axis_info);
     R_RegisterCCallable("libproj", "proj_get_ellipsoid", (DL_FUNC) &proj_get_ellipsoid);
     R_RegisterCCallable("libproj", "proj_ellipsoid_get_parameters", (DL_FUNC) &proj_ellipsoid_get_parameters);
+    R_RegisterCCallable("libproj", "proj_get_celestial_body_name", (DL_FUNC) &proj_get_celestial_body_name);
     R_RegisterCCallable("libproj", "proj_get_prime_meridian", (DL_FUNC) &proj_get_prime_meridian);
     R_RegisterCCallable("libproj", "proj_prime_meridian_get_parameters", (DL_FUNC) &proj_prime_meridian_get_parameters);
     R_RegisterCCallable("libproj", "proj_crs_get_coordoperation", (DL_FUNC) &proj_crs_get_coordoperation);
