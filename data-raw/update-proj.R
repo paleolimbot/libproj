@@ -111,6 +111,8 @@ clipr::write_clip(objects)
 
 #' Manual modifications
 #'
+#' Modifications for PROJ 8.1.0: https://github.com/paleolimbot/libproj/compare/2fefbcd...86d1246
+#'
 #' * Replace stderr/stdout with cpp_compat_printf()/cpp_compat_printerrf()/
 #'   cpp_compat_puts()
 #'   grep "stdout|stderr" $(find src -name "*.cpp")
