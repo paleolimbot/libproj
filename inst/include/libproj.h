@@ -32,6 +32,15 @@ extern "C" {
     (PROJ_VERSION_NUMBER >= PROJ_COMPUTE_VERSION(maj,min,patch))
 
 
+// how integer versions are calculated
+#define LIBPROJ_VERSION_INT(major, minor, patch) (patch + minor * 100 + major * 10000)
+
+// the runtime version of libproj
+extern int (*libproj_version_int)();
+
+// the compile-time version of libPROJ
+#define LIBPROJ_VERSION_COMPILE_INT LIBPROJ_VERSION_INT(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH)
+
 union PJ_COORD;
 typedef union PJ_COORD PJ_COORD;
 

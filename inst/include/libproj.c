@@ -173,6 +173,7 @@ int (*proj_concatoperation_get_step_count)(PJ_CONTEXT*, const PJ*) = NULL;
 PJ* (*proj_concatoperation_get_step)(PJ_CONTEXT*, const PJ*, int) = NULL;
 
 void libproj_init_api() {
+  libproj_version_int = (int (*)()) R_GetCCallable("libproj", "libproj_version_int");
   proj_context_create = (PJ_CONTEXT* (*)(void)) R_GetCCallable("libproj", "proj_context_create");
   proj_context_destroy = (PJ_CONTEXT* (*)(PJ_CONTEXT*)) R_GetCCallable("libproj", "proj_context_destroy");
   proj_context_clone = (PJ_CONTEXT* (*)(PJ_CONTEXT*)) R_GetCCallable("libproj", "proj_context_clone");

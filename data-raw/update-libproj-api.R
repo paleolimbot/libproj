@@ -94,6 +94,15 @@ extern "C" {{
 
 { paste0(version_defs_chr, collapse = "\n") }
 
+// how integer versions are calculated
+#define LIBPROJ_VERSION_INT(major, minor, patch) (patch + minor * 100 + major * 10000)
+
+// the runtime version of libproj
+extern int (*libproj_version_int)();
+
+// the compile-time version of libPROJ
+#define LIBPROJ_VERSION_COMPILE_INT LIBPROJ_VERSION_INT(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH)
+
 { paste0(typedefs_chr, collapse = "\n") }
 
 { paste0(header_def, collapse = "\n") }
@@ -123,6 +132,7 @@ libproj_c <- with(
 { paste0(impl_def, collapse = "\n") }
 
 void libproj_init_api() {{
+  libproj_version_int = (int (*)()) R_GetCCallable("libproj", "libproj_version_int");
 { paste0(init_def, collapse = "\n") }
 }}
 
@@ -138,6 +148,16 @@ libproj_init_c <- with(
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include "R-libproj/proj.h"
+
+// we need a utility function to get the runtime version in a form that is
+// queryable from the inst/include/libproj.c, because future PROJ versions
+// will add to the C API. The ability to do a runtime check around R_GetCCallable()
+// lets newer packages link to multiple versions of libproj.
+#define LIBPROJ_VERSION_INT(major, minor, patch) (patch + minor * 100 + major * 10000)
+
+int libproj_version_int() {{
+  return LIBPROJ_VERSION_INT(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
+}}
 
 // defined in libproj-config.c
 SEXP libproj_c_version();

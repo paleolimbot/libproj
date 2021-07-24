@@ -3,6 +3,16 @@
 #include <R_ext/Rdynload.h>
 #include "R-libproj/proj.h"
 
+// we need a utility function to get the runtime version in a form that is
+// queryable from the inst/include/libproj.c, because future PROJ versions
+// will add to the C API. The ability to do a runtime check around R_GetCCallable()
+// lets newer packages link to multiple versions of libproj.
+#define LIBPROJ_VERSION_INT(major, minor, patch) (patch + minor * 100 + major * 10000)
+
+int libproj_version_int() {
+  return LIBPROJ_VERSION_INT(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
+}
+
 // defined in libproj-config.c
 SEXP libproj_c_version();
 SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPath,
