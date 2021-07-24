@@ -30,13 +30,18 @@ test_that("libproj can be linked to", {
   shlib_file <- libproj_source('
   #include "libproj.h"
   #include "libproj.c"
-  SEXP libproj_test_version() {
+  SEXP libproj_version_run() {
     libproj_init_api();
-    return Rf_mkString("true");
+    return Rf_ScalarInteger(libproj_version_int());
+  }
+  SEXP libproj_version_build() {
+    libproj_init_api();
+    return Rf_ScalarInteger(LIBPROJ_VERSION_COMPILE_INT);
   }
   ')
 
-  expect_identical(.Call("libproj_test_version"), "true")
+  expect_equal(.Call("libproj_version_run"), 8 * 10000 + 1 * 100 + 0)
+  expect_equal(.Call("libproj_version_build"), 8 * 10000 + 1 * 100 + 0)
 
   unlink(shlib_file)
 })
