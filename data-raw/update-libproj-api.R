@@ -129,6 +129,7 @@ libproj_c <- with(
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+int (*libproj_version_int)() = NULL;
 { paste0(impl_def, collapse = "\n") }
 
 void libproj_init_api() {{
@@ -179,9 +180,9 @@ void R_init_libproj(DllInfo *dll) {{
   R_useDynamicSymbols(dll, FALSE);
 
   /* used by external packages linking to libproj from C */
+  R_RegisterCCallable("libproj", "libproj_version_int", (DL_FUNC) &libproj_version_int);
 { paste0(register_def, collapse = "\n") }
 }}
-
 '
   )
 )

@@ -3,6 +3,7 @@
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 
+int (*libproj_version_int)() = NULL;
 PJ_CONTEXT* (*proj_context_create)(void) = NULL;
 PJ_CONTEXT* (*proj_context_destroy)(PJ_CONTEXT*) = NULL;
 PJ_CONTEXT* (*proj_context_clone)(PJ_CONTEXT*) = NULL;

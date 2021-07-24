@@ -33,6 +33,7 @@ void R_init_libproj(DllInfo *dll) {
   R_useDynamicSymbols(dll, FALSE);
 
   /* used by external packages linking to libproj from C */
+  R_RegisterCCallable("libproj", "libproj_version_int", (DL_FUNC) &libproj_version_int);
     R_RegisterCCallable("libproj", "proj_context_create", (DL_FUNC) &proj_context_create);
     R_RegisterCCallable("libproj", "proj_context_destroy", (DL_FUNC) &proj_context_destroy);
     R_RegisterCCallable("libproj", "proj_context_clone", (DL_FUNC) &proj_context_clone);
