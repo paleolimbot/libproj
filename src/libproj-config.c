@@ -52,7 +52,7 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
   } else {
     const char* searchPaths[nSearchPaths];
     for (int i = 0; i < nSearchPaths; i++) {
-      searchPaths[i] = CHAR(STRING_ELT(searchPath, i));
+      searchPaths[i] = Rf_translateCharUTF8(STRING_ELT(searchPath, i));
     }
 
     proj_context_set_search_paths(PJ_DEFAULT_CTX, nSearchPaths, searchPaths);
@@ -72,17 +72,17 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
     }
 
   } else if (nDbPaths == 1) {
-    const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
+    const char* dbPath0 = Rf_translateCharUTF8(STRING_ELT(dbPath, 0));
     int setDbSuccess = proj_context_set_database_path(PJ_DEFAULT_CTX, dbPath0, NULL, NULL);
     if (setDbSuccess == 0) {
       Rf_error("Can't set database path to '%s'", dbPath0);
     }
 
   } else {
-    const char* dbPath0 = CHAR(STRING_ELT(dbPath, 0));
+    const char* dbPath0 = Rf_translateCharUTF8(STRING_ELT(dbPath, 0));
     const char* auxPaths[nDbPaths];
     for (int i = 0; i < (nDbPaths - 1); i++) {
-      auxPaths[i] = CHAR(STRING_ELT(dbPath, i + 1));
+      auxPaths[i] = Rf_translateCharUTF8(STRING_ELT(dbPath, i + 1));
     }
     auxPaths[nDbPaths - 1] = NULL;
 
@@ -97,7 +97,7 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
   if (STRING_ELT(caPath, 0) == NA_STRING) {
     caPath0 = NULL;
   } else {
-    caPath0 = CHAR(STRING_ELT(caPath, 0));
+    caPath0 = Rf_translateCharUTF8(STRING_ELT(caPath, 0));
   }
 
   proj_context_set_ca_bundle_path(PJ_DEFAULT_CTX, caPath0);
@@ -112,7 +112,7 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
   // The CDN endpoint isn't set by default, and is needed for
   // networking to work out of the box (when enabled by
   // proj_context_set_enable_network(PJ_DEFAULT_CTX, 1)).
-  const char* networkEndpoint0 = CHAR(STRING_ELT(networkEndpoint, 0));
+  const char* networkEndpoint0 = Rf_translateCharUTF8(STRING_ELT(networkEndpoint, 0));
   proj_context_set_url_endpoint(PJ_DEFAULT_CTX, networkEndpoint0);
 
   // TODO the default network handler (curl) downloads silently. In the context
