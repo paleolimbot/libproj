@@ -3,3 +3,6 @@
 .DS_Store
 docs
 .vscode
+autom4te.cache
+config.log
+config.status
