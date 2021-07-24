@@ -1,6 +1,6 @@
 
-PKG_CPPFLAGS = -I../src/include @cflags@
-PKG_LIBS = @libs@
+PKG_CPPFLAGS = -I../src/include @CPPFLAGS@
+PKG_LIBS = @LIBS@
 CXX_STD = CXX11
 
 OBJECTS = cpp-compat.o \
