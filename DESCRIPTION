@@ -30,7 +30,7 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-SystemRequirements: libcurl (optional), libtiff + libjpeg + zlib (optional)
+SystemRequirements: C++11, libcurl, libtiff, libjpeg, zlib
 Suggests: 
     testthat
 URL: https://paleolimbot.github.io/libproj/, https://github.com/paleolimbot/libproj
