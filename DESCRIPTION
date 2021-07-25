@@ -27,7 +27,6 @@ Description: Provides a 'PROJ' <https://proj.org> C API that can be
   or impossible to install a binary version of the library.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 SystemRequirements: C++11, libcurl, libtiff, zlib
