@@ -3,6 +3,11 @@ test_that("libproj_version works", {
   expect_identical(libproj_version(), "8.1.0")
 })
 
+test_that("curl and tiff are enabled", {
+  # in the current configure script, this should always be true
+  expect_true(libproj_has_libcurl())
+  expect_true(libproj_has_libtiff())
+})
 
 libproj_source <- function(code) {
   prev_pkg_cpp_flags <- Sys.getenv("PKG_CPPFLAGS")
