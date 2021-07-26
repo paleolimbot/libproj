@@ -101,10 +101,10 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://paleolimbot.github.io/libproj/">libproj</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/libproj_version.html">libproj_configuration</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; $db_path</span>
-<span class="co">#&gt; [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/RtmplU9vQO/temp_libpathd4075bb0aa65/libproj/proj/proj.db"</span>
+<span class="co">#&gt; [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpl82E86/temp_libpathe1fb4d326e34/libproj/proj/proj.db"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $search_path</span>
-<span class="co">#&gt; [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/RtmplU9vQO/temp_libpathd4075bb0aa65/libproj/proj"</span>
+<span class="co">#&gt; [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpl82E86/temp_libpathe1fb4d326e34/libproj/proj"</span>
 <span class="co">#&gt; [2] "/Users/dewey/Library/Application Support/R-libproj/data"                                                  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $network_endpoint</span>
@@ -114,77 +114,84 @@
 <span class="co">#&gt; [1] NA</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $network_enabled</span>
-<span class="co">#&gt; [1] FALSE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $user_writable_dir</span>
-<span class="co">#&gt; [1] "/Users/dewey/Library/Application Support/R-libproj/writable"</span></code></pre></div>
-<p>You probably want to install the <a href="https://github.com/OSGeo/PROJ-data">PROJ-data files</a> or turn on network access (by setting <code><a href="https://rdrr.io/r/base/options.html">options(libproj.network_enabled = TRUE)</a></code> in your .Rprofile) to ensure that datum transforms are handled correctly. The preferreed approach is to install all the data files (~600 MB).</p>
+<span class="co">#&gt; [1] FALSE</span></code></pre></div>
+<p>You probably want to install the <a href="https://github.com/OSGeo/PROJ-data">PROJ-data files</a> or turn on network access (by setting <code><a href="https://rdrr.io/r/base/options.html">options(libproj.network_enabled = TRUE)</a></code> in your .Rprofile) to ensure that datum transforms are handled correctly. The preferred approach is to install all the data files (~600 MB).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/libproj_install_proj_data.html">libproj_install_proj_data</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>Checking <span class="cf">for</span> latest PROJ<span class="op">-</span>data package at https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>OSGeo<span class="op">/</span>PROJ<span class="op">-</span>data<span class="op">/</span>releases<span class="op">/</span>latest</span>
+<span id="cb5-2"><a href="#cb5-2"></a>Downloading <span class="st">'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip'</span> (<span class="dv">558</span> MB)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>trying URL <span class="st">'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip'</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>Content type <span class="st">'application/octet-stream'</span> length <span class="dv">585582140</span> <span class="kw">bytes</span> (<span class="fl">558.5</span> MB)</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="op">==</span><span class="er">================================================</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>downloaded <span class="fl">558.5</span> MB</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a>Extracting <span class="st">'/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmplU9vQO/filed4072e1fa820.zip'</span> to <span class="st">'/Users/dewey/Library/Application Support/R-libproj/data'</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>Saving a record of the install to <span class="st">'/Users/dewey/Library/Application Support/R-libproj/data/.libproj_install_proj_data'</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>Done.</span></code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This package only exists for its exported C API. You can use it interactively (if using Rcpp use <code>// [[Rcpp::depends(libproj)]]</code>; if using cpp11 use <code>[[cpp11::linking_to(libproj)]]</code> to decorate at least one function) or by adding <code>libproj</code> to the <code>LinkingTo</code> field of a dependency package.</p>
 <p>An example using <a href="https://cpp11.r-lib.org">cpp11</a>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;cpp11.hpp&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">using</span> <span class="kw">namespace</span> cpp11;</span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">// needed in every file that uses proj_*() functions</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="pp">#include </span><span class="im">"libproj.h"</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">// needed exactly once in your package or Rcpp script</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="co">// contains all the function pointers and the</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">// implementation of the function to initialize them</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">// (`libproj_init_api()`)</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="pp">#include </span><span class="im">"libproj.c"</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">// this function needs to be called once before any proj_*() functions</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">// are called (e.g., in .onLoad() for your package)</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a>[[<span class="at">cpp11</span>::<span class="at">linking_to</span>(<span class="at">libproj</span>)]]</span>
-<span id="cb5-16"><a href="#cb5-16"></a>[[<span class="at">cpp11</span>::<span class="at">register</span>]]</span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="dt">void</span> cpp_libproj_init_api() {</span>
-<span id="cb5-18"><a href="#cb5-18"></a>  libproj_init_api();</span>
-<span id="cb5-19"><a href="#cb5-19"></a>}</span>
-<span id="cb5-20"><a href="#cb5-20"></a></span>
-<span id="cb5-21"><a href="#cb5-21"></a><span class="co">// regular C or C++ code that uses proj_()* functions!</span></span>
-<span id="cb5-22"><a href="#cb5-22"></a>[[<span class="at">cpp11</span>::<span class="at">register</span>]]</span>
-<span id="cb5-23"><a href="#cb5-23"></a>list proj_coords(list xy, <span class="bu">std::</span>string from, <span class="bu">std::</span>string to) {</span>
-<span id="cb5-24"><a href="#cb5-24"></a>  doubles x = xy[<span class="dv">0</span>];</span>
-<span id="cb5-25"><a href="#cb5-25"></a>  doubles y = xy[<span class="dv">1</span>];</span>
-<span id="cb5-26"><a href="#cb5-26"></a>  </span>
-<span id="cb5-27"><a href="#cb5-27"></a>  PJ_CONTEXT* context = PJ_DEFAULT_CTX;</span>
-<span id="cb5-28"><a href="#cb5-28"></a>  </span>
-<span id="cb5-29"><a href="#cb5-29"></a>  PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);</span>
-<span id="cb5-30"><a href="#cb5-30"></a>  <span class="cf">if</span> (trans == NULL) {</span>
-<span id="cb5-31"><a href="#cb5-31"></a>    <span class="dt">int</span> error_code = proj_context_errno(context);</span>
-<span id="cb5-32"><a href="#cb5-32"></a>    stop(<span class="st">"Error creating transform: </span><span class="sc">%s</span><span class="st">"</span>, proj_context_errno_string(context, error_code));</span>
-<span id="cb5-33"><a href="#cb5-33"></a>  }</span>
-<span id="cb5-34"><a href="#cb5-34"></a>  </span>
-<span id="cb5-35"><a href="#cb5-35"></a>  writable::doubles xout(x);</span>
-<span id="cb5-36"><a href="#cb5-36"></a>  writable::doubles yout(y);</span>
-<span id="cb5-37"><a href="#cb5-37"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
-<span id="cb5-38"><a href="#cb5-38"></a>  </span>
-<span id="cb5-39"><a href="#cb5-39"></a>  proj_trans_generic(</span>
-<span id="cb5-40"><a href="#cb5-40"></a>    trans, PJ_FWD,</span>
-<span id="cb5-41"><a href="#cb5-41"></a>    REAL(xout), stride, xout.size(),</span>
-<span id="cb5-42"><a href="#cb5-42"></a>    REAL(yout), stride, yout.size(),</span>
-<span id="cb5-43"><a href="#cb5-43"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span>,</span>
-<span id="cb5-44"><a href="#cb5-44"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span></span>
-<span id="cb5-45"><a href="#cb5-45"></a>  );</span>
-<span id="cb5-46"><a href="#cb5-46"></a>  </span>
-<span id="cb5-47"><a href="#cb5-47"></a>  <span class="dt">int</span> error_code = proj_errno(trans);</span>
-<span id="cb5-48"><a href="#cb5-48"></a>  proj_destroy(trans);</span>
-<span id="cb5-49"><a href="#cb5-49"></a>  </span>
-<span id="cb5-50"><a href="#cb5-50"></a>  <span class="cf">if</span> (error_code != <span class="dv">0</span>) {</span>
-<span id="cb5-51"><a href="#cb5-51"></a>    stop(<span class="st">"Error transforming coords: </span><span class="sc">%s</span><span class="st">"</span>, proj_context_errno_string(context, error_code));</span>
-<span id="cb5-52"><a href="#cb5-52"></a>  }</span>
-<span id="cb5-53"><a href="#cb5-53"></a>  </span>
-<span id="cb5-54"><a href="#cb5-54"></a>  writable::list out = {xout, yout};</span>
-<span id="cb5-55"><a href="#cb5-55"></a>  out.names() = {<span class="st">"x"</span>, <span class="st">"y"</span>};</span>
-<span id="cb5-56"><a href="#cb5-56"></a>  <span class="cf">return</span> out;</span>
-<span id="cb5-57"><a href="#cb5-57"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="pp">#include </span><span class="im">&lt;cpp11.hpp&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">using</span> <span class="kw">namespace</span> cpp11;</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">// needed in every file that uses proj_*() functions</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="pp">#include </span><span class="im">"libproj.h"</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">// needed exactly once in your package or Rcpp script</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">// contains all the function pointers and the</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">// implementation of the function to initialize them</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">// (`libproj_init_api()`)</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="pp">#include </span><span class="im">"libproj.c"</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">// this function needs to be called once before any proj_*() functions</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">// are called (e.g., in .onLoad() for your package)</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>[[<span class="at">cpp11</span>::<span class="at">linking_to</span>(<span class="at">libproj</span>)]]</span>
+<span id="cb6-16"><a href="#cb6-16"></a>[[<span class="at">cpp11</span>::<span class="at">register</span>]]</span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="dt">void</span> cpp_libproj_init_api() {</span>
+<span id="cb6-18"><a href="#cb6-18"></a>  libproj_init_api();</span>
+<span id="cb6-19"><a href="#cb6-19"></a>}</span>
+<span id="cb6-20"><a href="#cb6-20"></a></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="co">// regular C or C++ code that uses proj_()* functions!</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>[[<span class="at">cpp11</span>::<span class="at">register</span>]]</span>
+<span id="cb6-23"><a href="#cb6-23"></a>list proj_coords(list xy, <span class="bu">std::</span>string from, <span class="bu">std::</span>string to) {</span>
+<span id="cb6-24"><a href="#cb6-24"></a>  doubles x = xy[<span class="dv">0</span>];</span>
+<span id="cb6-25"><a href="#cb6-25"></a>  doubles y = xy[<span class="dv">1</span>];</span>
+<span id="cb6-26"><a href="#cb6-26"></a>  </span>
+<span id="cb6-27"><a href="#cb6-27"></a>  PJ_CONTEXT* context = PJ_DEFAULT_CTX;</span>
+<span id="cb6-28"><a href="#cb6-28"></a>  </span>
+<span id="cb6-29"><a href="#cb6-29"></a>  PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);</span>
+<span id="cb6-30"><a href="#cb6-30"></a>  <span class="cf">if</span> (trans == NULL) {</span>
+<span id="cb6-31"><a href="#cb6-31"></a>    <span class="dt">int</span> error_code = proj_context_errno(context);</span>
+<span id="cb6-32"><a href="#cb6-32"></a>    stop(<span class="st">"Error creating transform: </span><span class="sc">%s</span><span class="st">"</span>, proj_context_errno_string(context, error_code));</span>
+<span id="cb6-33"><a href="#cb6-33"></a>  }</span>
+<span id="cb6-34"><a href="#cb6-34"></a>  </span>
+<span id="cb6-35"><a href="#cb6-35"></a>  writable::doubles xout(x);</span>
+<span id="cb6-36"><a href="#cb6-36"></a>  writable::doubles yout(y);</span>
+<span id="cb6-37"><a href="#cb6-37"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
+<span id="cb6-38"><a href="#cb6-38"></a>  </span>
+<span id="cb6-39"><a href="#cb6-39"></a>  proj_trans_generic(</span>
+<span id="cb6-40"><a href="#cb6-40"></a>    trans, PJ_FWD,</span>
+<span id="cb6-41"><a href="#cb6-41"></a>    REAL(xout), stride, xout.size(),</span>
+<span id="cb6-42"><a href="#cb6-42"></a>    REAL(yout), stride, yout.size(),</span>
+<span id="cb6-43"><a href="#cb6-43"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span>,</span>
+<span id="cb6-44"><a href="#cb6-44"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span></span>
+<span id="cb6-45"><a href="#cb6-45"></a>  );</span>
+<span id="cb6-46"><a href="#cb6-46"></a>  </span>
+<span id="cb6-47"><a href="#cb6-47"></a>  <span class="dt">int</span> error_code = proj_errno(trans);</span>
+<span id="cb6-48"><a href="#cb6-48"></a>  proj_destroy(trans);</span>
+<span id="cb6-49"><a href="#cb6-49"></a>  </span>
+<span id="cb6-50"><a href="#cb6-50"></a>  <span class="cf">if</span> (error_code != <span class="dv">0</span>) {</span>
+<span id="cb6-51"><a href="#cb6-51"></a>    stop(<span class="st">"Error transforming coords: </span><span class="sc">%s</span><span class="st">"</span>, proj_context_errno_string(context, error_code));</span>
+<span id="cb6-52"><a href="#cb6-52"></a>  }</span>
+<span id="cb6-53"><a href="#cb6-53"></a>  </span>
+<span id="cb6-54"><a href="#cb6-54"></a>  writable::list out = {xout, yout};</span>
+<span id="cb6-55"><a href="#cb6-55"></a>  out.names() = {<span class="st">"x"</span>, <span class="st">"y"</span>};</span>
+<span id="cb6-56"><a href="#cb6-56"></a>  <span class="cf">return</span> out;</span>
+<span id="cb6-57"><a href="#cb6-57"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">cpp_libproj_init_api</span><span class="op">(</span><span class="op">)</span>
 <span class="fu">proj_coords</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">-</span><span class="fl">64</span>, <span class="fl">45</span><span class="op">)</span>, <span class="st">"+proj=longlat"</span>, <span class="st">"EPSG:32620"</span><span class="op">)</span>
 <span class="co">#&gt; $x</span>
@@ -193,57 +200,57 @@
 <span class="co">#&gt; $y</span>
 <span class="co">#&gt; [1] 4983437</span></code></pre></div>
 <p>An example using <a href="https://cran.r-project.org/package=Rcpp">Rcpp</a>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">using</span> <span class="kw">namespace</span> Rcpp;</span>
-<span id="cb7-3"><a href="#cb7-3"></a></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="co">// [[Rcpp::depends(libproj)]]</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="pp">#include </span><span class="im">"libproj.h"</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="pp">#include </span><span class="im">"libproj.c"</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="dt">void</span> cpp_libproj_init_api() {</span>
-<span id="cb7-10"><a href="#cb7-10"></a>  libproj_init_api();</span>
-<span id="cb7-11"><a href="#cb7-11"></a>}</span>
-<span id="cb7-12"><a href="#cb7-12"></a></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="co">// [[Rcpp::export]]</span></span>
-<span id="cb7-14"><a href="#cb7-14"></a>List proj_coords(List xy, <span class="bu">std::</span>string from, <span class="bu">std::</span>string to) {</span>
-<span id="cb7-15"><a href="#cb7-15"></a>  NumericVector x = xy[<span class="dv">0</span>];</span>
-<span id="cb7-16"><a href="#cb7-16"></a>  NumericVector y = xy[<span class="dv">1</span>];</span>
-<span id="cb7-17"><a href="#cb7-17"></a>  </span>
-<span id="cb7-18"><a href="#cb7-18"></a>  PJ_CONTEXT* context = PJ_DEFAULT_CTX;</span>
-<span id="cb7-19"><a href="#cb7-19"></a>  </span>
-<span id="cb7-20"><a href="#cb7-20"></a>  PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);</span>
-<span id="cb7-21"><a href="#cb7-21"></a>  <span class="cf">if</span> (trans == NULL) {</span>
-<span id="cb7-22"><a href="#cb7-22"></a>    <span class="dt">int</span> errorCode = proj_context_errno(context);</span>
-<span id="cb7-23"><a href="#cb7-23"></a>    <span class="bu">std::</span>stringstream err;</span>
-<span id="cb7-24"><a href="#cb7-24"></a>    err &lt;&lt; <span class="st">"Error creating transform: "</span> &lt;&lt; proj_context_errno_string(context, errorCode);</span>
-<span id="cb7-25"><a href="#cb7-25"></a>    stop(err.str());</span>
-<span id="cb7-26"><a href="#cb7-26"></a>  }</span>
-<span id="cb7-27"><a href="#cb7-27"></a>  </span>
-<span id="cb7-28"><a href="#cb7-28"></a>  NumericVector xout = clone(x);</span>
-<span id="cb7-29"><a href="#cb7-29"></a>  NumericVector yout = clone(y);</span>
-<span id="cb7-30"><a href="#cb7-30"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
-<span id="cb7-31"><a href="#cb7-31"></a>  </span>
-<span id="cb7-32"><a href="#cb7-32"></a>  proj_trans_generic(</span>
-<span id="cb7-33"><a href="#cb7-33"></a>    trans, PJ_FWD,</span>
-<span id="cb7-34"><a href="#cb7-34"></a>    &amp;(xout[<span class="dv">0</span>]), stride, xout.size(),</span>
-<span id="cb7-35"><a href="#cb7-35"></a>    &amp;(yout[<span class="dv">0</span>]), stride, yout.size(),</span>
-<span id="cb7-36"><a href="#cb7-36"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span>,</span>
-<span id="cb7-37"><a href="#cb7-37"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span></span>
-<span id="cb7-38"><a href="#cb7-38"></a>  );</span>
-<span id="cb7-39"><a href="#cb7-39"></a>  </span>
-<span id="cb7-40"><a href="#cb7-40"></a>  <span class="dt">int</span> errorCode = proj_errno(trans);</span>
-<span id="cb7-41"><a href="#cb7-41"></a>  proj_destroy(trans);</span>
-<span id="cb7-42"><a href="#cb7-42"></a>  </span>
-<span id="cb7-43"><a href="#cb7-43"></a>  <span class="cf">if</span> (errorCode != <span class="dv">0</span>) {</span>
-<span id="cb7-44"><a href="#cb7-44"></a>    <span class="bu">std::</span>stringstream err;</span>
-<span id="cb7-45"><a href="#cb7-45"></a>    err &lt;&lt; <span class="st">"Error transforming coords: "</span> &lt;&lt; proj_context_errno_string(context, errorCode);</span>
-<span id="cb7-46"><a href="#cb7-46"></a>    stop(err.str());</span>
-<span id="cb7-47"><a href="#cb7-47"></a>  }</span>
-<span id="cb7-48"><a href="#cb7-48"></a>  </span>
-<span id="cb7-49"><a href="#cb7-49"></a>  <span class="cf">return</span> List::create(_[<span class="st">"x"</span>] = xout, _[<span class="st">"y"</span>]  = yout);</span>
-<span id="cb7-50"><a href="#cb7-50"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="kw">using</span> <span class="kw">namespace</span> Rcpp;</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">// [[Rcpp::depends(libproj)]]</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="pp">#include </span><span class="im">"libproj.h"</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="pp">#include </span><span class="im">"libproj.c"</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="dt">void</span> cpp_libproj_init_api() {</span>
+<span id="cb8-10"><a href="#cb8-10"></a>  libproj_init_api();</span>
+<span id="cb8-11"><a href="#cb8-11"></a>}</span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>List proj_coords(List xy, <span class="bu">std::</span>string from, <span class="bu">std::</span>string to) {</span>
+<span id="cb8-15"><a href="#cb8-15"></a>  NumericVector x = xy[<span class="dv">0</span>];</span>
+<span id="cb8-16"><a href="#cb8-16"></a>  NumericVector y = xy[<span class="dv">1</span>];</span>
+<span id="cb8-17"><a href="#cb8-17"></a>  </span>
+<span id="cb8-18"><a href="#cb8-18"></a>  PJ_CONTEXT* context = PJ_DEFAULT_CTX;</span>
+<span id="cb8-19"><a href="#cb8-19"></a>  </span>
+<span id="cb8-20"><a href="#cb8-20"></a>  PJ* trans = proj_create_crs_to_crs(context, from.c_str(), to.c_str(), NULL);</span>
+<span id="cb8-21"><a href="#cb8-21"></a>  <span class="cf">if</span> (trans == NULL) {</span>
+<span id="cb8-22"><a href="#cb8-22"></a>    <span class="dt">int</span> errorCode = proj_context_errno(context);</span>
+<span id="cb8-23"><a href="#cb8-23"></a>    <span class="bu">std::</span>stringstream err;</span>
+<span id="cb8-24"><a href="#cb8-24"></a>    err &lt;&lt; <span class="st">"Error creating transform: "</span> &lt;&lt; proj_context_errno_string(context, errorCode);</span>
+<span id="cb8-25"><a href="#cb8-25"></a>    stop(err.str());</span>
+<span id="cb8-26"><a href="#cb8-26"></a>  }</span>
+<span id="cb8-27"><a href="#cb8-27"></a>  </span>
+<span id="cb8-28"><a href="#cb8-28"></a>  NumericVector xout = clone(x);</span>
+<span id="cb8-29"><a href="#cb8-29"></a>  NumericVector yout = clone(y);</span>
+<span id="cb8-30"><a href="#cb8-30"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
+<span id="cb8-31"><a href="#cb8-31"></a>  </span>
+<span id="cb8-32"><a href="#cb8-32"></a>  proj_trans_generic(</span>
+<span id="cb8-33"><a href="#cb8-33"></a>    trans, PJ_FWD,</span>
+<span id="cb8-34"><a href="#cb8-34"></a>    &amp;(xout[<span class="dv">0</span>]), stride, xout.size(),</span>
+<span id="cb8-35"><a href="#cb8-35"></a>    &amp;(yout[<span class="dv">0</span>]), stride, yout.size(),</span>
+<span id="cb8-36"><a href="#cb8-36"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span>,</span>
+<span id="cb8-37"><a href="#cb8-37"></a>    <span class="kw">nullptr</span>, stride, <span class="dv">0</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a>  );</span>
+<span id="cb8-39"><a href="#cb8-39"></a>  </span>
+<span id="cb8-40"><a href="#cb8-40"></a>  <span class="dt">int</span> errorCode = proj_errno(trans);</span>
+<span id="cb8-41"><a href="#cb8-41"></a>  proj_destroy(trans);</span>
+<span id="cb8-42"><a href="#cb8-42"></a>  </span>
+<span id="cb8-43"><a href="#cb8-43"></a>  <span class="cf">if</span> (errorCode != <span class="dv">0</span>) {</span>
+<span id="cb8-44"><a href="#cb8-44"></a>    <span class="bu">std::</span>stringstream err;</span>
+<span id="cb8-45"><a href="#cb8-45"></a>    err &lt;&lt; <span class="st">"Error transforming coords: "</span> &lt;&lt; proj_context_errno_string(context, errorCode);</span>
+<span id="cb8-46"><a href="#cb8-46"></a>    stop(err.str());</span>
+<span id="cb8-47"><a href="#cb8-47"></a>  }</span>
+<span id="cb8-48"><a href="#cb8-48"></a>  </span>
+<span id="cb8-49"><a href="#cb8-49"></a>  <span class="cf">return</span> List::create(_[<span class="st">"x"</span>] = xout, _[<span class="st">"y"</span>]  = yout);</span>
+<span id="cb8-50"><a href="#cb8-50"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">cpp_libproj_init_api</span><span class="op">(</span><span class="op">)</span>
 <span class="fu">proj_coords</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">-</span><span class="fl">64</span>, <span class="fl">45</span><span class="op">)</span>, <span class="st">"+proj=longlat"</span>, <span class="st">"EPSG:32620"</span><span class="op">)</span>
 <span class="co">#&gt; $x</span>
@@ -252,66 +259,66 @@
 <span class="co">#&gt; $y</span>
 <span class="co">#&gt; [1] 4983437</span></code></pre></div>
 <p>You can also link to libproj directly from C:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1"></a><span class="pp">#include </span><span class="im">&lt;R.h&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="pp">#include </span><span class="im">&lt;Rinternals.h&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="pp">#include </span><span class="im">"libproj.h"</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="pp">#include </span><span class="im">"libproj.c"</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="pp">#include </span><span class="im">&lt;memory.h&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a></span>
-<span id="cb9-9"><a href="#cb9-9"></a>SEXP c_libproj_init_api() {</span>
-<span id="cb9-10"><a href="#cb9-10"></a>  libproj_init_api();</span>
-<span id="cb9-11"><a href="#cb9-11"></a>  <span class="cf">return</span> R_NilValue;</span>
-<span id="cb9-12"><a href="#cb9-12"></a>}</span>
-<span id="cb9-13"><a href="#cb9-13"></a></span>
-<span id="cb9-14"><a href="#cb9-14"></a>SEXP proj_coords(SEXP xy, SEXP from, SEXP to) {</span>
-<span id="cb9-15"><a href="#cb9-15"></a>  R_xlen_t n = Rf_xlength(VECTOR_ELT(xy, <span class="dv">0</span>));</span>
-<span id="cb9-16"><a href="#cb9-16"></a>  SEXP xout = PROTECT(Rf_allocVector(REALSXP, n));</span>
-<span id="cb9-17"><a href="#cb9-17"></a>  SEXP yout = PROTECT(Rf_allocVector(REALSXP, n));</span>
-<span id="cb9-18"><a href="#cb9-18"></a></span>
-<span id="cb9-19"><a href="#cb9-19"></a>  <span class="dt">double</span>* x = REAL(VECTOR_ELT(xy, <span class="dv">0</span>));</span>
-<span id="cb9-20"><a href="#cb9-20"></a>  <span class="dt">double</span>* y = REAL(VECTOR_ELT(xy, <span class="dv">1</span>));</span>
-<span id="cb9-21"><a href="#cb9-21"></a></span>
-<span id="cb9-22"><a href="#cb9-22"></a>  <span class="dt">const</span> <span class="dt">char</span>* from_c = Rf_translateCharUTF8(STRING_ELT(from, <span class="dv">0</span>));</span>
-<span id="cb9-23"><a href="#cb9-23"></a>  <span class="dt">const</span> <span class="dt">char</span>* to_c = Rf_translateCharUTF8(STRING_ELT(to, <span class="dv">0</span>));</span>
-<span id="cb9-24"><a href="#cb9-24"></a></span>
-<span id="cb9-25"><a href="#cb9-25"></a>  PJ_CONTEXT* context = PJ_DEFAULT_CTX;</span>
-<span id="cb9-26"><a href="#cb9-26"></a></span>
-<span id="cb9-27"><a href="#cb9-27"></a>  PJ* trans = proj_create_crs_to_crs(context, from_c, to_c, NULL);</span>
-<span id="cb9-28"><a href="#cb9-28"></a>  <span class="cf">if</span> (trans == NULL) {</span>
-<span id="cb9-29"><a href="#cb9-29"></a>    <span class="dt">int</span> errorCode = proj_context_errno(context);</span>
-<span id="cb9-30"><a href="#cb9-30"></a>    Rf_error(<span class="st">"Error creating transform: %s"</span>, proj_context_errno_string(context, errorCode));</span>
-<span id="cb9-31"><a href="#cb9-31"></a>  }</span>
-<span id="cb9-32"><a href="#cb9-32"></a></span>
-<span id="cb9-33"><a href="#cb9-33"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
-<span id="cb9-34"><a href="#cb9-34"></a>  memcpy(REAL(xout), x, n * <span class="kw">sizeof</span>(<span class="dt">double</span>));</span>
-<span id="cb9-35"><a href="#cb9-35"></a>  memcpy(REAL(yout), y, n * <span class="kw">sizeof</span>(<span class="dt">double</span>));</span>
-<span id="cb9-36"><a href="#cb9-36"></a></span>
-<span id="cb9-37"><a href="#cb9-37"></a>  proj_trans_generic(</span>
-<span id="cb9-38"><a href="#cb9-38"></a>    trans, PJ_FWD,</span>
-<span id="cb9-39"><a href="#cb9-39"></a>    REAL(xout), stride, n,</span>
-<span id="cb9-40"><a href="#cb9-40"></a>    REAL(yout), stride, n,</span>
-<span id="cb9-41"><a href="#cb9-41"></a>    NULL, stride, <span class="dv">0</span>,</span>
-<span id="cb9-42"><a href="#cb9-42"></a>    NULL, stride, <span class="dv">0</span></span>
-<span id="cb9-43"><a href="#cb9-43"></a>  );</span>
-<span id="cb9-44"><a href="#cb9-44"></a></span>
-<span id="cb9-45"><a href="#cb9-45"></a>  <span class="dt">int</span> errorCode = proj_errno(trans);</span>
-<span id="cb9-46"><a href="#cb9-46"></a>  proj_destroy(trans);</span>
-<span id="cb9-47"><a href="#cb9-47"></a></span>
-<span id="cb9-48"><a href="#cb9-48"></a>  <span class="cf">if</span> (errorCode != <span class="dv">0</span>) {</span>
-<span id="cb9-49"><a href="#cb9-49"></a>    Rf_error(<span class="st">"Error transforming coords: %s"</span>, proj_context_errno_string(context, errorCode));</span>
-<span id="cb9-50"><a href="#cb9-50"></a>  }</span>
-<span id="cb9-51"><a href="#cb9-51"></a></span>
-<span id="cb9-52"><a href="#cb9-52"></a>  <span class="dt">const</span> <span class="dt">char</span>* names[] = {<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">""</span>};</span>
-<span id="cb9-53"><a href="#cb9-53"></a>  SEXP out = PROTECT(Rf_mkNamed(VECSXP, names));</span>
-<span id="cb9-54"><a href="#cb9-54"></a>  SET_VECTOR_ELT(out, <span class="dv">0</span>, xout);</span>
-<span id="cb9-55"><a href="#cb9-55"></a>  SET_VECTOR_ELT(out, <span class="dv">1</span>, yout);</span>
-<span id="cb9-56"><a href="#cb9-56"></a>  UNPROTECT(<span class="dv">3</span>);</span>
-<span id="cb9-57"><a href="#cb9-57"></a>  </span>
-<span id="cb9-58"><a href="#cb9-58"></a>  <span class="cf">return</span> out;</span>
-<span id="cb9-59"><a href="#cb9-59"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1"></a><span class="pp">#include </span><span class="im">&lt;R.h&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="pp">#include </span><span class="im">&lt;Rinternals.h&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="pp">#include </span><span class="im">"libproj.h"</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="pp">#include </span><span class="im">"libproj.c"</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="pp">#include </span><span class="im">&lt;memory.h&gt;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a>SEXP c_libproj_init_api() {</span>
+<span id="cb10-10"><a href="#cb10-10"></a>  libproj_init_api();</span>
+<span id="cb10-11"><a href="#cb10-11"></a>  <span class="cf">return</span> R_NilValue;</span>
+<span id="cb10-12"><a href="#cb10-12"></a>}</span>
+<span id="cb10-13"><a href="#cb10-13"></a></span>
+<span id="cb10-14"><a href="#cb10-14"></a>SEXP proj_coords(SEXP xy, SEXP from, SEXP to) {</span>
+<span id="cb10-15"><a href="#cb10-15"></a>  R_xlen_t n = Rf_xlength(VECTOR_ELT(xy, <span class="dv">0</span>));</span>
+<span id="cb10-16"><a href="#cb10-16"></a>  SEXP xout = PROTECT(Rf_allocVector(REALSXP, n));</span>
+<span id="cb10-17"><a href="#cb10-17"></a>  SEXP yout = PROTECT(Rf_allocVector(REALSXP, n));</span>
+<span id="cb10-18"><a href="#cb10-18"></a></span>
+<span id="cb10-19"><a href="#cb10-19"></a>  <span class="dt">double</span>* x = REAL(VECTOR_ELT(xy, <span class="dv">0</span>));</span>
+<span id="cb10-20"><a href="#cb10-20"></a>  <span class="dt">double</span>* y = REAL(VECTOR_ELT(xy, <span class="dv">1</span>));</span>
+<span id="cb10-21"><a href="#cb10-21"></a></span>
+<span id="cb10-22"><a href="#cb10-22"></a>  <span class="dt">const</span> <span class="dt">char</span>* from_c = Rf_translateCharUTF8(STRING_ELT(from, <span class="dv">0</span>));</span>
+<span id="cb10-23"><a href="#cb10-23"></a>  <span class="dt">const</span> <span class="dt">char</span>* to_c = Rf_translateCharUTF8(STRING_ELT(to, <span class="dv">0</span>));</span>
+<span id="cb10-24"><a href="#cb10-24"></a></span>
+<span id="cb10-25"><a href="#cb10-25"></a>  PJ_CONTEXT* context = PJ_DEFAULT_CTX;</span>
+<span id="cb10-26"><a href="#cb10-26"></a></span>
+<span id="cb10-27"><a href="#cb10-27"></a>  PJ* trans = proj_create_crs_to_crs(context, from_c, to_c, NULL);</span>
+<span id="cb10-28"><a href="#cb10-28"></a>  <span class="cf">if</span> (trans == NULL) {</span>
+<span id="cb10-29"><a href="#cb10-29"></a>    <span class="dt">int</span> errorCode = proj_context_errno(context);</span>
+<span id="cb10-30"><a href="#cb10-30"></a>    Rf_error(<span class="st">"Error creating transform: %s"</span>, proj_context_errno_string(context, errorCode));</span>
+<span id="cb10-31"><a href="#cb10-31"></a>  }</span>
+<span id="cb10-32"><a href="#cb10-32"></a></span>
+<span id="cb10-33"><a href="#cb10-33"></a>  <span class="dt">size_t</span> stride = <span class="kw">sizeof</span>(<span class="dt">double</span>);</span>
+<span id="cb10-34"><a href="#cb10-34"></a>  memcpy(REAL(xout), x, n * <span class="kw">sizeof</span>(<span class="dt">double</span>));</span>
+<span id="cb10-35"><a href="#cb10-35"></a>  memcpy(REAL(yout), y, n * <span class="kw">sizeof</span>(<span class="dt">double</span>));</span>
+<span id="cb10-36"><a href="#cb10-36"></a></span>
+<span id="cb10-37"><a href="#cb10-37"></a>  proj_trans_generic(</span>
+<span id="cb10-38"><a href="#cb10-38"></a>    trans, PJ_FWD,</span>
+<span id="cb10-39"><a href="#cb10-39"></a>    REAL(xout), stride, n,</span>
+<span id="cb10-40"><a href="#cb10-40"></a>    REAL(yout), stride, n,</span>
+<span id="cb10-41"><a href="#cb10-41"></a>    NULL, stride, <span class="dv">0</span>,</span>
+<span id="cb10-42"><a href="#cb10-42"></a>    NULL, stride, <span class="dv">0</span></span>
+<span id="cb10-43"><a href="#cb10-43"></a>  );</span>
+<span id="cb10-44"><a href="#cb10-44"></a></span>
+<span id="cb10-45"><a href="#cb10-45"></a>  <span class="dt">int</span> errorCode = proj_errno(trans);</span>
+<span id="cb10-46"><a href="#cb10-46"></a>  proj_destroy(trans);</span>
+<span id="cb10-47"><a href="#cb10-47"></a></span>
+<span id="cb10-48"><a href="#cb10-48"></a>  <span class="cf">if</span> (errorCode != <span class="dv">0</span>) {</span>
+<span id="cb10-49"><a href="#cb10-49"></a>    Rf_error(<span class="st">"Error transforming coords: %s"</span>, proj_context_errno_string(context, errorCode));</span>
+<span id="cb10-50"><a href="#cb10-50"></a>  }</span>
+<span id="cb10-51"><a href="#cb10-51"></a></span>
+<span id="cb10-52"><a href="#cb10-52"></a>  <span class="dt">const</span> <span class="dt">char</span>* names[] = {<span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">""</span>};</span>
+<span id="cb10-53"><a href="#cb10-53"></a>  SEXP out = PROTECT(Rf_mkNamed(VECSXP, names));</span>
+<span id="cb10-54"><a href="#cb10-54"></a>  SET_VECTOR_ELT(out, <span class="dv">0</span>, xout);</span>
+<span id="cb10-55"><a href="#cb10-55"></a>  SET_VECTOR_ELT(out, <span class="dv">1</span>, yout);</span>
+<span id="cb10-56"><a href="#cb10-56"></a>  UNPROTECT(<span class="dv">3</span>);</span>
+<span id="cb10-57"><a href="#cb10-57"></a>  </span>
+<span id="cb10-58"><a href="#cb10-58"></a>  <span class="cf">return</span> out;</span>
+<span id="cb10-59"><a href="#cb10-59"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/CallExternal.html">.Call</a></span><span class="op">(</span><span class="st">"c_libproj_init_api"</span><span class="op">)</span>
 <span class="co">#&gt; NULL</span>
 <span class="fu"><a href="https://rdrr.io/r/base/CallExternal.html">.Call</a></span><span class="op">(</span><span class="st">"proj_coords"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">-</span><span class="fl">64</span>, <span class="fl">45</span><span class="op">)</span>, <span class="st">"+proj=longlat"</span>, <span class="st">"EPSG:32620"</span><span class="op">)</span>
