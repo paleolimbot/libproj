@@ -50,10 +50,10 @@ all systems by default.
 library(libproj)
 libproj_configuration()
 #> $db_path
-#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/RtmplU9vQO/temp_libpathd4075bb0aa65/libproj/proj/proj.db"
+#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpl82E86/temp_libpathe1fb4d326e34/libproj/proj/proj.db"
 #> 
 #> $search_path
-#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/RtmplU9vQO/temp_libpathd4075bb0aa65/libproj/proj"
+#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpl82E86/temp_libpathe1fb4d326e34/libproj/proj"
 #> [2] "/Users/dewey/Library/Application Support/R-libproj/data"                                                  
 #> 
 #> $network_endpoint
@@ -64,20 +64,28 @@ libproj_configuration()
 #> 
 #> $network_enabled
 #> [1] FALSE
-#> 
-#> $user_writable_dir
-#> [1] "/Users/dewey/Library/Application Support/R-libproj/writable"
 ```
 
 You probably want to install the [PROJ-data
 files](https://github.com/OSGeo/PROJ-data) or turn on network access (by
 setting `options(libproj.network_enabled = TRUE)` in your .Rprofile) to
-ensure that datum transforms are handled correctly. The preferreed
+ensure that datum transforms are handled correctly. The preferred
 approach is to install all the data files (\~600 MB).
 
 ``` r
 libproj_install_proj_data()
 ```
+
+    Checking for latest PROJ-data package at https://github.com/OSGeo/PROJ-data/releases/latest
+    Downloading 'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip' (558 MB)
+    trying URL 'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip'
+    Content type 'application/octet-stream' length 585582140 bytes (558.5 MB)
+    ==================================================
+    downloaded 558.5 MB
+
+    Extracting '/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmplU9vQO/filed4072e1fa820.zip' to '/Users/dewey/Library/Application Support/R-libproj/data'
+    Saving a record of the install to '/Users/dewey/Library/Application Support/R-libproj/data/.libproj_install_proj_data'
+    Done.
 
 ## Example
 
