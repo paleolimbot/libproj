@@ -20,9 +20,6 @@ NULL
 #'   coordinate operations from the default proj.db included in this
 #'   package. You must specify at least one database as part of this configuration;
 #'   do not rely on `search_path` to find this value for you.
-#' @param user_writable_dir A directory that can safely be written to
-#'   by this package. This contains a cache of grid shift files downloaded
-#'   from the PROJ CDN at `network_endpoint` if using `with_libproj_network()`.
 #' @param ca_bundle_path A directory that contains the certificate bundle when
 #'   network is enabled. Can be `NA`.
 #' @param network_endpoint A mirror of the PROJ CDN of gridshift files. By default,
@@ -40,8 +37,10 @@ NULL
 #' - `libproj_version()`: A character vector of the proj release.
 #' - `libproj_has_libtiff()`: `TRUE` if built against libtiff, `FALSE` otherwise.
 #' - `libproj_has_libcurl()`: `TRUE` if built against curl, `FALSE` otherwise.
-#' - `libproj_temp_dir()`: A character vector of the path where libproj-speecific
+#' - `libproj_default_writable_dir()`: A character vector of the path where libproj-specific
 #'   tempfiles are written.
+#' - `libproj_default_data_dir()`: A character vector of the path where the default PROJ-data
+#'   installation is kept.
 #' - `libproj_configuration()`: A `list()` of values that can be passed to
 #'   `libproj_configure()`.
 #' - `with_libproj_configuration()`: The value of `expr`.
@@ -49,9 +48,6 @@ NULL
 #'
 #' @examples
 #' libproj_version()
-#' libproj_has_libtiff()
-#' libproj_has_libcurl()
-#' libproj_temp_dir()
 #' libproj_configuration()
 #'
 libproj_version <- function() {
@@ -72,8 +68,22 @@ libproj_has_libcurl <- function() {
 
 #' @rdname libproj_version
 #' @export
-libproj_temp_dir <- function() {
-  libproj_tempdir_
+libproj_default_writable_dir <- function() {
+  dir <- path.expand(file.path(rappdirs::user_data_dir("R-libproj"), "writable"))
+  if (!dir.exists(dir)) {
+    dir.create(dir, recursive = TRUE)
+  }
+  dir
+}
+
+#' @rdname libproj_version
+#' @export
+libproj_default_data_dir <- function() {
+  dir <- path.expand(file.path(rappdirs::user_data_dir("R-libproj"), "data"))
+  if (!dir.exists(dir)) {
+    dir.create(dir, recursive = TRUE)
+  }
+  dir
 }
 
 #' @rdname libproj_version
@@ -102,9 +112,8 @@ libproj_configuration <- function() {
 #' @rdname libproj_version
 #' @export
 libproj_configure <- function(
-  search_path = c(system.file("proj", package = "libproj"), getOption("libproj.search_path", NULL)),
+  search_path = getOption("libproj.search_path", c(system.file("proj", package = "libproj"), libproj_default_data_dir())),
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package = "libproj")),
-  user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
   ca_bundle_path = NA,
   network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE),
@@ -113,7 +122,6 @@ libproj_configure <- function(
 
   search_path <- enc2utf8(search_path)
   db_path <- enc2utf8(db_path)
-  user_writable_dir <- enc2utf8(user_writable_dir)
   ca_bundle_path <- enc2utf8(as.character(ca_bundle_path))
   network_endpoint <- enc2utf8(network_endpoint)
   network_enabled <- as.logical(network_enabled)
@@ -121,8 +129,6 @@ libproj_configure <- function(
   stopifnot(
     all(dir.exists(search_path)),
     length(db_path) >= 1, all(file.exists(db_path)), all(!dir.exists(db_path)),
-    length(user_writable_dir) == 1, !is.na(user_writable_dir),
-      dir.exists(user_writable_dir) || (!file.exists(user_writable_dir)),
     length(ca_bundle_path) == 1, is.na(ca_bundle_path) || dir.exists(ca_bundle_path),
     length(network_endpoint) == 1, !is.na(network_endpoint),
     length(network_enabled) == 1, !is.na(network_enabled)
@@ -155,10 +161,11 @@ libproj_configure <- function(
     stop(e)
   })
 
-
   # this currently has to be set by env var, as there is no
   # proj_set_user_writable_dir() at the C level
-  Sys.setenv("PROJ_USER_WRITABLE_DIRECTORY" = user_writable_dir)
+  # once this is accessed it appears that it can't be changed! as such,
+  # don't expose as a config value for now.
+  Sys.setenv("PROJ_USER_WRITABLE_DIRECTORY" = libproj_default_writable_dir())
 
   # keep a copy of this, since it can't be accessed from C
   # the ownership of const char* passed to the PROJ C API is also unclear to me
@@ -166,7 +173,6 @@ libproj_configure <- function(
   # configuration is being used.
   libproj_config$search_path <- search_path
   libproj_config$db_path <- db_path
-  libproj_config$user_writable_dir <- user_writable_dir
   libproj_config$ca_bundle_path <- ca_bundle_path
   libproj_config$network_endpoint <- network_endpoint
   libproj_config$network_enabled <- network_enabled
@@ -174,18 +180,10 @@ libproj_configure <- function(
   invisible(NULL)
 }
 
-# by default, this setup makes sure that anybody using PJ_DEFAULT_CTX
-# isn't writing files anywhere they didn't mean to (as per CRAN policy)
-libproj_tempdir_ <- NULL
-
 # keep a copy of the configuration
 libproj_config <- new.env(parent = emptyenv())
 
 .onLoad <- function(...) {
-  # by default, user-writable dir is a tempdir that is cleaned up on exit
-  libproj_tempdir_ <<- tempfile()
-  dir.create(libproj_tempdir_)
-
   # safely apply default configuration
   if (inherits(try(libproj_configure(restore_previous_on_error = FALSE)), "try-error")) {
     warning(
@@ -196,9 +194,4 @@ libproj_config <- new.env(parent = emptyenv())
       call. = FALSE
     )
   }
-}
-
-# cleanup any files that might have been downloaded on exit
-.onUnload <- function(...) {
-  unlink(libproj_tempdir_, recursive = TRUE)
 }

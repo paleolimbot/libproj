@@ -31,6 +31,9 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 SystemRequirements: C++11, libcurl, libtiff, zlib
 Suggests: 
+    gh,
     testthat
 URL: https://paleolimbot.github.io/libproj/, https://github.com/paleolimbot/libproj
 BugReports: https://github.com/paleolimbot/libproj/issues
+Imports: 
+    rappdirs

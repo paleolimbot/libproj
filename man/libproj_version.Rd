@@ -4,7 +4,8 @@
 \alias{libproj_version}
 \alias{libproj_has_libtiff}
 \alias{libproj_has_libcurl}
-\alias{libproj_temp_dir}
+\alias{libproj_default_writable_dir}
+\alias{libproj_default_data_dir}
 \alias{with_libproj_configuration}
 \alias{libproj_configuration}
 \alias{libproj_configure}
@@ -16,18 +17,19 @@ libproj_has_libtiff()
 
 libproj_has_libcurl()
 
-libproj_temp_dir()
+libproj_default_writable_dir()
+
+libproj_default_data_dir()
 
 with_libproj_configuration(config, expr)
 
 libproj_configuration()
 
 libproj_configure(
-  search_path = c(system.file("proj", package = "libproj"),
-    getOption("libproj.search_path", NULL)),
+  search_path = getOption("libproj.search_path", c(system.file("proj", package =
+    "libproj"), libproj_default_data_dir())),
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package =
     "libproj")),
-  user_writable_dir = getOption("libproj.user_writable_dir", libproj_temp_dir()),
   ca_bundle_path = NA,
   network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE),
@@ -51,10 +53,6 @@ coordinate operations from the default proj.db included in this
 package. You must specify at least one database as part of this configuration;
 do not rely on \code{search_path} to find this value for you.}
 
-\item{user_writable_dir}{A directory that can safely be written to
-by this package. This contains a cache of grid shift files downloaded
-from the PROJ CDN at \code{network_endpoint} if using \code{with_libproj_network()}.}
-
 \item{ca_bundle_path}{A directory that contains the certificate bundle when
 network is enabled. Can be \code{NA}.}
 
@@ -72,8 +70,10 @@ if the configuration fails.}
 \item \code{libproj_version()}: A character vector of the proj release.
 \item \code{libproj_has_libtiff()}: \code{TRUE} if built against libtiff, \code{FALSE} otherwise.
 \item \code{libproj_has_libcurl()}: \code{TRUE} if built against curl, \code{FALSE} otherwise.
-\item \code{libproj_temp_dir()}: A character vector of the path where libproj-speecific
+\item \code{libproj_default_writable_dir()}: A character vector of the path where libproj-specific
 tempfiles are written.
+\item \code{libproj_default_data_dir()}: A character vector of the path where the default PROJ-data
+installation is kept.
 \item \code{libproj_configuration()}: A \code{list()} of values that can be passed to
 \code{libproj_configure()}.
 \item \code{with_libproj_configuration()}: The value of \code{expr}.
@@ -85,9 +85,6 @@ PROJ configuration
 }
 \examples{
 libproj_version()
-libproj_has_libtiff()
-libproj_has_libcurl()
-libproj_temp_dir()
 libproj_configuration()
 
 }

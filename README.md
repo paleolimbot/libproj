@@ -41,17 +41,51 @@ Universe](https://r-universe.dev/) with:
 install.packages("libproj", repos = "https://paleolimbot.r-universe.dev")
 ```
 
+## Configuration
+
+The libproj package provides a configuration that is likely to work on
+all systems by default.
+
+``` r
+library(libproj)
+libproj_configuration()
+#> $db_path
+#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/RtmplU9vQO/temp_libpathd4075bb0aa65/libproj/proj/proj.db"
+#> 
+#> $search_path
+#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/RtmplU9vQO/temp_libpathd4075bb0aa65/libproj/proj"
+#> [2] "/Users/dewey/Library/Application Support/R-libproj/data"                                                  
+#> 
+#> $network_endpoint
+#> [1] "https://cdn.proj.org"
+#> 
+#> $ca_bundle_path
+#> [1] NA
+#> 
+#> $network_enabled
+#> [1] FALSE
+#> 
+#> $user_writable_dir
+#> [1] "/Users/dewey/Library/Application Support/R-libproj/writable"
+```
+
+You probably want to install the [PROJ-data
+files](https://github.com/OSGeo/PROJ-data) or turn on network access (by
+setting `options(libproj.network_enabled = TRUE)` in your .Rprofile) to
+ensure that datum transforms are handled correctly. The preferreed
+approach is to install all the data files (\~600 MB).
+
+``` r
+libproj_install_proj_data()
+```
+
 ## Example
 
 This package only exists for its exported C API. You can use it
 interactively (if using Rcpp use `// [[Rcpp::depends(libproj)]]`; if
 using cpp11 use `[[cpp11::linking_to(libproj)]]` to decorate at least
 one function) or by adding `libproj` to the `LinkingTo` field of a
-dependency package. The libproj package does some minimal configuration
-on the `PJ_DEFAULT_CTX` context so that it’s safe to use; however, you
-might want to use `proj_context_clone()` to create a new one and
-configure it to your liking (e.g., turn networking on or point it to a
-cusom data directory).
+dependency package.
 
 An example using [cpp11](https://cpp11.r-lib.org):
 
@@ -125,7 +159,7 @@ proj_coords(list(-64, 45), "+proj=longlat", "EPSG:32620")
 #> [1] 4983437
 ```
 
-An example using [Rcpp](https://cpp11.r-lib.org):
+An example using [Rcpp](https://cran.r-project.org/package=Rcpp):
 
 ``` cpp
 #include <Rcpp.h>
@@ -263,34 +297,4 @@ SEXP proj_coords(SEXP xy, SEXP from, SEXP to) {
 #> 
 #> $y
 #> [1] 4983437
-```
-
-## Configuration
-
-The libproj package encourages downstream packages to create their own
-`PJ_CONTEXT` and configure it to their liking. The default configuration
-is designed to point to a valid database with a valid (but temporary)
-writable directory that can be used to store network downloads if
-networking is turned on.
-
-``` r
-library(libproj)
-libproj_configuration()
-#> $db_path
-#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpe1RiQ7/temp_libpatha7c6437f5665/libproj/proj/proj.db"
-#> 
-#> $search_path
-#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpe1RiQ7/temp_libpatha7c6437f5665/libproj/proj"
-#> 
-#> $network_endpoint
-#> [1] "https://cdn.proj.org"
-#> 
-#> $ca_bundle_path
-#> [1] NA
-#> 
-#> $network_enabled
-#> [1] FALSE
-#> 
-#> $user_writable_dir
-#> [1] "/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmpbXaDo2/fileab215fcd90ff"
 ```

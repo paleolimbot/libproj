@@ -46,9 +46,24 @@ You can install the development version from [R Universe](https://r-universe.dev
 install.packages("libproj", repos = "https://paleolimbot.r-universe.dev")
 ```
 
+## Configuration
+
+The libproj package provides a configuration that is likely to work on all systems by default.
+
+```{r}
+library(libproj)
+libproj_configuration()
+```
+
+You probably want to install the [PROJ-data files](https://github.com/OSGeo/PROJ-data) or turn on network access (by setting `options(libproj.network_enabled = TRUE)` in your .Rprofile) to ensure that datum transforms are handled correctly. The preferreed approach is to install all the data files (~600 MB).
+
+``` r
+libproj_install_proj_data()
+```
+
 ## Example
 
-This package only exists for its exported C API. You can use it interactively (if using Rcpp use `// [[Rcpp::depends(libproj)]]`; if using cpp11 use `[[cpp11::linking_to(libproj)]]` to decorate at least one function) or by adding `libproj` to the `LinkingTo` field of a dependency package. The libproj package does some minimal configuration on the `PJ_DEFAULT_CTX` context so that it's safe to use; however, you might want to use `proj_context_clone()` to create a new one and configure it to your liking (e.g., turn networking on or point it to a cusom data directory).
+This package only exists for its exported C API. You can use it interactively (if using Rcpp use `// [[Rcpp::depends(libproj)]]`; if using cpp11 use `[[cpp11::linking_to(libproj)]]` to decorate at least one function) or by adding `libproj` to the `LinkingTo` field of a dependency package.
 
 An example using [cpp11](https://cpp11.r-lib.org):
 
@@ -117,7 +132,7 @@ cpp_libproj_init_api()
 proj_coords(list(-64, 45), "+proj=longlat", "EPSG:32620")
 ```
 
-An example using [Rcpp](https://cpp11.r-lib.org):
+An example using [Rcpp](https://cran.r-project.org/package=Rcpp):
 
 ```{Rcpp}
 #include <Rcpp.h>
@@ -244,13 +259,4 @@ SEXP proj_coords(SEXP xy, SEXP from, SEXP to) {
 ```{r}
 .Call("c_libproj_init_api")
 .Call("proj_coords", list(-64, 45), "+proj=longlat", "EPSG:32620")
-```
-
-## Configuration
-
-The libproj package encourages downstream packages to create their own `PJ_CONTEXT` and configure it to their liking. The default configuration is designed to point to a valid database with a valid (but temporary) writable directory that can be used to store network downloads if networking is turned on.
-
-```{r}
-library(libproj)
-libproj_configuration()
 ```

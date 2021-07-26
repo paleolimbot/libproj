@@ -2,9 +2,11 @@
 
 export(libproj_configuration)
 export(libproj_configure)
+export(libproj_default_data_dir)
+export(libproj_default_writable_dir)
 export(libproj_has_libcurl)
 export(libproj_has_libtiff)
-export(libproj_temp_dir)
+export(libproj_install_proj_data)
 export(libproj_version)
 export(with_libproj_configuration)
 useDynLib(libproj, .registration = TRUE)
