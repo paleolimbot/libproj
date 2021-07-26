@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • libproj</title>
+<title>Download and install PROJ data files — libproj_install_proj_data • libproj</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,12 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Download and install PROJ data files — libproj_install_proj_data" />
+<meta property="og:description" content="Since PROJ 7.0, the data files used to convert between horizontal and vertical datums
+are packaged separately. You can access these files as needed using the PROJ
+networking capability (e.g., with libproj_configure(network_enabled = TRUE)) or
+you can download them all at once. This function searches for the latest release
+from the PROJ-data." />
 
 
 <meta name="robots" content="noindex">
@@ -58,7 +63,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -108,48 +113,53 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Download and install PROJ data files</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paleolimbot/libproj/blob/master/R/libproj-install-proj-data.R'><code>R/libproj-install-proj-data.R</code></a></small>
+    <div class="hidden name"><code>libproj_install_proj_data.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Since PROJ 7.0, the data files used to convert between horizontal and vertical datums
+are packaged separately. You can access these files as needed using the PROJ
+networking capability (e.g., with <code><a href='libproj_version.html'>libproj_configure(network_enabled = TRUE)</a></code>) or
+you can download them all at once. This function searches for the latest release
+from the <a href='https://github.com/OSGeo/PROJ-data'>PROJ-data</a>.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>libproj_install_proj_data</span><span class='op'>(</span>
+  where <span class='op'>=</span> <span class='fu'><a href='libproj_version.html'>libproj_default_data_dir</a></span><span class='op'>(</span><span class='op'>)</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>NA</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="libproj_install_proj_data.html">libproj_install_proj_data()</a></code> </p>
-        </td>
-        <td><p>Download and install PROJ data files</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="libproj_version.html">libproj_version()</a></code> <code><a href="libproj_version.html">libproj_has_libtiff()</a></code> <code><a href="libproj_version.html">libproj_has_libcurl()</a></code> <code><a href="libproj_version.html">libproj_default_writable_dir()</a></code> <code><a href="libproj_version.html">libproj_default_data_dir()</a></code> <code><a href="libproj_version.html">with_libproj_configuration()</a></code> <code><a href="libproj_version.html">libproj_configuration()</a></code> <code><a href="libproj_version.html">libproj_configure()</a></code> </p>
-        </td>
-        <td><p>PROJ configuration</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>where</th>
+      <td><p>The directory into which data files will be installed.</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>Use <code>NA</code> to overwrite if newer or <code>TRUE</code> to overwrite
+completely.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>TRUE</code> if files were downloaded and installed, <code>FALSE</code> otherwise</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># will download ~600 MB!</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>libproj_install_proj_data</span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
