@@ -10,6 +10,7 @@
 #' @param where The directory into which data files will be installed.
 #' @param overwrite Use `NA` to overwrite if newer or `TRUE` to overwrite
 #'   completely.
+#' @param quiet Use `TRUE` to suppress status messages
 #'
 #' @return `TRUE` if files were downloaded and installed, `FALSE` otherwise
 #' @export

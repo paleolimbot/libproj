@@ -15,6 +15,8 @@ libproj_install_proj_data(
 
 \item{overwrite}{Use \code{NA} to overwrite if newer or \code{TRUE} to overwrite
 completely.}
+
+\item{quiet}{Use \code{TRUE} to suppress status messages}
 }
 \value{
 \code{TRUE} if files were downloaded and installed, \code{FALSE} otherwise
