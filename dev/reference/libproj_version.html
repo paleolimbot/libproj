@@ -142,6 +142,7 @@
   ca_bundle_path <span class='op'>=</span> <span class='cn'>NA</span>,
   network_endpoint <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"libproj.network_endpoint"</span>, <span class='st'>"https://cdn.proj.org"</span><span class='op'>)</span>,
   network_enabled <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"libproj.network_enabled"</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
+  log_level <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"libproj.log_level"</span>, <span class='fl'>1L</span><span class='op'>)</span>,
   restore_previous_on_error <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -188,6 +189,11 @@ this is set to <a href='https://cdn.proj.org'>https://cdn.proj.org</a>.</p></td>
 This defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
+      <th>log_level</th>
+      <td><p>An integer describing the log level: 0 (none), 1 (error), 2 (debug),
+3 (trace), or 4 (tell)</p></td>
+    </tr>
+    <tr>
       <th>restore_previous_on_error</th>
       <td><p>Use <code>FALSE</code> to skip resetting the previous configuration
 if the configuration fails.</p></td>
@@ -224,6 +230,9 @@ installation is kept.</p></li>
 #&gt; 
 #&gt; $network_endpoint
 #&gt; [1] "https://cdn.proj.org"
+#&gt; 
+#&gt; $log_level
+#&gt; [1] 1
 #&gt; 
 #&gt; $ca_bundle_path
 #&gt; [1] NA
