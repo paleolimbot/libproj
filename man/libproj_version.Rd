@@ -33,6 +33,7 @@ libproj_configure(
   ca_bundle_path = NA,
   network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE),
+  log_level = getOption("libproj.log_level", 1L),
   restore_previous_on_error = TRUE
 )
 }
@@ -61,6 +62,9 @@ this is set to \url{https://cdn.proj.org}.}
 
 \item{network_enabled}{Whether or not to download gridshift files on the fly.
 This defaults to \code{FALSE}.}
+
+\item{log_level}{An integer describing the log level: 0 (none), 1 (error), 2 (debug),
+3 (trace), or 4 (tell)}
 
 \item{restore_previous_on_error}{Use \code{FALSE} to skip resetting the previous configuration
 if the configuration fails.}

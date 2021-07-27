@@ -41,7 +41,8 @@ SEXP libproj_c_has_libcurl() {
 // wants to add additional data directories or aux database paths and have
 // these choices respected by the rest of the spatial stack).
 SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPath,
-                                         SEXP networkEndpoint, SEXP networkEnabled) {
+                                         SEXP networkEndpoint, SEXP networkEnabled,
+                                         SEXP logLevel) {
 
   // Set the search paths (this also includes the user-writable directory,
   // which is currently set by environment variable)
@@ -120,6 +121,10 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
   // when a download takes place. This is not possible without a complex call
   // to proj_set_network_handler() and linking to libcurl, so should probably be implemented
   // here to make it practical for downstream packages to do this as well.
+
+  // Set log level
+  int logLevel0 = INTEGER(logLevel)[0];
+  proj_log_level(PJ_DEFAULT_CTX, (PJ_LOG_LEVEL) logLevel0);
 
   return R_NilValue;
 }

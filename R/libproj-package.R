@@ -26,6 +26,8 @@ NULL
 #'   this is set to <https://cdn.proj.org>.
 #' @param network_enabled Whether or not to download gridshift files on the fly.
 #'   This defaults to `FALSE`.
+#' @param log_level An integer describing the log level: 0 (none), 1 (error), 2 (debug),
+#'   3 (trace), or 4 (tell)
 #' @param config A named `list()` with elements used to temporarily override elements of the
 #'   current [libproj_configuration()].
 #' @param expr An expression to evaluate with the specified state
@@ -97,7 +99,7 @@ with_libproj_configuration <- function(config, expr) {
   current_config <- libproj_configuration()
   on.exit(do.call(libproj_configure, current_config))
 
-  new_config <- c(config, current_config)[names(config)]
+  new_config <- c(config, current_config)[intersect(names(config), names(current_config))]
   do.call(libproj_configure, new_config)
 
   force(expr)
@@ -117,6 +119,7 @@ libproj_configure <- function(
   ca_bundle_path = NA,
   network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE),
+  log_level = getOption("libproj.log_level", 1L),
   restore_previous_on_error = TRUE
 ) {
 
@@ -125,13 +128,15 @@ libproj_configure <- function(
   ca_bundle_path <- enc2utf8(as.character(ca_bundle_path))
   network_endpoint <- enc2utf8(network_endpoint)
   network_enabled <- as.logical(network_enabled)
+  log_level <- as.integer(log_level)
 
   stopifnot(
     all(dir.exists(search_path)),
     length(db_path) >= 1, all(file.exists(db_path)), all(!dir.exists(db_path)),
     length(ca_bundle_path) == 1, is.na(ca_bundle_path) || dir.exists(ca_bundle_path),
     length(network_endpoint) == 1, !is.na(network_endpoint),
-    length(network_enabled) == 1, !is.na(network_enabled)
+    length(network_enabled) == 1, !is.na(network_enabled),
+    length(log_level) == 1, log_level >= 0, log_level <= 4
   )
 
   # handle case where this errors (it shouldn't since we've
@@ -146,7 +151,8 @@ libproj_configure <- function(
       db_path,
       ca_bundle_path,
       network_endpoint,
-      network_enabled
+      network_enabled,
+      log_level
     )
   }, error = function(e) {
     if (restore_previous_on_error) {
@@ -176,6 +182,7 @@ libproj_configure <- function(
   libproj_config$ca_bundle_path <- ca_bundle_path
   libproj_config$network_endpoint <- network_endpoint
   libproj_config$network_enabled <- network_enabled
+  libproj_config$log_level <- log_level
 
   invisible(NULL)
 }

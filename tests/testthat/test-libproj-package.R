@@ -134,17 +134,11 @@ test_that("libproj can project coordinates", {
   libproj_configure()
 
   if (libproj_has_libcurl() && libproj_has_libtiff()) {
-    # check networking
-    tmp_dir <- tempfile()
-    dir.create(tmp_dir)
-
     with_libproj_configuration(list(search_path = libproj_configuration()$search_path[-2], network_enabled = TRUE), {
       # requires a grid
       proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")
       expect_true("cache.db" %in% list.files(libproj_default_writable_dir()))
     })
-
-    unlink(tmp_dir, recursive = TRUE)
   } else if (!libproj_has_libcurl()) {
     expect_error(libproj_configure(network_enabled = TRUE), "Can't enable PROJ network access")
   }

@@ -4,19 +4,29 @@
 #include <stdarg.h>
 #include <Rinternals.h>
 #include <time.h>
+#include <stdio.h>
+#include <memory.h>
 
 void cpp_compat_printf(const char* fmt, ...) {
+  char buf[8096];
+  memset(buf, 0, 8096);
   va_list args;
   va_start(args, fmt);
-  Rprintf(fmt, args);
+  vsnprintf(buf, 8096, fmt, args);
   va_end(args);
+
+  Rprintf(buf);
 }
 
 void cpp_compat_printerrf(const char* fmt, ...) {
+  char buf[8096];
+  memset(buf, 0, 8096);
   va_list args;
   va_start(args, fmt);
-  REprintf(fmt, args);
+  vsnprintf(buf, 8096, fmt, args);
   va_end(args);
+
+  REprintf(buf);
 }
 
 void cpp_compat_abort() {
