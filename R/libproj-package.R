@@ -113,6 +113,29 @@ libproj_configuration <- function() {
 
 #' @rdname libproj_version
 #' @export
+warn_for_configuration <- function() {
+  config <- libproj::libproj_configuration()
+  has_data <- vapply(config$search_path, libproj_has_proj_data, logical(1))
+  has_network <- config$network_enabled
+  check_message <- getOption("libproj.check_data_installed", TRUE)
+
+  if (!any(has_data) && !has_network && check_message) {
+    packageStartupMessage(
+      paste0(
+        "Package 'libproj' is running without data files installed or network enabled\n",
+        "which may lead to unexpected coordinate transforms. Silence this message by:\n",
+        "- Running `libproj::libproj_install_proj_data()`\n",
+        "- Adding `options(libproj.search_path = \"path/to/proj_data\")` to your .Rprofile\n",
+        "- Adding `options(libproj.network_enabled = TRUE)` to your .Rprofile\n",
+        "- Adding `options(libproj.check_data_installed = FALSE)` to your .Rprofile\n",
+        "...and restarting your R session."
+      )
+    )
+  }
+}
+
+#' @rdname libproj_version
+#' @export
 libproj_configure <- function(
   search_path = c(system.file("proj", package = "libproj"), getOption("libproj.search_path", libproj_default_data_dir())),
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package = "libproj")),
@@ -215,25 +238,11 @@ libproj_cleanup <- function() {
         "Please run `libproj_configure()` with explicit arguments to fix this error."
       )
     )
-  } else {
-    config <- libproj_configuration()
-    has_data <- vapply(config$search_path, libproj_has_proj_data, logical(1))
-    has_network <- config$network_enabled
-    check_message <- getOption("libproj.check_data_installed", TRUE)
-
-    if (!any(has_data) && !has_network && check_message) {
-      packageStartupMessage(
-        paste0(
-          "Package 'libproj' is running without data files installed or network enabled\n",
-          "which may lead to unexpected coordinate transforms. Silence this message by:\n",
-          "- Running `libproj::libproj_install_proj_data()`\n",
-          "- Adding `options(libproj.search_path = \"path/to/proj_data\")` to your .Rprofile\n",
-          "- Adding `options(libproj.network_enabled = TRUE)` to your .Rprofile\n",
-          "- Adding `options(libproj.check_data_installed = FALSE)` to your .Rprofile"
-        )
-      )
-    }
   }
+}
+
+.onAttach <- function(...) {
+  warn_for_configuration()
 }
 
 .onUnload <- function(...) {

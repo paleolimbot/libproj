@@ -8,6 +8,7 @@
 \alias{libproj_default_data_dir}
 \alias{with_libproj_configuration}
 \alias{libproj_configuration}
+\alias{warn_for_configuration}
 \alias{libproj_configure}
 \title{PROJ configuration}
 \usage{
@@ -24,6 +25,8 @@ libproj_default_data_dir()
 with_libproj_configuration(config, expr)
 
 libproj_configuration()
+
+warn_for_configuration()
 
 libproj_configure(
   search_path = c(system.file("proj", package = "libproj"),
