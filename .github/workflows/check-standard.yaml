@@ -98,16 +98,6 @@ jobs:
         run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
 
-      - name: Install package
-        run: |
-          remotes::install_cran("fs")
-          # outdated version of libproj
-          if (dir.exists(file.path(.libPaths()[1], "libproj"))) {
-            unlink(file.path(.libPaths()[1], "libproj"), recursive = TRUE)
-          }
-          fs::dir_copy("check/libproj.Rcheck/libproj", file.path(.libPaths()[1], "libproj"))
-        shell: Rscript {0}
-
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
