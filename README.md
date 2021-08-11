@@ -50,14 +50,17 @@ all systems by default.
 library(libproj)
 libproj_configuration()
 #> $db_path
-#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpl82E86/temp_libpathe1fb4d326e34/libproj/proj/proj.db"
+#> [1] "/Library/Frameworks/R.framework/Versions/4.1/Resources/library/libproj/proj/proj.db"
 #> 
 #> $search_path
-#> [1] "/private/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T/Rtmpl82E86/temp_libpathe1fb4d326e34/libproj/proj"
-#> [2] "/Users/dewey/Library/Application Support/R-libproj/data"                                                  
+#> [1] "/Library/Frameworks/R.framework/Versions/4.1/Resources/library/libproj/proj"
+#> [2] "/Users/dewey/Library/Application Support/R-libproj/data"                    
 #> 
 #> $network_endpoint
 #> [1] "https://cdn.proj.org"
+#> 
+#> $log_level
+#> [1] 1
 #> 
 #> $ca_bundle_path
 #> [1] NA
