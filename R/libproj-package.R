@@ -114,7 +114,7 @@ libproj_configuration <- function() {
 #' @rdname libproj_version
 #' @export
 libproj_configure <- function(
-  search_path = getOption("libproj.search_path", c(system.file("proj", package = "libproj"), libproj_default_data_dir())),
+  search_path = c(system.file("proj", package = "libproj"), getOption("libproj.search_path", libproj_default_data_dir())),
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package = "libproj")),
   ca_bundle_path = NA,
   network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),
@@ -130,19 +130,30 @@ libproj_configure <- function(
   network_enabled <- as.logical(network_enabled)
   log_level <- as.integer(log_level)
 
+  # this can't be unset, so always use the default until it can be
+  user_writable_directory <- libproj_default_writable_dir()
+
   stopifnot(
     all(dir.exists(search_path)),
     length(db_path) >= 1, all(file.exists(db_path)), all(!dir.exists(db_path)),
     length(ca_bundle_path) == 1, is.na(ca_bundle_path) || dir.exists(ca_bundle_path),
     length(network_endpoint) == 1, !is.na(network_endpoint),
     length(network_enabled) == 1, !is.na(network_enabled),
-    length(log_level) == 1, log_level >= 0, log_level <= 4
+    length(log_level) == 1, log_level >= 0, log_level <= 4,
+    length(user_writable_directory) == 1, dir.exists(user_writable_directory)
   )
 
   # handle case where this errors (it shouldn't since we've
   # already checked that the files and directories exist, but we also check
   # return values at the C level
   old_config <- as.list(libproj_config)
+
+  # writable dir currently has to be set by env var as there is no
+  # proj_set_user_writable_dir() at the C level
+  # configure_default_context checks the environment variable, solidifying
+  # the value.
+  old_writable <- Sys.setenv("PROJ_USER_WRITABLE_DIRECTORY" = user_writable_directory)
+  on.exit(Sys.setenv("PROJ_USER_WRITABLE_DIRECTORY" = old_writable))
 
   tryCatch({
     .Call(
@@ -167,16 +178,7 @@ libproj_configure <- function(
     stop(e)
   })
 
-  # this currently has to be set by env var, as there is no
-  # proj_set_user_writable_dir() at the C level
-  # once this is accessed it appears that it can't be changed! as such,
-  # don't expose as a config value for now.
-  Sys.setenv("PROJ_USER_WRITABLE_DIRECTORY" = libproj_default_writable_dir())
-
   # keep a copy of this, since it can't be accessed from C
-  # the ownership of const char* passed to the PROJ C API is also unclear to me
-  # and this ensures that any const char* that is passed remains valid while the
-  # configuration is being used.
   libproj_config$search_path <- search_path
   libproj_config$db_path <- db_path
   libproj_config$ca_bundle_path <- ca_bundle_path
@@ -190,15 +192,50 @@ libproj_configure <- function(
 # keep a copy of the configuration
 libproj_config <- new.env(parent = emptyenv())
 
+
+#' Clean up resources used by the default context
+#'
+#' @return NULL, invisibly
+#' @export
+#'
+#' @examples
+#' libproj_cleanup()
+#'
+libproj_cleanup <- function() {
+  invisible(.Call(libproj_c_cleanup))
+}
+
+
 .onLoad <- function(...) {
   # safely apply default configuration
   if (inherits(try(libproj_configure(restore_previous_on_error = FALSE)), "try-error")) {
-    warning(
+    packageStartupMessage(
       paste0(
         "`libproj_configure()` failed, likely as a result of invalid options().\n",
         "Please run `libproj_configure()` with explicit arguments to fix this error."
-      ),
-      call. = FALSE
+      )
     )
+  } else {
+    config <- libproj_configuration()
+    has_data <- vapply(config$search_path, libproj_has_proj_data, logical(1))
+    has_network <- config$network_enabled
+    check_message <- getOption("libproj.check_data_installed", TRUE)
+
+    if (!any(has_data) && !has_network && check_message) {
+      packageStartupMessage(
+        paste0(
+          "Package 'libproj' is running without data files installed or network enabled\n",
+          "which may lead to unexpected coordinate transforms. Silence this message by:\n",
+          "- Running `libproj::libproj_install_proj_data()`\n",
+          "- Adding `options(libproj.search_path = \"path/to/proj_data\")` to your .Rprofile\n",
+          "- Adding `options(libproj.network_enabled = TRUE)` to your .Rprofile\n",
+          "- Adding `options(libproj.check_data_installed = FALSE)` to your .Rprofile"
+        )
+      )
+    }
   }
+}
+
+.onUnload <- function(...) {
+  libproj_cleanup()
 }

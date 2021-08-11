@@ -19,7 +19,7 @@ test_that("libproj_install_proj_data() works", {
   expect_false(libproj_install_proj_data(tmp, overwrite = NA, quiet = quiet))
   expect_false(libproj_install_proj_data(tmp, overwrite = FALSE, quiet = quiet))
   expect_true(libproj_install_proj_data(tmp, overwrite = TRUE, quiet = quiet))
+  expect_true(libproj_has_proj_data(tmp))
 
   unlink(tmp, recursive = TRUE)
-
 })

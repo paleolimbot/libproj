@@ -2,6 +2,7 @@
 % Please edit documentation in R/libproj-install-proj-data.R
 \name{libproj_install_proj_data}
 \alias{libproj_install_proj_data}
+\alias{libproj_has_proj_data}
 \title{Download and install PROJ data files}
 \usage{
 libproj_install_proj_data(
@@ -9,6 +10,8 @@ libproj_install_proj_data(
   overwrite = NA,
   quiet = FALSE
 )
+
+libproj_has_proj_data(where = libproj_default_data_dir())
 }
 \arguments{
 \item{where}{The directory into which data files will be installed.}

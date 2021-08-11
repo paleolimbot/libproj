@@ -35,6 +35,11 @@ SEXP libproj_c_has_libcurl() {
   return out;
 }
 
+SEXP libproj_c_cleanup() {
+  proj_cleanup();
+  return R_NilValue;
+}
+
 // Here, the PJ_DEFAULT_CTX is configured. Downstream packages can also
 // define their own contexts but this configuration is intended to be
 // a reasonable default and can be configured from R (e.g., if a user
@@ -125,6 +130,11 @@ SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPa
   // Set log level
   int logLevel0 = INTEGER(logLevel)[0];
   proj_log_level(PJ_DEFAULT_CTX, (PJ_LOG_LEVEL) logLevel0);
+
+  // The user writable directory is only solidified when the
+  // environment variable is checked. Getting the value forces this
+  // check.
+  proj_context_get_user_writable_directory(PJ_DEFAULT_CTX, 0);
 
   return R_NilValue;
 }

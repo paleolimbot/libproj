@@ -82,3 +82,12 @@ libproj_install_proj_data <- function(where = libproj_default_data_dir(), overwr
   if (!quiet) message("Done.")
   invisible(TRUE)
 }
+
+#' @rdname libproj_install_proj_data
+#' @export
+libproj_has_proj_data <- function(where = libproj_default_data_dir()) {
+  # better to check an actual file than the install record file
+  # in case a user has their own data installed
+  check_file <- file.path(where, "us_noaa_README.txt")
+  file.exists(check_file)
+}
