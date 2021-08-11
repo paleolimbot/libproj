@@ -232,11 +232,12 @@ libproj_cleanup <- function() {
 .onLoad <- function(...) {
   # safely apply default configuration
   if (inherits(try(libproj_configure(restore_previous_on_error = FALSE)), "try-error")) {
-    packageStartupMessage(
+    warning(
       paste0(
         "`libproj_configure()` failed, likely as a result of invalid options().\n",
         "Please run `libproj_configure()` with explicit arguments to fix this error."
-      )
+      ),
+      call. = FALSE
     )
   }
 }
