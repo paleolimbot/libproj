@@ -34,8 +34,6 @@ libproj_configure(
   network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE),
   log_level = getOption("libproj.log_level", 1L),
-  user_writable_directory = getOption("libproj.user_writable_directory",
-    libproj_default_writable_dir()),
   restore_previous_on_error = TRUE
 )
 }
