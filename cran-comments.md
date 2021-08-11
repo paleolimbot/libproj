@@ -41,9 +41,9 @@ attempts to rectify the problems that were identified, including
       And multiple broken submissions.
       
     * checking installed package size ... NOTE
-      installed size is 14.5Mb
-      sub-directories of 1Mb or more:
-        libs   5.6Mb
-        proj   8.8Mb
+        installed size is 13.5Mb
+        sub-directories of 1Mb or more:
+          libs   6.3Mb
+          proj   7.0Mb
     
-    0 errors | 0 warnings | 2 notes
+    0 errors v | 0 warnings v | 2 notes x
