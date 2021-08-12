@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">libproj</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">8.1.0-0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">8.1.0-1</span>
       </span>
     </div>
 
@@ -114,6 +114,20 @@
       <small>Source: <a href='https://github.com/paleolimbot/libproj/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="libproj-810-1" class="section level1">
+<h1 class="page-header" data-toc-text="8.1.0-1">
+<a href="#libproj-810-1" class="anchor"></a>libproj 8.1.0-1<small> Unreleased </small>
+</h1>
+<ul>
+<li>Rewrite the configure script using autoconf and test it on all the platforms supported by rhub.</li>
+<li>Update the internal PROJ copy to 8.1.0.</li>
+<li>Rewrite tests to make sure the C API can be linked to and don’t skip them on any platform.</li>
+<li>Test using a wrapper package that uses most of the exported functions (see <a href="https://github.com/paleolimbot/rlibproj" class="uri">https://github.com/paleolimbot/rlibproj</a>)</li>
+<li>Update the README with examples of how to make use of this package (optionally using Rcpp or cpp11 as a helper)</li>
+<li>Correctly declare system requirements.</li>
+<li>Update configuration options to be more robust across environments.</li>
+</ul>
+</div>
     <div id="libproj-720-1" class="section level1">
 <h1 class="page-header" data-toc-text="7.2.0-1">
 <a href="#libproj-720-1" class="anchor"></a>libproj 7.2.0-1<small> Unreleased </small>
