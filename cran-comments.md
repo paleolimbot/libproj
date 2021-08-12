@@ -12,7 +12,7 @@ attempts to rectify the problems that were identified, including
   exported functions to make sure the package is usable
   (see <https://github.com/paleolimbot/rlibproj>)
 * Update the README with examples of how to make use of this
-  package (optionally using Rcpp or cpp11 as a helper)\
+  package (optionally using Rcpp or cpp11 as a helper)
 * Correctly declare system requirements.
 
 ## Test environments
