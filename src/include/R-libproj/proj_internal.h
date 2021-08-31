@@ -598,13 +598,18 @@ struct ARG_list {
     paralist *next;
     char used;
 // this causes CRAN checks to fail and has been backported to most
-// versions of GCC8 in use
+// versions of GCC8 in use. We need param[64] because the sanitizer checks
+// for address errors outside the bounds of param[1] (which is literally
+// every parameter). This will add 64 bytes of overhead to every +proj=XXX param
+// which should be trivial as the overhead of creating projections is not linked
+// to the parameter list. It should be noted that arguments can still be more than
+// 64 bytes because struct ARG_list is always allocated as sizeof(paralist) + strlen(param) + 1.
 // #if (defined(__GNUC__) && __GNUC__ >= 8) || (defined(__clang__) && __clang_major__ >= 9)
 //    char param[]; /* variable-length member */
 //    /* Safer to use [] for gcc 8. See https://github.com/OSGeo/proj.4/pull/1087 */
 //    /* and https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86914 */
 // #else
-    char param[1]; /* variable-length member */
+    char param[64]; /* variable-length member */
 // #endif
 };
 
