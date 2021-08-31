@@ -3650,7 +3650,8 @@ then :
 
 else $as_nop
 
-  as_fn_error $? "Compilation with libcurl headers failed; compiling without -DCURL_ENABLED" "$LINENO" 5
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: Compilation with libcurl headers failed; compiling without -DCURL_ENABLED" >&5
+printf "%s\n" "$as_me: WARNING: Compilation with libcurl headers failed; compiling without -DCURL_ENABLED" >&2;}
   USE_LIBCURL_FLAGS=""
 fi
 

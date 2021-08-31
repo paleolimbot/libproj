@@ -107,7 +107,7 @@ AC_CHECK_HEADERS([tiff.h tiffio.h],, [
   AC_MSG_WARN([Compilation with libtiff headers failed; compiling without -DTIFF_ENABLED])
   USE_LIBTIFF_FLAGS=""])
 AC_CHECK_HEADERS([curl/curl.h],, [
-  AC_MSG_ERROR([Compilation with libcurl headers failed; compiling without -DCURL_ENABLED])
+  AC_MSG_WARN([Compilation with libcurl headers failed; compiling without -DCURL_ENABLED])
   USE_LIBCURL_FLAGS=""])
 
 # add the -D flags to CPPFLAGS
