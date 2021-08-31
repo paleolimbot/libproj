@@ -3,6 +3,8 @@ The previous submission to CRAN identified a number of serious
 issues with this approach to a PROJ installation. This submission
 attempts to rectify the problems that were identified, including
 
+* Allow package to be installed without system libraries
+  that are not necessary for the package to function.
 * Rewrite the configure script using autoconf and test it on
   all the platforms supported by rhub
 * Update the internal PROJ copy to 8.1.0
