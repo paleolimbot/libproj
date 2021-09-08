@@ -26,6 +26,9 @@ CPPFLAGS="${CPPFLAGS} ${PKG_CPPFLAGS}"
 USE_LIBTIFF_FLAGS="-DTIFF_ENABLED"
 USE_LIBCURL_FLAGS="-DCURL_ENABLED"
 
+if test -z "${CURL_CONFIG}" ; then
+ AC_PATH_PROG([CURL_CONFIG], [curl-config])
+fi
 AC_PATH_PROG([PKG_CONFIG], [pkg-config])
 AC_LANG(C)
 
@@ -67,35 +70,54 @@ AC_CHECK_LIB([tiff],[TIFFClientOpen],,[
 AC_CHECK_LIB([curl],[curl_easy_setopt],,[
     AC_MSG_NOTICE([Using libcurl directly doesn't work, falling back to pkg-config.])
     AC_MSG_NOTICE([Note that you can provide correct PKG_LIBS to allow installation without pkg-config.])
-    AC_MSG_CHECKING([for pkg-config])
-    AS_IF(["$PKG_CONFIG" --version], [
-      AC_MSG_CHECKING([pkg-config can find $PKG_CONFIG_MODULE_CURL])
-      AS_IF([$PKG_CONFIG $PKG_CONFIG_MODULE_CURL], [
-        AC_MSG_RESULT(yes)
-        CURL_CPPFLAGS="`$PKG_CONFIG --cflags $PKG_CONFIG_MODULE_CURL`"
-        CURL_LIBS="`$PKG_CONFIG --libs $PKG_CONFIG_MODULE_CURL`"
-        LIBS0="$LIBS"
-        LIBS="$LIBS0 ${CURL_LIBS}"
-        CPPFLAGS="$CPPFLAGS ${CURL_CPPFLAGS}"
-        AC_MSG_CHECKING([whether ${CURL_CPPFLAGS} ${CURL_LIBS} works])
-        AC_LINK_IFELSE([AC_LANG_CALL([], [curl_easy_setopt])], AC_MSG_RESULT([yes]), [
-            AC_MSG_RESULT([no])
-            AC_MSG_CHECKING([whether pkg-config with --static works])
-            CURL_LIBS="`$PKG_CONFIG --static --libs $PKG_CONFIG_MODULE_CURL`"
-            LIBS="$LIBS0 ${CURL_LIBS}"
-            AC_LINK_IFELSE([AC_LANG_CALL([], [curl_easy_setopt])], AC_MSG_RESULT([yes]),,[
-              AC_MSG_RESULT([no])
-              AC_MSG_WARN([Config failed for libcurl, check config.log for details.])
-              USE_LIBCURL_FLAGS=""])])
-      ], [
-        AC_MSG_RESULT([no])
-        AC_MSG_WARN([pkg-config failed. Install libcurl4-openssl-dev (deb), libcurl-devel (rpm), or equivalent])
-        USE_LIBCURL_FLAGS=""
+
+    AC_MSG_CHECKING([for curl-config])
+    AS_IF(["$CURL_CONFIG" --version], [
+      AC_MSG_RESULT(yes)
+      CURL_CPPFLAGS="`$CURL_CONFIG --cflags`"
+      CURL_LIBS="`$CURL_CONFIG --libs`"
+      LIBS0="$LIBS"
+      LIBS="$LIBS0 ${CURL_LIBS}"
+      CPPFLAGS="$CPPFLAGS ${CURL_CPPFLAGS}"
+      AC_MSG_CHECKING([whether ${CURL_CPPFLAGS} ${CURL_LIBS} works])
+
+      AC_MSG_CHECKING([whether ${CURL_CPPFLAGS} ${CURL_LIBS} works])
+      AC_LINK_IFELSE([AC_LANG_CALL([], [curl_easy_setopt])], AC_MSG_RESULT([yes]), [
+          AC_MSG_RESULT([no])
+          AC_MSG_WARN([Config failed for libcurl using curl-config, check config.log for details.])
+          USE_LIBCURL_FLAGS=""
       ])
     ], [
-      AC_MSG_RESULT([no])
-      AC_MSG_WARN([PKG_LIBS flags don't work and pkg-config is not present.])
-      USE_LIBCURL_FLAGS=""
+      AC_MSG_CHECKING([for pkg-config])
+      AS_IF(["$PKG_CONFIG" --version], [
+        AC_MSG_CHECKING([pkg-config can find $PKG_CONFIG_MODULE_CURL])
+        AS_IF([$PKG_CONFIG $PKG_CONFIG_MODULE_CURL], [
+          AC_MSG_RESULT(yes)
+          CURL_CPPFLAGS="`$PKG_CONFIG --cflags $PKG_CONFIG_MODULE_CURL`"
+          CURL_LIBS="`$PKG_CONFIG --libs $PKG_CONFIG_MODULE_CURL`"
+          LIBS0="$LIBS"
+          LIBS="$LIBS0 ${CURL_LIBS}"
+          CPPFLAGS="$CPPFLAGS ${CURL_CPPFLAGS}"
+          AC_MSG_CHECKING([whether ${CURL_CPPFLAGS} ${CURL_LIBS} works])
+          AC_LINK_IFELSE([AC_LANG_CALL([], [curl_easy_setopt])], AC_MSG_RESULT([yes]), [
+              AC_MSG_RESULT([no])
+              AC_MSG_CHECKING([whether pkg-config with --static works])
+              CURL_LIBS="`$PKG_CONFIG --static --libs $PKG_CONFIG_MODULE_CURL`"
+              LIBS="$LIBS0 ${CURL_LIBS}"
+              AC_LINK_IFELSE([AC_LANG_CALL([], [curl_easy_setopt])], AC_MSG_RESULT([yes]),,[
+                AC_MSG_RESULT([no])
+                AC_MSG_WARN([Config failed for libcurl, check config.log for details.])
+                USE_LIBCURL_FLAGS=""])])
+        ], [
+          AC_MSG_RESULT([no])
+          AC_MSG_WARN([pkg-config failed. Install libcurl4-openssl-dev (deb), libcurl-devel (rpm), or equivalent])
+          USE_LIBCURL_FLAGS=""
+        ])
+      ], [
+        AC_MSG_RESULT([no])
+        AC_MSG_WARN([PKG_LIBS flags don't work and pkg-config is not present.])
+        USE_LIBCURL_FLAGS=""
+      ])
     ])
 ])
 

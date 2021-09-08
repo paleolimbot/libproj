@@ -662,6 +662,7 @@ LDFLAGS
 CFLAGS
 CC
 PKG_CONFIG
+CURL_CONFIG
 target_alias
 host_alias
 build_alias
@@ -2256,6 +2257,53 @@ CPPFLAGS="${CPPFLAGS} ${PKG_CPPFLAGS}"
 USE_LIBTIFF_FLAGS="-DTIFF_ENABLED"
 USE_LIBCURL_FLAGS="-DCURL_ENABLED"
 
+if test -z "${CURL_CONFIG}" ; then
+ # Extract the first word of "curl-config", so it can be a program name with args.
+set dummy curl-config; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_path_CURL_CONFIG+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  case $CURL_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_CURL_CONFIG="$CURL_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_path_CURL_CONFIG="$as_dir$ac_word$ac_exec_ext"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+CURL_CONFIG=$ac_cv_path_CURL_CONFIG
+if test -n "$CURL_CONFIG"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CURL_CONFIG" >&5
+printf "%s\n" "$CURL_CONFIG" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+fi
 # Extract the first word of "pkg-config", so it can be a program name with args.
 set dummy pkg-config; ac_word=$2
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -3493,26 +3541,25 @@ else $as_nop
 printf "%s\n" "$as_me: Using libcurl directly doesn't work, falling back to pkg-config." >&6;}
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: Note that you can provide correct PKG_LIBS to allow installation without pkg-config." >&5
 printf "%s\n" "$as_me: Note that you can provide correct PKG_LIBS to allow installation without pkg-config." >&6;}
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for pkg-config" >&5
-printf %s "checking for pkg-config... " >&6; }
-    if "$PKG_CONFIG" --version
+
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for curl-config" >&5
+printf %s "checking for curl-config... " >&6; }
+    if "$CURL_CONFIG" --version
 then :
 
-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking pkg-config can find $PKG_CONFIG_MODULE_CURL" >&5
-printf %s "checking pkg-config can find $PKG_CONFIG_MODULE_CURL... " >&6; }
-      if $PKG_CONFIG $PKG_CONFIG_MODULE_CURL
-then :
-
-        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
-        CURL_CPPFLAGS="`$PKG_CONFIG --cflags $PKG_CONFIG_MODULE_CURL`"
-        CURL_LIBS="`$PKG_CONFIG --libs $PKG_CONFIG_MODULE_CURL`"
-        LIBS0="$LIBS"
-        LIBS="$LIBS0 ${CURL_LIBS}"
-        CPPFLAGS="$CPPFLAGS ${CURL_CPPFLAGS}"
-        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether ${CURL_CPPFLAGS} ${CURL_LIBS} works" >&5
+      CURL_CPPFLAGS="`$CURL_CONFIG --cflags`"
+      CURL_LIBS="`$CURL_CONFIG --libs`"
+      LIBS0="$LIBS"
+      LIBS="$LIBS0 ${CURL_LIBS}"
+      CPPFLAGS="$CPPFLAGS ${CURL_CPPFLAGS}"
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether ${CURL_CPPFLAGS} ${CURL_LIBS} works" >&5
 printf %s "checking whether ${CURL_CPPFLAGS} ${CURL_LIBS} works... " >&6; }
-        cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether ${CURL_CPPFLAGS} ${CURL_LIBS} works" >&5
+printf %s "checking whether ${CURL_CPPFLAGS} ${CURL_LIBS} works... " >&6; }
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 /* Override any GCC internal prototype to avoid an error.
@@ -3533,13 +3580,65 @@ then :
 printf "%s\n" "yes" >&6; }
 else $as_nop
 
-            { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-            { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether pkg-config with --static works" >&5
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: Config failed for libcurl using curl-config, check config.log for details." >&5
+printf "%s\n" "$as_me: WARNING: Config failed for libcurl using curl-config, check config.log for details." >&2;}
+          USE_LIBCURL_FLAGS=""
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+
+else $as_nop
+
+      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for pkg-config" >&5
+printf %s "checking for pkg-config... " >&6; }
+      if "$PKG_CONFIG" --version
+then :
+
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking pkg-config can find $PKG_CONFIG_MODULE_CURL" >&5
+printf %s "checking pkg-config can find $PKG_CONFIG_MODULE_CURL... " >&6; }
+        if $PKG_CONFIG $PKG_CONFIG_MODULE_CURL
+then :
+
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+          CURL_CPPFLAGS="`$PKG_CONFIG --cflags $PKG_CONFIG_MODULE_CURL`"
+          CURL_LIBS="`$PKG_CONFIG --libs $PKG_CONFIG_MODULE_CURL`"
+          LIBS0="$LIBS"
+          LIBS="$LIBS0 ${CURL_LIBS}"
+          CPPFLAGS="$CPPFLAGS ${CURL_CPPFLAGS}"
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether ${CURL_CPPFLAGS} ${CURL_LIBS} works" >&5
+printf %s "checking whether ${CURL_CPPFLAGS} ${CURL_LIBS} works... " >&6; }
+          cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char curl_easy_setopt ();
+int
+main (void)
+{
+return curl_easy_setopt ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+printf "%s\n" "yes" >&6; }
+else $as_nop
+
+              { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+              { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether pkg-config with --static works" >&5
 printf %s "checking whether pkg-config with --static works... " >&6; }
-            CURL_LIBS="`$PKG_CONFIG --static --libs $PKG_CONFIG_MODULE_CURL`"
-            LIBS="$LIBS0 ${CURL_LIBS}"
-            cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+              CURL_LIBS="`$PKG_CONFIG --static --libs $PKG_CONFIG_MODULE_CURL`"
+              LIBS="$LIBS0 ${CURL_LIBS}"
+              cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 /* Override any GCC internal prototype to avoid an error.
@@ -3564,24 +3663,26 @@ rm -f core conftest.err conftest.$ac_objext conftest.beam \
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
+
+else $as_nop
+
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+          { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: pkg-config failed. Install libcurl4-openssl-dev (deb), libcurl-devel (rpm), or equivalent" >&5
+printf "%s\n" "$as_me: WARNING: pkg-config failed. Install libcurl4-openssl-dev (deb), libcurl-devel (rpm), or equivalent" >&2;}
+          USE_LIBCURL_FLAGS=""
+
+fi
 
 else $as_nop
 
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: pkg-config failed. Install libcurl4-openssl-dev (deb), libcurl-devel (rpm), or equivalent" >&5
-printf "%s\n" "$as_me: WARNING: pkg-config failed. Install libcurl4-openssl-dev (deb), libcurl-devel (rpm), or equivalent" >&2;}
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: PKG_LIBS flags don't work and pkg-config is not present." >&5
+printf "%s\n" "$as_me: WARNING: PKG_LIBS flags don't work and pkg-config is not present." >&2;}
         USE_LIBCURL_FLAGS=""
 
 fi
-
-else $as_nop
-
-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: WARNING: PKG_LIBS flags don't work and pkg-config is not present." >&5
-printf "%s\n" "$as_me: WARNING: PKG_LIBS flags don't work and pkg-config is not present." >&2;}
-      USE_LIBCURL_FLAGS=""
 
 fi
 

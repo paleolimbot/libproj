@@ -5,6 +5,7 @@ attempts to rectify the problems that were identified, including
 
 * Allow package to be installed without system libraries
   that are not necessary for the package to function.
+* Detect libcurl on Solaris
 * Rewrite the configure script using autoconf and test it on
   all the platforms supported by rhub
 * Update the internal PROJ copy to 8.1.0
