@@ -62,7 +62,7 @@ function_header_defs <- function_defs %>%
     header_def = glue::glue("extern {pointer_def};"),
     impl_def = glue::glue("{pointer_def} = NULL;"),
     init_def = glue::glue('  {name} = ({return_type} (*)({arg_types})) R_GetCCallable("libproj", "{name}");'),
-    register_def = glue::glue('    R_RegisterCCallable("libproj", "{name}", (DL_FUNC) &{name});')
+    register_def = glue::glue('  R_RegisterCCallable("libproj", "{name}", (DL_FUNC) &{name});')
   )
 
 # make files
@@ -146,6 +146,7 @@ libproj_init_c <- with(
   glue::glue(
     '
 // generated automatically by data-raw/update-libproj-api.R - do not edit by hand!
+#include <R.h>
 #include <Rinternals.h>
 #include <R_ext/Rdynload.h>
 #include "R-libproj/proj.h"
@@ -160,31 +161,14 @@ int libproj_version_int() {{
   return LIBPROJ_VERSION_INT(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 }}
 
-// defined in libproj-config.c
-SEXP libproj_c_version();
-SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPath,
-                                        SEXP networkEndpoint, SEXP networkEnabled);
-SEXP libproj_c_has_libtiff();
-SEXP libproj_c_has_libcurl();
-SEXP libproj_c_cleanup();
-
-static const R_CallMethodDef CallEntries[] = {{
-  {{"libproj_c_version", (DL_FUNC) &libproj_c_version, 0}},
-  {{"libproj_c_has_libtiff", (DL_FUNC) &libproj_c_has_libtiff, 0}},
-  {{"libproj_c_has_libcurl", (DL_FUNC) &libproj_c_has_libcurl, 0}},
-  {{"libproj_c_cleanup", (DL_FUNC) &libproj_c_cleanup, 0}},
-  {{"libproj_c_configure_default_context", (DL_FUNC) &libproj_c_configure_default_context, 6}},
-  {{NULL, NULL, 0}}
-}};
-
-void R_init_libproj(DllInfo *dll) {{
-  R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-  R_useDynamicSymbols(dll, FALSE);
-
+SEXP libproj_c_register_c_callables() {{
   /* used by external packages linking to libproj from C */
   R_RegisterCCallable("libproj", "libproj_version_int", (DL_FUNC) &libproj_version_int);
-{ paste0(register_def, collapse = "\n") }
+  { paste0(register_def, collapse = "\n") }
+
+  return R_NilValue;
 }}
+
 '
   )
 )

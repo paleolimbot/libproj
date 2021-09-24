@@ -37,8 +37,8 @@ extern "C" SEXP _libproj_libproj_cpp_cleanup() {
 
 extern "C" {
 /* .Call calls */
-extern SEXP libproj_c_register_c_callables();
 extern SEXP libproj_c_configure_default_context(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP libproj_c_register_c_callables();
 
 static const R_CallMethodDef CallEntries[] = {
     {"_libproj_libproj_cpp_cleanup",        (DL_FUNC) &_libproj_libproj_cpp_cleanup,        0},
@@ -46,7 +46,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_libproj_libproj_cpp_has_libtiff",    (DL_FUNC) &_libproj_libproj_cpp_has_libtiff,    0},
     {"_libproj_libproj_cpp_version",        (DL_FUNC) &_libproj_libproj_cpp_version,        0},
     {"libproj_c_configure_default_context", (DL_FUNC) &libproj_c_configure_default_context, 6},
-    {"libproj_c_register_c_callables", (DL_FUNC) &libproj_c_register_c_callables, 0},
+    {"libproj_c_register_c_callables",      (DL_FUNC) &libproj_c_register_c_callables,      0},
     {NULL, NULL, 0}
 };
 }
