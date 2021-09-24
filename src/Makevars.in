@@ -6,6 +6,8 @@ CXX_STD = CXX11
 OBJECTS = cpp-compat.o \
     libproj-config.o \
     libproj-init.o \
+    config.o \
+    cpp11.o \
     proj/4D_api.o \
     proj/aasincos.o \
     proj/adjlon.o \

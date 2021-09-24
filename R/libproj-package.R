@@ -53,19 +53,19 @@ NULL
 #' libproj_configuration()
 #'
 libproj_version <- function() {
-  .Call(libproj_c_version)
+  libproj_cpp_version()
 }
 
 #' @rdname libproj_version
 #' @export
 libproj_has_libtiff <- function() {
-  .Call(libproj_c_has_libtiff)
+  libproj_cpp_has_libtiff()
 }
 
 #' @rdname libproj_version
 #' @export
 libproj_has_libcurl <- function() {
-  .Call(libproj_c_has_libcurl)
+  libproj_cpp_has_libcurl()
 }
 
 #' @rdname libproj_version
@@ -225,11 +225,14 @@ libproj_config <- new.env(parent = emptyenv())
 #' libproj_cleanup()
 #'
 libproj_cleanup <- function() {
-  invisible(.Call(libproj_c_cleanup))
+  invisible(libproj_cpp_cleanup())
 }
 
 
 .onLoad <- function(...) {
+  # load callables
+  .Call(libproj_c_register_c_callables)
+
   # safely apply default configuration
   if (inherits(try(libproj_configure(restore_previous_on_error = FALSE)), "try-error")) {
     warning(

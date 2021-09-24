@@ -6,40 +6,6 @@
 #define STR(x) STR_HELPER(x)
 #define LIBPROJ_PROJ_VERSION STR(PROJ_VERSION_MAJOR) "." STR(PROJ_VERSION_MINOR) "." STR(PROJ_VERSION_PATCH)
 
-SEXP libproj_c_version() {
-  SEXP out = PROTECT(Rf_allocVector(STRSXP, 1));
-  SET_STRING_ELT(out, 0, Rf_mkChar(LIBPROJ_PROJ_VERSION));
-  UNPROTECT(1);
-  return out;
-}
-
-SEXP libproj_c_has_libtiff() {
-  SEXP out = PROTECT(Rf_allocVector(LGLSXP, 1));
-#ifdef TIFF_ENABLED
-  LOGICAL(out)[0] = TRUE;
-#else
-  LOGICAL(out)[0] = FALSE;
-#endif
-  UNPROTECT(1);
-  return out;
-}
-
-SEXP libproj_c_has_libcurl() {
-  SEXP out = PROTECT(Rf_allocVector(LGLSXP, 1));
-#ifdef CURL_ENABLED
-  LOGICAL(out)[0] = TRUE;
-#else
-  LOGICAL(out)[0] = FALSE;
-#endif
-  UNPROTECT(1);
-  return out;
-}
-
-SEXP libproj_c_cleanup() {
-  proj_cleanup();
-  return R_NilValue;
-}
-
 // Here, the PJ_DEFAULT_CTX is configured. Downstream packages can also
 // define their own contexts but this configuration is intended to be
 // a reasonable default and can be configured from R (e.g., if a user
