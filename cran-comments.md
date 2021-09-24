@@ -6,6 +6,9 @@ attempts to rectify the problems that were identified, including
 * Allow package to be installed without system libraries
   that are not necessary for the package to function.
 * Detect libcurl on Solaris
+* Use cpp11 to improve automatic wrapper generation and ensure 
+  that g++ is used on Solaris as it is required for the compilation
+  of PROJ sources.
 * Rewrite the configure script using autoconf and test it on
   all the platforms supported by rhub
 * Update the internal PROJ copy to 8.1.0
