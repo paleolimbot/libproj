@@ -1,3 +1,5 @@
+# libproj (development version)
+
 # libproj 8.1.0-1
 
 * Rewrite the configure script using autoconf and test it on
