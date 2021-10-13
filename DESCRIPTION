@@ -16,7 +16,7 @@ Authors@R:
       person("Kristan", "Evers", role = "cph"),
       person("Frank", "Warmerdam", role = "cph"),
       person("Charles", "Karney", role = "cph"),
-      person("Evan", "Roualt", role = "cph")
+      person("Even", "Roualt", role = "cph")
     )
 Description: Provides a 'PROJ' <https://proj.org> C API that can be 
   used to write high-performance C and C++ coordinate transformation
