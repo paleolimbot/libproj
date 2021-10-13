@@ -40,7 +40,7 @@ Other contributors:
   \item Kristan Evers [copyright holder]
   \item Frank Warmerdam [copyright holder]
   \item Charles Karney [copyright holder]
-  \item Evan Roualt [copyright holder]
+  \item Even Roualt [copyright holder]
 }
 
 }
