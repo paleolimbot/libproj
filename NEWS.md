@@ -1,4 +1,4 @@
-# libproj (development version)
+# libproj 8.1.0-2
 
 * Fix check problem where a test was creating files
   in the user's home directory that were not cleaned.
