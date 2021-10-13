@@ -1,35 +1,8 @@
 
-The previous submission to CRAN identified a number of serious
-issues with this approach to a PROJ installation. This submission
-attempts to rectify the problems that were identified, including
+This submission fixes the following check errors on various platforms:
 
-* Allow package to be installed without system libraries
-  that are not necessary for the package to function.
-* Detect libcurl on Solaris
-* Use cpp11 to improve automatic wrapper generation and ensure 
-  that g++ is used on Solaris as it is required for the compilation
-  of PROJ sources.
-* Rewrite the configure script using autoconf and test it on
-  all the platforms supported by rhub
-* Update the internal PROJ copy to 8.1.0
-* Rewrite tests to make sure the C API can be linked to
-  and don't skip them on any platform
-* Write an extensive wrapper package that uses most of the
-  exported functions to make sure the package is usable
-  (see <https://github.com/paleolimbot/rlibproj>)
-* Update the README with examples of how to make use of this
-  package (optionally using Rcpp or cpp11 as a helper)
-* Correctly declare system requirements.
-
-## Test environments
-
-* local R installation, R 4.1.0
-* GitHub Actions (Windows/R-release, MacOS/R-release,
-  Ubuntu 16.04, Ubuntu 18.04, Ubuntu 20.04)
-* win-builder (devel)
-* `rhub::check_for_cran()`
-* `rhub::check_on_solaris()`
-* `rhub::check_on_macos()`
+* Updated rwinlibs libraries to work on UCRT
+* Properly clean up home directory files that may have been written by tests
 
 ## R CMD check results
 

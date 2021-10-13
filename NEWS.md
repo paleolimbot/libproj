@@ -1,5 +1,9 @@
 # libproj (development version)
 
+* Fix donttest problem where an example was creating files
+  in the user's home directory.
+* Update rwinlibs libraries to rix UCRT check error.
+
 # libproj 8.1.0-1
 
 * Rewrite the configure script using autoconf and test it on

@@ -1,6 +1,7 @@
-RWINLIB_TIFF = ../windows/libtiff-4.1.0/mingw$(WIN)
+MSYSTEM ?= mingw$(WIN)
+RWINLIB_TIFF = ../windows/libtiff-4.2.0/$(MSYSTEM)
 PKG_CPPFLAGS = -I../src/include -DTIFF_ENABLED -I$(RWINLIB_TIFF)/include -DCURL_ENABLED -I../windows/libcurl-7.64.1/include -DCURL_STATICLIB
-PKG_LIBS = -L$(RWINLIB_TIFF)/lib -ltiff -ljpeg -lz -L../windows/libcurl-7.64.1/lib${R_ARCH} -lwinhttp -lcurl -lssh2 -lz -lssl -lcrypto -lgdi32 -lws2_32 -lcrypt32 -lwldap32
+PKG_LIBS = -L$(RWINLIB_TIFF)/lib -ltiff -ljpeg -lz -L../windows/libcurl-7.64.1/lib${R_ARCH}${CRT} -lwinhttp -lcurl -lssh2 -lz -lssl -lcrypto -lgdi32 -lws2_32 -lcrypt32 -lwldap32
 CXX_STD = CXX11
 
 OBJECTS = cpp-compat.o \

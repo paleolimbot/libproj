@@ -1,0 +1,3 @@
+CRT=-ucrt
+MSYSTEM = ucrt64
+include Makevars.win
