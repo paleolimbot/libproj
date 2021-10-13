@@ -1,7 +1,7 @@
 # libproj (development version)
 
-* Fix donttest problem where an example was creating files
-  in the user's home directory.
+* Fix check problem where a test was creating files
+  in the user's home directory that were not cleaned.
 * Update rwinlibs libraries to rix UCRT check error.
 
 # libproj 8.1.0-1

@@ -137,10 +137,15 @@ test_that("libproj can project coordinates", {
       # requires a grid
       proj_coords(list(45, -64), "EPSG:4326", "EPSG:26920")
       expect_true("cache.db" %in% list.files(libproj_default_writable_dir()))
+      # remove cache to avoid check failure on some CRAN systems
+      unlink(file.path(libproj_default_writable_dir(), "cache.db"))
+      expect_false("cache.db" %in% list.files(libproj_default_writable_dir()))
     })
   } else if (!libproj_has_libcurl()) {
     expect_error(libproj_configure(network_enabled = TRUE), "Can't enable PROJ network access")
   }
 
   unlink(shlib_file)
+  libproj_cleanup()
+
 })
