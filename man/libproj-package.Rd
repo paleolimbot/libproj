@@ -6,13 +6,7 @@
 \alias{libproj-package}
 \title{libproj: Generic Coordinate Transformation Library ('PROJ') C API}
 \description{
-Provides a 'PROJ' <https://proj.org> C API that can be 
-  used to write high-performance C and C++ coordinate transformation
-  operations using R as an interface. This package contains an internal 
-  version of the 'PROJ' library to guarantee the best possible 
-  consistency on multiple platforms, and to provide a means by which
-  'PROJ' can be used on platforms where it may be impractical
-  or impossible to install a binary version of the library.
+Provides a 'PROJ' <https://proj.org> C API that can be used to write high-performance C and C++ coordinate transformation operations using R as an interface. This package contains an internal version of the 'PROJ' library to guarantee the best possible consistency on multiple platforms, and to provide a means by which 'PROJ' can be used on platforms where it may be impractical or impossible to install a binary version of the library.
 }
 \seealso{
 Useful links:
@@ -34,7 +28,6 @@ Authors:
 Other contributors:
 \itemize{
   \item Jeroen Ooms (configure script) [copyright holder]
-  \item Evan Roualt [copyright holder]
   \item Thomas Knudsen [copyright holder]
   \item SDFE [copyright holder]
   \item Kristan Evers [copyright holder]

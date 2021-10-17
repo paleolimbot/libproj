@@ -10,7 +10,6 @@ Authors@R:
              comment = c(ORCID = "0000-0002-9415-4582")),
       person("PROJ authors", role = "aut"),
       person("Jeroen", "Ooms", role = "cph", comment = "configure script"),
-      person("Evan", "Roualt", role = "cph"),
       person("Thomas", "Knudsen", role = "cph"),
       person("SDFE", role = "cph"),
       person("Kristan", "Evers", role = "cph"),
