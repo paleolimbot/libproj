@@ -1,14 +1,12 @@
 MSYSTEM ?= mingw$(WIN)
 RWINLIB_TIFF = ../windows/libtiff-4.2.0/$(MSYSTEM)
 PKG_CPPFLAGS = -I../src/include -DTIFF_ENABLED -I$(RWINLIB_TIFF)/include -DCURL_ENABLED -I../windows/libcurl-7.64.1/include -DCURL_STATICLIB
-PKG_LIBS = -L$(RWINLIB_TIFF)/lib -ltiff -ljpeg -lz -L../windows/libcurl-7.64.1/lib${R_ARCH}${CRT} -lwinhttp -lcurl -lssh2 -lz -lssl -lcrypto -lgdi32 -lws2_32 -lcrypt32 -lwldap32
+PKG_LIBS = -Lproj -lstaticproj -L$(RWINLIB_TIFF)/lib -ltiff -ljpeg -lz -L../windows/libcurl-7.64.1/lib${R_ARCH}${CRT} -lwinhttp -lcurl -lssh2 -lz -lssl -lcrypto -lgdi32 -lws2_32 -lcrypt32 -lwldap32
 CXX_STD = CXX11
 
-OBJECTS = cpp-compat.o \
-    libproj-config.o \
-    libproj-init.o \
-    config.o \
-    cpp11.o \
+STATLIB = proj/libstaticproj.a
+
+PROJ_OBJECTS = \
     proj/4D_api.o \
     proj/aasincos.o \
     proj/adjlon.o \
@@ -207,13 +205,18 @@ OBJECTS = cpp-compat.o \
     proj/wkt1_parser.o \
     proj/wkt2_generated_parser.o \
     proj/wkt2_parser.o \
-    proj/zpoly1.o \
-    sqlite3.o
+    proj/zpoly1.o
 
-all: clean winlibs
+$(SHLIB): $(STATLIB)
+
+$(STATLIB): $(PROJ_OBJECTS)
+
+$(PROJ_OBJECTS): winlibs
+
+all: clean
 
 winlibs:
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
 
 clean:
-	rm -f $(SHLIB) $(OBJECTS)
+	rm -f $(SHLIB) $(OBJECTS) $(STATLIB) $(PROJ_OBJECTS)
