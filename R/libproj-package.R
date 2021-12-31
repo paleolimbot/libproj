@@ -53,19 +53,19 @@ NULL
 #' libproj_configuration()
 #'
 libproj_version <- function() {
-  libproj_cpp_version()
+  .Call(libproj_c_version)
 }
 
 #' @rdname libproj_version
 #' @export
 libproj_has_libtiff <- function() {
-  libproj_cpp_has_libtiff()
+  .Call(libproj_c_has_libtiff)
 }
 
 #' @rdname libproj_version
 #' @export
 libproj_has_libcurl <- function() {
-  libproj_cpp_has_libcurl()
+  .Call(libproj_c_has_libcurl)
 }
 
 #' @rdname libproj_version
@@ -223,16 +223,13 @@ libproj_config <- new.env(parent = emptyenv())
 #' libproj_cleanup()
 #'
 libproj_cleanup <- function() {
-  invisible(libproj_cpp_cleanup())
+  invisible(.Call(libproj_c_cleanup))
 }
 
 
 temp_dir_internal <- NULL
 
 .onLoad <- function(...) {
-  # load callables
-  .Call(libproj_c_register_c_callables)
-
   # create default temporary writable directory
   temp_dir_internal <<- tempfile()
   dir.create(temp_dir_internal)

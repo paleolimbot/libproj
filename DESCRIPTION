@@ -36,5 +36,3 @@ URL: https://paleolimbot.github.io/libproj/, https://github.com/paleolimbot/libp
 BugReports: https://github.com/paleolimbot/libproj/issues
 Imports: 
     rappdirs
-LinkingTo: 
-    cpp11

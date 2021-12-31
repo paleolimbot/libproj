@@ -1,10 +1,42 @@
 
+#include <R.h>
 #include <Rinternals.h>
 #include "R-libproj/proj.h"
 
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 #define LIBPROJ_PROJ_VERSION STR(PROJ_VERSION_MAJOR) "." STR(PROJ_VERSION_MINOR) "." STR(PROJ_VERSION_PATCH)
+
+SEXP libproj_c_version() {
+  return Rf_mkString(LIBPROJ_PROJ_VERSION);
+}
+
+SEXP libproj_c_has_libtiff() {
+  SEXP out = PROTECT(Rf_allocVector(LGLSXP, 1));
+#ifdef TIFF_ENABLED
+  LOGICAL(out)[0] = TRUE;
+#else
+  LOGICAL(out)[0] = FALSE;
+#endif
+  UNPROTECT(1);
+  return out;
+}
+
+SEXP libproj_c_has_libcurl() {
+  SEXP out = PROTECT(Rf_allocVector(LGLSXP, 1));
+#ifdef CURL_ENABLED
+  LOGICAL(out)[0] = TRUE;
+#else
+  LOGICAL(out)[0] = FALSE;
+#endif
+  UNPROTECT(1);
+  return out;
+}
+
+SEXP libproj_c_cleanup() {
+  proj_cleanup();
+  return R_NilValue;
+}
 
 // Here, the PJ_DEFAULT_CTX is configured. Downstream packages can also
 // define their own contexts but this configuration is intended to be
