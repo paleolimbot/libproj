@@ -71,21 +71,20 @@ libproj_has_libcurl <- function() {
 #' @rdname libproj_version
 #' @export
 libproj_default_writable_dir <- function() {
-  dir <- path.expand(file.path(rappdirs::user_data_dir("R-libproj"), "writable"))
-  if (!dir.exists(dir)) {
-    dir.create(dir, recursive = TRUE)
-  }
-  dir
+  # we have to use a temporary directory that's cleaned up on
+  # unload to comply with CRAN policies that are not compatible with
+  # rappdirs choice of the user data directory
+  temp_dir_internal
 }
 
 #' @rdname libproj_version
 #' @export
 libproj_default_data_dir <- function() {
-  dir <- path.expand(file.path(rappdirs::user_data_dir("R-libproj"), "data"))
-  if (!dir.exists(dir)) {
-    dir.create(dir, recursive = TRUE)
-  }
-  dir
+  # it is important not to create this directory until it is needed
+  # (i.e., until a user explicitly creates it and installs the data
+  # there) to comply with CRAN policy about writing to the home
+  # directory.
+  path.expand(file.path(rappdirs::user_data_dir("R-libproj"), "data"))
 }
 
 #' @rdname libproj_version
@@ -116,7 +115,7 @@ libproj_configuration <- function() {
 warn_for_configuration <- function() {
   config <- libproj::libproj_configuration()
   has_data <- vapply(config$search_path, libproj_has_proj_data, logical(1))
-  has_network <- config$network_enabled
+  has_network <- isTRUE(config$network_enabled)
   check_message <- getOption("libproj.check_data_installed", TRUE)
 
   if (!any(has_data) && !has_network && check_message) {
@@ -157,7 +156,6 @@ libproj_configure <- function(
   user_writable_directory <- libproj_default_writable_dir()
 
   stopifnot(
-    all(dir.exists(search_path)),
     length(db_path) >= 1, all(file.exists(db_path)), all(!dir.exists(db_path)),
     length(ca_bundle_path) == 1, is.na(ca_bundle_path) || dir.exists(ca_bundle_path),
     length(network_endpoint) == 1, !is.na(network_endpoint),
@@ -229,9 +227,15 @@ libproj_cleanup <- function() {
 }
 
 
+temp_dir_internal <- NULL
+
 .onLoad <- function(...) {
   # load callables
   .Call(libproj_c_register_c_callables)
+
+  # create default temporary writable directory
+  temp_dir_internal <<- tempfile()
+  dir.create(temp_dir_internal)
 
   # safely apply default configuration
   if (inherits(try(libproj_configure(restore_previous_on_error = FALSE)), "try-error")) {
@@ -251,4 +255,5 @@ libproj_cleanup <- function() {
 
 .onUnload <- function(...) {
   libproj_cleanup()
+  unlink(temp_dir_internal, recursive = TRUE)
 }
