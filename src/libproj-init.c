@@ -14,7 +14,7 @@ int libproj_version_int() {
   return LIBPROJ_VERSION_INT(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
 }
 
-SEXP libproj_c_register_c_callables() {
+void libproj_register_c_callables() {
   /* used by external packages linking to libproj from C */
   R_RegisterCCallable("libproj", "libproj_version_int", (DL_FUNC) &libproj_version_int);
     R_RegisterCCallable("libproj", "proj_context_create", (DL_FUNC) &proj_context_create);
@@ -185,6 +185,28 @@ SEXP libproj_c_register_c_callables() {
   R_RegisterCCallable("libproj", "proj_coordoperation_create_inverse", (DL_FUNC) &proj_coordoperation_create_inverse);
   R_RegisterCCallable("libproj", "proj_concatoperation_get_step_count", (DL_FUNC) &proj_concatoperation_get_step_count);
   R_RegisterCCallable("libproj", "proj_concatoperation_get_step", (DL_FUNC) &proj_concatoperation_get_step);
+}
 
-  return R_NilValue;
+// defined in libproj-config.c
+SEXP libproj_c_version();
+SEXP libproj_c_has_libtiff();
+SEXP libproj_c_has_libcurl();
+SEXP libproj_c_cleanup();
+SEXP libproj_c_configure_default_context(SEXP searchPath, SEXP dbPath, SEXP caPath,
+                                         SEXP networkEndpoint, SEXP networkEnabled,
+                                         SEXP logLevel);
+
+static const R_CallMethodDef CallEntries[] = {
+  {"libproj_c_version", (DL_FUNC) &libproj_c_version, 0},
+  {"libproj_c_has_libtiff", (DL_FUNC) &libproj_c_has_libtiff, 0},
+  {"libproj_c_has_libcurl", (DL_FUNC) &libproj_c_has_libcurl, 0},
+  {"libproj_c_cleanup", (DL_FUNC) &libproj_c_cleanup, 0},
+  {"libproj_c_configure_default_context", (DL_FUNC) &libproj_c_configure_default_context, 6},
+  {NULL, NULL, 0}
+};
+
+void R_init_libproj(DllInfo *dll) {
+  R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+  R_useDynamicSymbols(dll, FALSE);
+  libproj_register_c_callables();
 }

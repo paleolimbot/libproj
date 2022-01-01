@@ -72,6 +72,7 @@ libproj_install_proj_data <- function(where = libproj_default_data_dir(), overwr
   }
 
   if (!quiet) message(sprintf("Extracting '%s' to '%s'", temp_zip, where))
+  if (!dir.exists(where)) dir.create(where, recursive = TRUE)
   utils::unzip(temp_zip, exdir = where, overwrite = isTRUE(overwrite))
 
   # keep a record of the installed files
