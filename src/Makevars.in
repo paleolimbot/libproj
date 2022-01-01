@@ -158,6 +158,7 @@ OBJECTS = cpp-compat.o \
     proj/projections/robin.o \
     proj/projections/rouss.o \
     proj/projections/rpoly.o \
+    proj/projections/s2.o \
     proj/projections/sch.o \
     proj/projections/sconics.o \
     proj/projections/somerc.o \

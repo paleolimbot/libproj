@@ -42,7 +42,7 @@
 
 #define PJ_LIB__
 
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 PROJ_HEAD(cart,    "Geodetic/cartesian conversions");

@@ -30,7 +30,7 @@
 
 #include <memory>
 
-#include <sqlite3.h>
+#include "R-libproj/sqlite3.h"
 
 #include "proj.h"
 #include "proj/util.hpp"

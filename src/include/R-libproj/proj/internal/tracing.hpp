@@ -33,7 +33,7 @@
 
 #include <string>
 
-#include "proj/util.hpp"
+#include "R-libproj/proj/util.hpp"
 
 #ifdef ENABLE_TRACING
 

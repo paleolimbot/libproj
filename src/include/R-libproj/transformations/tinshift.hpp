@@ -29,9 +29,9 @@
 #define TINSHIFT_HPP
 
 #ifdef PROJ_COMPILATION
-#include "proj/internal/include_nlohmann_json.hpp"
+#include "R-libproj/proj/internal/include_nlohmann_json.hpp"
 #else
-#include "nlohmann/json.hpp"
+#include "R-libproj/proj/internal/vendor/nlohmann/json.hpp"
 #endif
 
 #include <algorithm>
@@ -43,7 +43,7 @@
 #include <string>
 #include <vector>
 
-#include "quadtree.hpp"
+#include "R-libproj/quadtree.hpp"
 
 #ifndef TINSHIFT_NAMESPACE
 #define TINSHIFT_NAMESPACE TINShift

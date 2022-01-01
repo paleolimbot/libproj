@@ -4,8 +4,8 @@
 #include <stddef.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 
 /* Prototypes of the pj_ellipsoid helper functions */

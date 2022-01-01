@@ -26,7 +26,7 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#include "vectorofvaluesparams.hpp"
+#include "R-libproj/iso19111/operation/vectorofvaluesparams.hpp"
 
 // ---------------------------------------------------------------------------
 

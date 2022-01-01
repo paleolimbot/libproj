@@ -27,10 +27,10 @@
 
 #include <stddef.h>
 
-#include "proj.h"
+#include "R-libproj/proj.h"
 
 #define PJ_DATUMS__
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 
 /*
  * The ellipse code must match one from pj_ellps.c.  The datum id should

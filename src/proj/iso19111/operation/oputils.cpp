@@ -32,17 +32,17 @@
 
 #include <string.h>
 
-#include "proj/coordinateoperation.hpp"
-#include "proj/crs.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/crs.hpp"
+#include "R-libproj/proj/util.hpp"
 
-#include "proj/internal/internal.hpp"
-#include "proj/internal/io_internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/io_internal.hpp"
 
-#include "oputils.hpp"
-#include "parammappings.hpp"
+#include "R-libproj/iso19111/operation/oputils.hpp"
+#include "R-libproj/iso19111/operation/parammappings.hpp"
 
-#include "proj_constants.h"
+#include "R-libproj/proj_constants.h"
 
 // ---------------------------------------------------------------------------
 

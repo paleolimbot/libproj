@@ -32,9 +32,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_config.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_config.h"
+#include "R-libproj/proj_internal.h"
 
 #define PJ_STRTOD_WORK_BUFFER_SIZE 64
 

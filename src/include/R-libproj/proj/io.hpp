@@ -36,7 +36,7 @@
 #include <utility>
 #include <vector>
 
-#include "proj.h"
+#include "R-libproj/proj.h"
 
 #include "util.hpp"
 

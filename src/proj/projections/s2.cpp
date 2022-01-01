@@ -53,8 +53,8 @@
 #include <errno.h>
 #include <cmath>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 /* The six cube faces. */
 namespace { // anonymous namespace

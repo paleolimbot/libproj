@@ -3,8 +3,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(kav5,    "Kavraisky V")         "\n\tPCyl, Sph";
 PROJ_HEAD(qua_aut, "Quartic Authalic")    "\n\tPCyl, Sph";

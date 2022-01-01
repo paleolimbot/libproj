@@ -3,8 +3,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 PROJ_HEAD(gnom, "Gnomonic") "\n\tAzi, Sph";

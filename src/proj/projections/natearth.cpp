@@ -16,8 +16,8 @@ Port to PROJ.4 by Bernhard Jenny, 6 June 2011
 
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(natearth, "Natural Earth") "\n\tPCyl, Sph";
 

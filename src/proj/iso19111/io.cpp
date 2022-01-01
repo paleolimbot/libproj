@@ -45,36 +45,36 @@
 #include <utility>
 #include <vector>
 
-#include "proj/common.hpp"
-#include "proj/coordinateoperation.hpp"
-#include "proj/coordinatesystem.hpp"
-#include "proj/crs.hpp"
-#include "proj/datum.hpp"
-#include "proj/io.hpp"
-#include "proj/metadata.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/coordinatesystem.hpp"
+#include "R-libproj/proj/crs.hpp"
+#include "R-libproj/proj/datum.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/metadata.hpp"
+#include "R-libproj/proj/util.hpp"
 
-#include "operation/coordinateoperation_internal.hpp"
-#include "operation/esriparammappings.hpp"
-#include "operation/oputils.hpp"
-#include "operation/parammappings.hpp"
+#include "R-libproj/iso19111/operation/coordinateoperation_internal.hpp"
+#include "R-libproj/iso19111/operation/esriparammappings.hpp"
+#include "R-libproj/iso19111/operation/oputils.hpp"
+#include "R-libproj/iso19111/operation/parammappings.hpp"
 
-#include "proj/internal/coordinatesystem_internal.hpp"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/io_internal.hpp"
+#include "R-libproj/proj/internal/coordinatesystem_internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/io_internal.hpp"
 
-#include "proj/internal/include_nlohmann_json.hpp"
+#include "R-libproj/proj/internal/include_nlohmann_json.hpp"
 
-#include "proj_constants.h"
+#include "R-libproj/proj_constants.h"
 
-#include "proj_json_streaming_writer.hpp"
-#include "wkt1_parser.h"
-#include "wkt2_parser.h"
+#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "R-libproj/wkt1_parser.h"
+#include "R-libproj/wkt2_parser.h"
 
 // PROJ include order is sensitive
 // clang-format off
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 // clang-format on
 
 using namespace NS_PROJ::common;

@@ -30,11 +30,11 @@
 #define _GNU_SOURCE
 #endif
 
-#include "proj.h"
+#include "R-libproj/proj.h"
 #ifndef _WIN32
-#include "proj_config.h"
+#include "R-libproj/proj_config.h"
 #endif
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 
 /* on win32 we always use win32 mutexes, even if pthreads are available */
 #if defined(_WIN32) && !defined(MUTEX_stub)

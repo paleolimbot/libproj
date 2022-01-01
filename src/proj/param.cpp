@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 static void unquote_string(char* param_str) {
 

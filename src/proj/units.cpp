@@ -2,10 +2,10 @@
 
 #include <stddef.h>
 
-#include "proj.h"
+#include "R-libproj/proj.h"
 
 #define PJ_UNITS__
-#include "proj_internal.h"
+#include "R-libproj/proj_internal.h"
 
 /* Field 2 that contains the multiplier to convert named units to meters
 ** may be expressed by either a simple floating point constant or a

@@ -15,10 +15,10 @@
 #include <errno.h>
 #include <math.h>
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
-#include "mlfn.hpp"
+#include "R-libproj/mlfn.hpp"
 
 PROJ_HEAD(tmerc, "Transverse Mercator") "\n\tCyl, Sph&Ell\n\tapprox";
 PROJ_HEAD(etmerc, "Extended Transverse Mercator") "\n\tCyl, Sph";

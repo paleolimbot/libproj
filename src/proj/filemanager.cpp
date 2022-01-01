@@ -37,16 +37,16 @@
 #include <limits>
 #include <string>
 
-#include "filemanager.hpp"
-#include "proj.h"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/io_internal.hpp"
-#include "proj/io.hpp"
-#include "proj_internal.h"
+#include "R-libproj/filemanager.hpp"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/io_internal.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj_internal.h"
 
 #include <sys/stat.h>
 
-#include "proj_config.h"
+#include "R-libproj/proj_config.h"
 
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)
 #define UWP 1

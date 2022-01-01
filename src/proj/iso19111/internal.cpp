@@ -30,7 +30,7 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
 
 #include <cstdint>
 #include <cstring>

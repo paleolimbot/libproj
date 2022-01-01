@@ -25,7 +25,7 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#include "wkt_parser.hpp"
+#include "R-libproj/wkt_parser.hpp"
 
 #include <algorithm>
 #include <string>

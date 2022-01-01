@@ -1,7 +1,7 @@
 #define PJ_LIB__
 #include <errno.h>
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 #include <math.h>
 
 PROJ_HEAD(laea, "Lambert Azimuthal Equal Area") "\n\tAzi, Sph&Ell";

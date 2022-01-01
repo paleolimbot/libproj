@@ -102,9 +102,9 @@ Thomas Knudsen, thokn@sdfe.dk, 2016-05-20
 #include <stack>
 #include <vector>
 
-#include "geodesic.h"
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/geodesic.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(pipeline,         "Transformation pipeline manager");
 PROJ_HEAD(pop, "Retrieve coordinate value from pipeline stack");

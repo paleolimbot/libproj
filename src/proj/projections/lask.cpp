@@ -1,7 +1,7 @@
 #define PJ_LIB__
 
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 PROJ_HEAD(lask, "Laskowski") "\n\tMisc Sph, no inv";
 

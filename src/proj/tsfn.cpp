@@ -1,7 +1,7 @@
 /* determine small t */
 #include <math.h>
-#include "proj.h"
-#include "proj_internal.h"
+#include "R-libproj/proj.h"
+#include "R-libproj/proj_internal.h"
 
 double pj_tsfn(double phi, double sinphi, double e) {
   /****************************************************************************

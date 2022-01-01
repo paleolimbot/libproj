@@ -34,23 +34,23 @@
 #define DO_NOT_DEFINE_EXTERN_DERIVED_CRS_TEMPLATE
 //! @endcond
 
-#include "proj/crs.hpp"
-#include "proj/common.hpp"
-#include "proj/coordinateoperation.hpp"
-#include "proj/coordinatesystem.hpp"
-#include "proj/io.hpp"
-#include "proj/metadata.hpp"
-#include "proj/util.hpp"
+#include "R-libproj/proj/crs.hpp"
+#include "R-libproj/proj/common.hpp"
+#include "R-libproj/proj/coordinateoperation.hpp"
+#include "R-libproj/proj/coordinatesystem.hpp"
+#include "R-libproj/proj/io.hpp"
+#include "R-libproj/proj/metadata.hpp"
+#include "R-libproj/proj/util.hpp"
 
-#include "proj/internal/coordinatesystem_internal.hpp"
-#include "proj/internal/crs_internal.hpp"
-#include "proj/internal/internal.hpp"
-#include "proj/internal/io_internal.hpp"
+#include "R-libproj/proj/internal/coordinatesystem_internal.hpp"
+#include "R-libproj/proj/internal/crs_internal.hpp"
+#include "R-libproj/proj/internal/internal.hpp"
+#include "R-libproj/proj/internal/io_internal.hpp"
 
-#include "operation/oputils.hpp"
+#include "R-libproj/iso19111/operation/oputils.hpp"
 
-#include "proj_constants.h"
-#include "proj_json_streaming_writer.hpp"
+#include "R-libproj/proj_constants.h"
+#include "R-libproj/proj_json_streaming_writer.hpp"
 
 #include <algorithm>
 #include <cassert>
