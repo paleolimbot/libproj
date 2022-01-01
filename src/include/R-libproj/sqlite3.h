@@ -2955,7 +2955,7 @@ SQLITE_API sqlite3_int64 sqlite3_memory_highwater(int resetFlag);
 ** SQLite contains a high-quality pseudo-random number generator (PRNG) used to
 ** select random [ROWID | ROWIDs] when inserting new records into a table that
 ** already uses the largest possible [ROWID].  The PRNG is also used for
-** the built-in random() and randomblob() SQL functions.  This interface allows
+** the built-in cpp_compat_random() and randomblob() SQL functions.  This interface allows
 ** applications to access the same PRNG for other purposes.
 **
 ** ^A call to this routine stores N bytes of randomness into buffer P.
@@ -5124,7 +5124,7 @@ SQLITE_API int sqlite3_reset(sqlite3_stmt *pStmt);
 ** ^The fourth parameter may optionally be ORed with [SQLITE_DETERMINISTIC]
 ** to signal that the function will always return the same result given
 ** the same inputs within a single SQL statement.  Most SQL functions are
-** deterministic.  The built-in [random()] SQL function is an example of a
+** deterministic.  The built-in [cpp_compat_random()] SQL function is an example of a
 ** function that is not deterministic.  The SQLite query planner is able to
 ** perform additional optimizations on deterministic functions, so use
 ** of the [SQLITE_DETERMINISTIC] flag is recommended where possible.
@@ -5293,7 +5293,7 @@ SQLITE_API int sqlite3_create_window_function(
 ** The [load_extension() SQL function] is not innocuous because of its
 ** side effects.
 ** <p> SQLITE_INNOCUOUS is similar to SQLITE_DETERMINISTIC, but is not
-** exactly the same.  The [random|random() function] is an example of a
+** exactly the same.  The [random|cpp_compat_random() function] is an example of a
 ** function that is innocuous but not deterministic.
 ** <p>Some heightened security settings
 ** ([SQLITE_DBCONFIG_TRUSTED_SCHEMA] and [PRAGMA trusted_schema=OFF])
