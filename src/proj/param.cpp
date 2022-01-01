@@ -165,7 +165,7 @@ PROJVALUE pj_param (PJ_CONTEXT *ctx, paralist *pl, const char *opt) {
 
     if (nullptr==strchr ("tbirds", type)) {
         cpp_compat_printerrf("invalid request to pj_param, fatal\n");
-        exit(1);
+        cpp_compat_exit(1);
     }
 
     pl = pj_param_exists (pl, opt);

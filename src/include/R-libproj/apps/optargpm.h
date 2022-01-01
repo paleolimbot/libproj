@@ -114,7 +114,7 @@ int main(int argc, char **argv) {
 
     if (opt_given (o, "h")) {
         printf ("Usage: %s [-v|--verbose] [-h|--help] [-o|--output <filename>] [--hello=<name>] infile...", o->progname);
-        exit (0);
+        cpp_compat_exit(0);
     }
 
     if (opt_given (o, "v"))
@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
 
     if (opt_given (o, "hello")) {
         printf ("Hello, %s!\n", opt_arg(o, "hello"));
-        exit (0);
+        cpp_compat_exit(0);
     }
 
     if (opt_given (o, "o"))
