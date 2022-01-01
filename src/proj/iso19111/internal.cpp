@@ -45,7 +45,7 @@
 #include <sstream> // std::istringstream and std::ostringstream
 #include <string>
 
-#include "sqlite3.h"
+#include "R-libproj/sqlite3.h"
 
 NS_PROJ_START
 
