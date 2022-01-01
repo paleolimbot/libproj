@@ -18,7 +18,6 @@ void cpp_compat_printerrf(const char* fmt, ...);
 void cpp_compat_abort();
 void cpp_compat_exit(int code);
 long int cpp_compat_random();
-void cpp_compat_srandom(int seed);
 
 #ifdef __cplusplus
 }

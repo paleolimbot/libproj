@@ -15,7 +15,7 @@ void cpp_compat_printf(const char* fmt, ...) {
   vsnprintf(buf, 8096, fmt, args);
   va_end(args);
 
-  Rprintf(buf);
+  Rprintf("%s", buf);
 }
 
 void cpp_compat_printerrf(const char* fmt, ...) {
@@ -26,7 +26,7 @@ void cpp_compat_printerrf(const char* fmt, ...) {
   vsnprintf(buf, 8096, fmt, args);
   va_end(args);
 
-  REprintf(buf);
+  REprintf("%s", buf);
 }
 
 void cpp_compat_abort() {
@@ -42,10 +42,6 @@ long int cpp_compat_random() {
   // this should only be used for (very) low-quality random numbers
   double unif_rand_ish = (clock() % CLOCKS_PER_SEC) / ((double) CLOCKS_PER_SEC);
   return unif_rand_ish * RAND_MAX;
-}
-
-void cpp_compat_srandom(int seed) {
-  // not used in libproj
 }
 
 int cpp_compat_putchar(int c) {
