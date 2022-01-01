@@ -33,10 +33,10 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/iso19111/operation/esriparammappings.hpp"
-#include "R-libproj/proj_constants.h"
+#include "esriparammappings.hpp"
+#include "proj_constants.h"
 
-#include "R-libproj/proj/internal/internal.hpp"
+#include "proj/internal/internal.hpp"
 
 NS_PROJ_START
 
@@ -744,9 +744,18 @@ static const ESRIParamMapping paramsESRI_Goode_Homolosine_alt1[] = {
      EPSG_CODE_PARAMETER_FALSE_NORTHING, "0.0", false},
     {"Central_Meridian", EPSG_NAME_PARAMETER_LONGITUDE_OF_NATURAL_ORIGIN,
      EPSG_CODE_PARAMETER_LONGITUDE_OF_NATURAL_ORIGIN, "0.0", false},
-    {"Option", nullptr, 0, "1.0", false},
+    {"Option", nullptr, 0, "0.0", false},
     {nullptr, nullptr, 0, "0.0", false}};
 static const ESRIParamMapping paramsESRI_Goode_Homolosine_alt2[] = {
+    {"False_Easting", EPSG_NAME_PARAMETER_FALSE_EASTING,
+     EPSG_CODE_PARAMETER_FALSE_EASTING, "0.0", false},
+    {"False_Northing", EPSG_NAME_PARAMETER_FALSE_NORTHING,
+     EPSG_CODE_PARAMETER_FALSE_NORTHING, "0.0", false},
+    {"Central_Meridian", EPSG_NAME_PARAMETER_LONGITUDE_OF_NATURAL_ORIGIN,
+     EPSG_CODE_PARAMETER_LONGITUDE_OF_NATURAL_ORIGIN, "0.0", false},
+    {"Option", nullptr, 0, "1.0", false},
+    {nullptr, nullptr, 0, "0.0", false}};
+static const ESRIParamMapping paramsESRI_Goode_Homolosine_alt3[] = {
     {"False_Easting", EPSG_NAME_PARAMETER_FALSE_EASTING,
      EPSG_CODE_PARAMETER_FALSE_EASTING, "0.0", false},
     {"False_Northing", EPSG_NAME_PARAMETER_FALSE_NORTHING,
@@ -1063,11 +1072,13 @@ static const ESRIMethodMapping esriMappings[] = {
      EPSG_NAME_METHOD_HOTINE_OBLIQUE_MERCATOR_VARIANT_B,
      EPSG_CODE_METHOD_HOTINE_OBLIQUE_MERCATOR_VARIANT_B,
      paramsESRI_Rectified_Skew_Orthomorphic_Center},
-    {"Goode_Homolosine", PROJ_WKT2_NAME_METHOD_INTERRUPTED_GOODE_HOMOLOSINE, 0,
+    {"Goode_Homolosine", PROJ_WKT2_NAME_METHOD_GOODE_HOMOLOSINE, 0,
      paramsESRI_Goode_Homolosine_alt1},
+    {"Goode_Homolosine", PROJ_WKT2_NAME_METHOD_INTERRUPTED_GOODE_HOMOLOSINE, 0,
+     paramsESRI_Goode_Homolosine_alt2},
     {"Goode_Homolosine",
      PROJ_WKT2_NAME_METHOD_INTERRUPTED_GOODE_HOMOLOSINE_OCEAN, 0,
-     paramsESRI_Goode_Homolosine_alt2},
+     paramsESRI_Goode_Homolosine_alt3},
     {"Equidistant_Cylindrical_Ellipsoidal",
      EPSG_NAME_METHOD_EQUIDISTANT_CYLINDRICAL,
      EPSG_CODE_METHOD_EQUIDISTANT_CYLINDRICAL,

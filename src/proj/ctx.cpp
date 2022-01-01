@@ -34,10 +34,10 @@
 
 #include <new>
 
-#include "R-libproj/proj_experimental.h"
-#include "R-libproj/proj_internal.h"
-#include "R-libproj/filemanager.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj_experimental.h"
+#include "proj_internal.h"
+#include "filemanager.hpp"
+#include "proj/internal/io_internal.hpp"
 
 /************************************************************************/
 /*                             pj_get_ctx()                             */

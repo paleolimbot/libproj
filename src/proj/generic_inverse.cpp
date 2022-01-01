@@ -26,7 +26,7 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#include "R-libproj/proj_internal.h"
+#include "proj_internal.h"
 
 #include <algorithm>
 #include <cmath>

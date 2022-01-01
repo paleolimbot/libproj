@@ -33,8 +33,8 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/coordinateoperation.hpp"
+#include "proj/util.hpp"
 
 // ---------------------------------------------------------------------------
 

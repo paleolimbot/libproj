@@ -5,9 +5,9 @@
 #include <string.h>
 #include <time.h>
 
-#include "R-libproj/proj_internal.h"
-#include "R-libproj/proj/internal/mutex.hpp"
-#include "R-libproj/grids.hpp"
+#include "proj_internal.h"
+#include "proj/internal/mutex.hpp"
+#include "grids.hpp"
 
 PROJ_HEAD(vgridshift, "Vertical grid shift");
 

@@ -35,12 +35,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "R-libproj/geodesic.h"
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
-#include "R-libproj/filemanager.hpp"
+#include "geodesic.h"
+#include "proj.h"
+#include "proj_internal.h"
+#include "filemanager.hpp"
 #include <math.h>
-
 
 /**************************************************************************************/
 static paralist *string_to_paralist (PJ_CONTEXT *ctx, char *definition) {

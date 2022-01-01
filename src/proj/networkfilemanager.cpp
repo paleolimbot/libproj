@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  Functionality related to network access and caching
@@ -37,17 +36,17 @@
 #include <limits>
 #include <string>
 
-#include "R-libproj/filemanager.hpp"
-#include "R-libproj/proj.h"
-#include "R-libproj/proj/internal/internal.hpp"
-#include "R-libproj/proj/internal/lru_cache.hpp"
-#include "R-libproj/proj/internal/mutex.hpp"
-#include "R-libproj/proj_internal.h"
-#include "R-libproj/sqlite3_utils.hpp"
+#include "filemanager.hpp"
+#include "proj.h"
+#include "proj/internal/internal.hpp"
+#include "proj/internal/lru_cache.hpp"
+#include "proj/internal/mutex.hpp"
+#include "proj_internal.h"
+#include "sqlite3_utils.hpp"
 
 #ifdef CURL_ENABLED
 #include <curl/curl.h>
-#include "R-libproj/sqlite3.h" // for sqlite3_snprintf
+#include <sqlite3.h> // for sqlite3_snprintf
 #endif
 
 #include <sys/stat.h>
@@ -394,7 +393,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("Rows in chunk_data not referenced by chunks.\n");
+        fprintf(stderr, "Rows in chunk_data not referenced by chunks.\n");
         return false;
     }
 
@@ -404,7 +403,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("Rows in chunks not referenced by linked_chunks.\n");
+        fprintf(stderr, "Rows in chunks not referenced by linked_chunks.\n");
         return false;
     }
 
@@ -415,7 +414,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("url values in chunks not referenced by properties.\n");
+        fprintf(stderr, "url values in chunks not referenced by properties.\n");
         return false;
     }
 
@@ -424,13 +423,13 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_ROW) {
-        cpp_compat_printerrf("linked_chunks_head_tail empty.\n");
+        fprintf(stderr, "linked_chunks_head_tail empty.\n");
         return false;
     }
     const auto head = stmt->getInt64();
     const auto tail = stmt->getInt64();
     if (stmt->execute() != SQLITE_DONE) {
-        cpp_compat_printerrf("linked_chunks_head_tail has more than one row.\n");
+        fprintf(stderr, "linked_chunks_head_tail has more than one row.\n");
         return false;
     }
 
@@ -439,7 +438,7 @@ bool DiskChunkCache::checkConsistency() {
         return false;
     }
     if (stmt->execute() != SQLITE_ROW) {
-        cpp_compat_printerrf("linked_chunks_head_tail empty.\n");
+        fprintf(stderr, "linked_chunks_head_tail empty.\n");
         return false;
     }
     const auto count_linked_chunks = stmt->getInt64();
@@ -456,33 +455,33 @@ bool DiskChunkCache::checkConsistency() {
             stmt->reset();
             stmt->bindInt64(id);
             if (stmt->execute() != SQLITE_ROW) {
-                cpp_compat_printerrf("cannot find linked_chunks.id = %d.\n",
+                fprintf(stderr, "cannot find linked_chunks.id = %d.\n",
                         static_cast<int>(id));
                 return false;
             }
             auto next = stmt->getInt64();
             if (next == 0) {
                 if (id != tail) {
-                    cpp_compat_printerrf(
+                    fprintf(stderr,
                             "last item when following next is not tail.\n");
                     return false;
                 }
                 break;
             }
             if (visitedIds.find(next) != visitedIds.end()) {
-                cpp_compat_printerrf("found cycle on linked_chunks.next = %d.\n",
+                fprintf(stderr, "found cycle on linked_chunks.next = %d.\n",
                         static_cast<int>(next));
                 return false;
             }
             id = next;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            cpp_compat_printerrf(
+            fprintf(stderr,
                     "ghost items in linked_chunks when following next.\n");
             return false;
         }
     } else if (count_linked_chunks) {
-        cpp_compat_printerrf("linked_chunks_head_tail.head = NULL but linked_chunks "
+        fprintf(stderr, "linked_chunks_head_tail.head = NULL but linked_chunks "
                         "not empty.\n");
         return false;
     }
@@ -499,38 +498,38 @@ bool DiskChunkCache::checkConsistency() {
             stmt->reset();
             stmt->bindInt64(id);
             if (stmt->execute() != SQLITE_ROW) {
-                cpp_compat_printerrf("cannot find linked_chunks.id = %d.\n",
+                fprintf(stderr, "cannot find linked_chunks.id = %d.\n",
                         static_cast<int>(id));
                 return false;
             }
             auto prev = stmt->getInt64();
             if (prev == 0) {
                 if (id != head) {
-                    cpp_compat_printerrf(
+                    fprintf(stderr,
                             "last item when following prev is not head.\n");
                     return false;
                 }
                 break;
             }
             if (visitedIds.find(prev) != visitedIds.end()) {
-                cpp_compat_printerrf("found cycle on linked_chunks.prev = %d.\n",
+                fprintf(stderr, "found cycle on linked_chunks.prev = %d.\n",
                         static_cast<int>(prev));
                 return false;
             }
             id = prev;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            cpp_compat_printerrf(
+            fprintf(stderr,
                     "ghost items in linked_chunks when following prev.\n");
             return false;
         }
     } else if (count_linked_chunks) {
-        cpp_compat_printerrf("linked_chunks_head_tail.tail = NULL but linked_chunks "
+        fprintf(stderr, "linked_chunks_head_tail.tail = NULL but linked_chunks "
                         "not empty.\n");
         return false;
     }
 
-    cpp_compat_printerrf("check ok\n");
+    fprintf(stderr, "check ok\n");
     return true;
 }
 
@@ -1186,7 +1185,7 @@ bool NetworkFilePropertiesCache::tryGet(PJ_CONTEXT *ctx, const std::string &url,
     if (stmt->execute() != SQLITE_ROW) {
         return false;
     }
-    props.lastChecked = stmt->getInt64();
+    props.lastChecked = static_cast<time_t>(stmt->getInt64());
     props.size = stmt->getInt64();
     const char *lastModified = stmt->getText();
     props.lastModified = lastModified ? lastModified : std::string();
@@ -1681,7 +1680,7 @@ static double GetNewRetryDelay(int response_code, double dfOldDelay,
         // Use an exponential backoff factor of 2 plus some random jitter
         // We don't care about cryptographic quality randomness, hence:
         // coverity[dont_call]
-        return dfOldDelay * (2 + cpp_compat_random() * 0.5 / RAND_MAX);
+        return dfOldDelay * (2 + rand() * 0.5 / RAND_MAX);
     } else {
         return 0;
     }
@@ -2266,7 +2265,7 @@ int proj_is_download_needed(PJ_CONTEXT *ctx, const char *url_or_filename,
     }
 
     NS_PROJ::FileProperties cachedProps;
-    cachedProps.lastChecked = stmt->getInt64();
+    cachedProps.lastChecked = static_cast<time_t>(stmt->getInt64());
     cachedProps.size = stmt->getInt64();
     const char *lastModified = stmt->getText();
     cachedProps.lastModified = lastModified ? lastModified : std::string();

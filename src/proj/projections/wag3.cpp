@@ -3,8 +3,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(wag3, "Wagner III") "\n\tPCyl, Sph\n\tlat_ts=";
 

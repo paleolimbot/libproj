@@ -49,12 +49,12 @@
 
 #include <new>
 
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
-#include "R-libproj/grids.hpp"
-#include "R-libproj/filemanager.hpp"
+#include "proj.h"
+#include "proj_internal.h"
+#include "grids.hpp"
+#include "filemanager.hpp"
 
 using namespace NS_PROJ;
 

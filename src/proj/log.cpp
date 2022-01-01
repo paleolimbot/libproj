@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ.4
  * Purpose:  Implementation of pj_log() function.
@@ -31,8 +30,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 /************************************************************************/
 /*                          pj_stderr_logger()                          */
@@ -43,29 +42,40 @@ void pj_stderr_logger( void *app_data, int level, const char *msg )
 {
     (void) app_data;
     (void) level;
-    cpp_compat_printerrf("%s\n", msg );
+    fprintf( stderr, "%s\n", msg );
 }
 
 /************************************************************************/
-/*                               pj_vlog()                              */
+/*                           pj_log_active()                            */
 /************************************************************************/
-void pj_vlog( PJ_CONTEXT *ctx, int level, const char *fmt, va_list args );
 
-void pj_vlog( PJ_CONTEXT *ctx, int level, const char *fmt, va_list args )
-
+bool pj_log_active( PJ_CONTEXT *ctx, int level )
 {
-    char *msg_buf;
     int debug_level = ctx->debug_level;
     int shutup_unless_errno_set = debug_level < 0;
 
     /* For negative debug levels, we first start logging when errno is set */
     if (ctx->last_errno==0 && shutup_unless_errno_set)
-        return;
+        return false;
 
     if (debug_level < 0)
         debug_level = -debug_level;
 
     if( level > debug_level )
+        return false;
+    return true;
+}
+
+/************************************************************************/
+/*                               pj_vlog()                              */
+/************************************************************************/
+
+static
+void pj_vlog( PJ_CONTEXT *ctx, int level, const PJ* P, const char *fmt, va_list args )
+
+{
+    char *msg_buf;
+    if( !pj_log_active(ctx, level) )
         return;
 
     constexpr size_t BUF_SIZE = 100000;
@@ -73,14 +83,21 @@ void pj_vlog( PJ_CONTEXT *ctx, int level, const char *fmt, va_list args )
     if( msg_buf == nullptr )
         return;
 
-    vsnprintf( msg_buf, BUF_SIZE, fmt, args );
+    if( P == nullptr || P->short_name == nullptr )
+        vsnprintf( msg_buf, BUF_SIZE, fmt, args );
+    else
+    {
+        std::string fmt_with_P_short_name(P->short_name);
+        fmt_with_P_short_name += ": ";
+        fmt_with_P_short_name += fmt;
+        vsnprintf( msg_buf, BUF_SIZE, fmt_with_P_short_name.c_str(), args );
+    }
     msg_buf[BUF_SIZE-1] = '\0';
 
     ctx->logger( ctx->logger_app_data, level, msg_buf );
 
     free( msg_buf );
 }
-
 
 /************************************************************************/
 /*                               pj_log()                               */
@@ -95,7 +112,7 @@ void pj_log( PJ_CONTEXT *ctx, int level, const char *fmt, ... )
         return;
 
     va_start( args, fmt );
-    pj_vlog( ctx, level, fmt, args );
+    pj_vlog( ctx, level, nullptr, fmt, args );
     va_end( args );
 }
 
@@ -119,25 +136,13 @@ PJ_LOG_LEVEL proj_log_level (PJ_CONTEXT *ctx, PJ_LOG_LEVEL log_level) {
 }
 
 /*****************************************************************************/
-static std::string add_short_name_prefix(const PJ* P, const char* fmt)
-/*****************************************************************************/
-{
-    if( P->short_name == nullptr )
-        return fmt;
-    std::string ret(P->short_name);
-    ret += ": ";
-    ret += fmt;
-    return ret;
-}
-
-/*****************************************************************************/
 void proj_log_error (const PJ *P, const char *fmt, ...) {
 /******************************************************************************
    For reporting the most severe events.
 ******************************************************************************/
     va_list args;
     va_start( args, fmt );
-    pj_vlog (pj_get_ctx ((PJ*)P), PJ_LOG_ERROR , add_short_name_prefix(P, fmt).c_str(), args);
+    pj_vlog (pj_get_ctx ((PJ*)P), PJ_LOG_ERROR, P, fmt, args);
     va_end( args );
 }
 
@@ -149,7 +154,7 @@ void proj_log_debug (PJ *P, const char *fmt, ...) {
 ******************************************************************************/
     va_list args;
     va_start( args, fmt );
-    pj_vlog (pj_get_ctx (P), PJ_LOG_DEBUG , add_short_name_prefix(P, fmt).c_str(), args);
+    pj_vlog (pj_get_ctx (P), PJ_LOG_DEBUG, P, fmt, args);
     va_end( args );
 }
 
@@ -160,7 +165,7 @@ void proj_context_log_debug (PJ_CONTEXT *ctx, const char *fmt, ...) {
 ******************************************************************************/
     va_list args;
     va_start( args, fmt );
-    pj_vlog (ctx, PJ_LOG_DEBUG , fmt, args);
+    pj_vlog (ctx, PJ_LOG_DEBUG, nullptr, fmt, args);
     va_end( args );
 }
 
@@ -171,7 +176,7 @@ void proj_log_trace (PJ *P, const char *fmt, ...) {
 ******************************************************************************/
     va_list args;
     va_start( args, fmt );
-    pj_vlog (pj_get_ctx (P), PJ_LOG_TRACE , add_short_name_prefix(P, fmt).c_str(), args);
+    pj_vlog (pj_get_ctx (P), PJ_LOG_TRACE, P, fmt, args);
     va_end( args );
 }
 

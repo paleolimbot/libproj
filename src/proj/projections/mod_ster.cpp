@@ -1,8 +1,8 @@
 /* based upon Snyder and Linck, USGS-NMD */
 #define PJ_LIB__
 #include <errno.h>
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 #include <math.h>
 
 PROJ_HEAD(mil_os, "Miller Oblated Stereographic") "\n\tAzi(mod)";

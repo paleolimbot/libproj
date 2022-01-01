@@ -30,7 +30,7 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/internal/internal.hpp"
+#include "proj/internal/internal.hpp"
 
 #include <cstdint>
 #include <cstring>
@@ -45,7 +45,7 @@
 #include <sstream> // std::istringstream and std::ostringstream
 #include <string>
 
-#include "R-libproj/sqlite3.h"
+#include "sqlite3.h"
 
 NS_PROJ_START
 

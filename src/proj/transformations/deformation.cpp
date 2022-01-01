@@ -53,10 +53,10 @@ grid-values in units of mm/year in ENU-space.
 ***********************************************************************/
 #define PJ_LIB__
 #include <errno.h>
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 #include <math.h>
-#include "R-libproj/grids.hpp"
+#include "grids.hpp"
 
 #include <algorithm>
 

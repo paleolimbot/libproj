@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /*
  * This code was entirely written by Nathan Wagner
  * and is in the public domain.
@@ -14,8 +13,8 @@
 #include <limits>
 
 #define PJ_LIB__
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 #include <math.h>
 
 #define DEG36 0.62831853071795864768
@@ -289,7 +288,7 @@ static struct isea_pt isea_triangle_xy(int triangle)
         break;
     default:
         /* should be impossible */
-        cpp_compat_exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     };
     c.x *= Rprime;
     c.y *= Rprime;
@@ -479,10 +478,10 @@ static int isea_snyder_forward(struct isea_geo * ll, struct isea_pt * out)
      * any triangle
      */
 
-    cpp_compat_printerrf("impossible transform: %f %f is not on any triangle\n",
+    fprintf(stderr, "impossible transform: %f %f is not on any triangle\n",
             PJ_TODEG(ll->lon), PJ_TODEG(ll->lat));
 
-    cpp_compat_exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE);
 
     /* not reached */
     return 0;       /* suppresses a warning */

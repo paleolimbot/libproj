@@ -1,6 +1,6 @@
 #define PJ_LIB__
 
-#include "R-libproj/proj_internal.h"
+#include "proj_internal.h"
 #include <errno.h>
 
 PROJ_HEAD(set, "Set coordinate value");

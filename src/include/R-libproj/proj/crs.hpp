@@ -33,12 +33,12 @@
 #include <string>
 #include <vector>
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/coordinatesystem.hpp"
-#include "R-libproj/proj/datum.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "common.hpp"
+#include "coordinateoperation.hpp"
+#include "coordinatesystem.hpp"
+#include "datum.hpp"
+#include "io.hpp"
+#include "util.hpp"
 
 NS_PROJ_START
 
@@ -142,6 +142,8 @@ class PROJ_GCC_DLL CRS : public common::ObjectUsage,
 
     PROJ_INTERNAL bool mustAxisOrderBeSwitchedForVisualization() const;
 
+    PROJ_INTERNAL CRSNNPtr applyAxisOrderReversal(const char *nameSuffix) const;
+
     PROJ_FOR_TEST CRSNNPtr normalizeForVisualization() const;
 
     PROJ_INTERNAL CRSNNPtr allowNonConformantWKT1Export() const;
@@ -172,6 +174,10 @@ class PROJ_GCC_DLL CRS : public common::ObjectUsage,
 
     PROJ_INTERNAL virtual std::list<std::pair<CRSNNPtr, int>>
     _identify(const io::AuthorityFactoryPtr &authorityFactory) const;
+
+    PROJ_INTERNAL void
+    setProperties(const util::PropertyMap
+                      &properties); // throw(InvalidValueTypeException)
 
   private:
     PROJ_OPAQUE_PRIVATE_DATA
@@ -266,6 +272,8 @@ class PROJ_GCC_DLL GeodeticCRS : virtual public SingleCRS,
 
     PROJ_DLL bool isGeocentric() PROJ_PURE_DECL;
 
+    PROJ_DLL bool isSphericalPlanetocentric() PROJ_PURE_DECL;
+
     PROJ_DLL static GeodeticCRSNNPtr
     create(const util::PropertyMap &properties,
            const datum::GeodeticReferenceFrameNNPtr &datum,
@@ -303,6 +311,9 @@ class PROJ_GCC_DLL GeodeticCRS : virtual public SingleCRS,
 
     PROJ_INTERNAL void addGeocentricUnitConversionIntoPROJString(
         io::PROJStringFormatter *formatter) const;
+
+    PROJ_INTERNAL void
+    addAngularUnitConvertAndAxisSwap(io::PROJStringFormatter *formatter) const;
 
     PROJ_INTERNAL void _exportToWKT(io::WKTFormatter *formatter)
         const override; // throw(io::FormattingException)
@@ -396,12 +407,10 @@ class PROJ_GCC_DLL GeographicCRS : public GeodeticCRS {
 
     PROJ_PRIVATE :
         //! @cond Doxygen_Suppress
-        PROJ_INTERNAL void
-        addAngularUnitConvertAndAxisSwap(
-            io::PROJStringFormatter *formatter) const;
 
-    PROJ_INTERNAL void _exportToPROJString(io::PROJStringFormatter *formatter)
-        const override; // throw(FormattingException)
+        PROJ_INTERNAL void
+        _exportToPROJString(io::PROJStringFormatter *formatter)
+            const override; // throw(FormattingException)
 
     PROJ_INTERNAL void _exportToJSON(io::JSONFormatter *formatter)
         const override; // throw(FormattingException)
@@ -1007,6 +1016,11 @@ class PROJ_GCC_DLL BoundCRS final : public CRS,
     //! @endcond
 
     PROJ_DLL static BoundCRSNNPtr
+    create(const util::PropertyMap &properties, const CRSNNPtr &baseCRSIn,
+           const CRSNNPtr &hubCRSIn,
+           const operation::TransformationNNPtr &transformationIn);
+
+    PROJ_DLL static BoundCRSNNPtr
     create(const CRSNNPtr &baseCRSIn, const CRSNNPtr &hubCRSIn,
            const operation::TransformationNNPtr &transformationIn);
 
@@ -1167,6 +1181,10 @@ class PROJ_GCC_DLL DerivedGeographicCRS final : public GeographicCRS,
            const GeodeticCRSNNPtr &baseCRSIn,
            const operation::ConversionNNPtr &derivingConversionIn,
            const cs::EllipsoidalCSNNPtr &csIn);
+
+    PROJ_DLL DerivedGeographicCRSNNPtr
+    demoteTo2D(const std::string &newName,
+               const io::DatabaseContextPtr &dbContext) const;
 
     //! @cond Doxygen_Suppress
     PROJ_INTERNAL void _exportToWKT(io::WKTFormatter *formatter)

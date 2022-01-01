@@ -37,9 +37,9 @@
 #define DEFMODEL_HPP
 
 #ifdef PROJ_COMPILATION
-#include "R-libproj/proj/internal/include_nlohmann_json.hpp"
+#include "proj/internal/include_nlohmann_json.hpp"
 #else
-#include "R-libproj/nlohmann/json.hpp"
+#include "nlohmann/json.hpp"
 #endif
 
 #include <algorithm>
@@ -54,7 +54,7 @@
 #define DEFORMATON_MODEL_NAMESPACE DeformationModel
 #endif
 
-#include "R-libproj/transformations/defmodel_exceptions.hpp"
+#include "defmodel_exceptions.hpp"
 
 namespace DEFORMATON_MODEL_NAMESPACE {
 
@@ -634,6 +634,6 @@ class Evaluator {
 
 // ---------------------------------------------------------------------------
 
-#include "R-libproj/transformations/defmodel_impl.hpp"
+#include "defmodel_impl.hpp"
 
 #endif // DEFMODEL_HPP

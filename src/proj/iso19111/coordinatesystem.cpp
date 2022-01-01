@@ -30,17 +30,17 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/coordinatesystem.hpp"
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/coordinatesystem.hpp"
+#include "proj/common.hpp"
+#include "proj/io.hpp"
+#include "proj/metadata.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/coordinatesystem_internal.hpp"
-#include "R-libproj/proj/internal/internal.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj/internal/coordinatesystem_internal.hpp"
+#include "proj/internal/internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_json_streaming_writer.hpp"
 
 #include <map>
 #include <memory>
@@ -660,6 +660,27 @@ SphericalCSNNPtr SphericalCS::create(const util::PropertyMap &properties,
                                      const CoordinateSystemAxisNNPtr &axis2,
                                      const CoordinateSystemAxisNNPtr &axis3) {
     std::vector<CoordinateSystemAxisNNPtr> axis{axis1, axis2, axis3};
+    auto cs(SphericalCS::nn_make_shared<SphericalCS>(axis));
+    cs->setProperties(properties);
+    return cs;
+}
+
+// ---------------------------------------------------------------------------
+
+/** \brief Instantiate a SphericalCS with 2 axis.
+ *
+ * This is an extension to ISO19111 to support (planet)-ocentric CS with
+ * geocentric latitude.
+ *
+ * @param properties See \ref general_properties.
+ * @param axis1 The first axis.
+ * @param axis2 The second axis.
+ * @return a new SphericalCS.
+ */
+SphericalCSNNPtr SphericalCS::create(const util::PropertyMap &properties,
+                                     const CoordinateSystemAxisNNPtr &axis1,
+                                     const CoordinateSystemAxisNNPtr &axis2) {
+    std::vector<CoordinateSystemAxisNNPtr> axis{axis1, axis2};
     auto cs(SphericalCS::nn_make_shared<SphericalCS>(axis));
     cs->setProperties(properties);
     return cs;

@@ -5,7 +5,7 @@
  * Author:   Even Rouault <even dot rouault at spatialys dot com>
  *
  ******************************************************************************
- * Copyright (c) 2018, Even Rouault <even dot rouault at spatialys dot com>
+ * Copyright (c) 2021, Even Rouault <even dot rouault at spatialys dot com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,31 +26,16 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef OPERATIONMETHOD_PRIVATE_HPP
-#define OPERATIONMETHOD_PRIVATE_HPP
+#ifndef FROM_PROJ_CPP
+#error This file should only be included from a PROJ cpp file
+#endif
 
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/util.hpp"
+#ifndef CRS_INTERNAL_HH_INCLUDED
+#define CRS_INTERNAL_HH_INCLUDED
 
-// ---------------------------------------------------------------------------
+#define NORMALIZED_AXIS_ORDER_SUFFIX_STR                                       \
+    " (with axis order normalized for visualization)"
 
-NS_PROJ_START
-namespace operation {
+#define AXIS_ORDER_REVERSED_SUFFIX_STR " (with axis order reversed)"
 
-// ---------------------------------------------------------------------------
-
-//! @cond Doxygen_Suppress
-struct OperationMethod::Private {
-    util::optional<std::string> formula_{};
-    util::optional<metadata::Citation> formulaCitation_{};
-    std::vector<GeneralOperationParameterNNPtr> parameters_{};
-    std::string projMethodOverride_{};
-};
-//! @endcond
-
-// ---------------------------------------------------------------------------
-
-} // namespace operation
-NS_PROJ_END
-
-#endif // OPERATIONMETHOD_PRIVATE_HPP
+#endif // CRS_INTERNAL_HH_INCLUDED

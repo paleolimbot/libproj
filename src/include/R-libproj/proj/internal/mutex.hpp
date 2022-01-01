@@ -26,8 +26,8 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#include "R-libproj/proj/util.hpp"
-#include "R-libproj/proj_internal.h"
+#include "proj/util.hpp"
+#include "proj_internal.h"
 
 #ifndef __MINGW32__
 #include <mutex>

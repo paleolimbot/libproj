@@ -30,27 +30,28 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/crs.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/common.hpp"
+#include "proj/coordinateoperation.hpp"
+#include "proj/crs.hpp"
+#include "proj/io.hpp"
+#include "proj/metadata.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/internal.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj/internal/crs_internal.hpp"
+#include "proj/internal/internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
-#include "R-libproj/iso19111/operation/coordinateoperation_internal.hpp"
-#include "R-libproj/iso19111/operation/oputils.hpp"
+#include "coordinateoperation_internal.hpp"
+#include "oputils.hpp"
 
 // PROJ include order is sensitive
 // clang-format off
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h" // M_PI
+#include "proj.h"
+#include "proj_internal.h" // M_PI
 // clang-format on
-#include "R-libproj/proj_constants.h"
+#include "proj_constants.h"
 
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_json_streaming_writer.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -245,15 +246,44 @@ void ConcatenatedOperation::fixStepsDirection(
         return false;
     };
 
+    // Apply axis order reversal operation on first operation if needed
+    // to set CRSs on it
+    if (operationsInOut.size() >= 1) {
+        auto &op = operationsInOut.front();
+        auto l_sourceCRS = op->sourceCRS();
+        auto l_targetCRS = op->targetCRS();
+        auto conv = dynamic_cast<const Conversion *>(op.get());
+        if (conv && !l_sourceCRS && !l_targetCRS &&
+            isAxisOrderReversal(conv->method()->getEPSGCode())) {
+            auto reversedCRS = concatOpSourceCRS->applyAxisOrderReversal(
+                NORMALIZED_AXIS_ORDER_SUFFIX_STR);
+            op->setCRSs(concatOpSourceCRS, reversedCRS, nullptr);
+        }
+    }
+
+    // Apply axis order reversal operation on last operation if needed
+    // to set CRSs on it
+    if (operationsInOut.size() >= 2) {
+        auto &op = operationsInOut.back();
+        auto l_sourceCRS = op->sourceCRS();
+        auto l_targetCRS = op->targetCRS();
+        auto conv = dynamic_cast<const Conversion *>(op.get());
+        if (conv && !l_sourceCRS && !l_targetCRS &&
+            isAxisOrderReversal(conv->method()->getEPSGCode())) {
+            auto reversedCRS = concatOpTargetCRS->applyAxisOrderReversal(
+                NORMALIZED_AXIS_ORDER_SUFFIX_STR);
+            op->setCRSs(reversedCRS, concatOpTargetCRS, nullptr);
+        }
+    }
+
     for (size_t i = 0; i < operationsInOut.size(); ++i) {
         auto &op = operationsInOut[i];
         auto l_sourceCRS = op->sourceCRS();
         auto l_targetCRS = op->targetCRS();
         auto conv = dynamic_cast<const Conversion *>(op.get());
         if (conv && i == 0 && !l_sourceCRS && !l_targetCRS) {
-            auto derivedCRS =
-                dynamic_cast<const crs::DerivedCRS *>(concatOpSourceCRS.get());
-            if (derivedCRS) {
+            if (auto derivedCRS = dynamic_cast<const crs::DerivedCRS *>(
+                    concatOpSourceCRS.get())) {
                 if (i + 1 < operationsInOut.size()) {
                     // use the sourceCRS of the next operation as our target CRS
                     l_targetCRS = operationsInOut[i + 1]->sourceCRS();
@@ -335,13 +365,26 @@ void ConcatenatedOperation::fixStepsDirection(
                 }
             }
         } else if (conv && i > 0 && i < operationsInOut.size() - 1) {
-            // For an intermediate conversion, use the target CRS of the
-            // previous step and the source CRS of the next step
+
             l_sourceCRS = operationsInOut[i - 1]->targetCRS();
             l_targetCRS = operationsInOut[i + 1]->sourceCRS();
+            // For an intermediate conversion, use the target CRS of the
+            // previous step and the source CRS of the next step
             if (l_sourceCRS && l_targetCRS) {
-                op->setCRSs(NN_NO_CHECK(l_sourceCRS), NN_NO_CHECK(l_targetCRS),
-                            nullptr);
+                // If the sourceCRS is a projectedCRS and the target a
+                // geographic one, then we must inverse the operation. See
+                // https://github.com/OSGeo/PROJ/issues/2817
+                if (dynamic_cast<const crs::ProjectedCRS *>(
+                        l_sourceCRS.get()) &&
+                    dynamic_cast<const crs::GeographicCRS *>(
+                        l_targetCRS.get())) {
+                    op->setCRSs(NN_NO_CHECK(l_targetCRS),
+                                NN_NO_CHECK(l_sourceCRS), nullptr);
+                    op = op->inverse();
+                } else {
+                    op->setCRSs(NN_NO_CHECK(l_sourceCRS),
+                                NN_NO_CHECK(l_targetCRS), nullptr);
+                }
             } else if (l_sourceCRS && l_targetCRS == nullptr &&
                        conv->method()->getEPSGCode() ==
                            EPSG_CODE_METHOD_HEIGHT_DEPTH_REVERSAL) {
@@ -380,6 +423,11 @@ void ConcatenatedOperation::fixStepsDirection(
             // whereas we should instead use the reverse path.
             auto prevOpTarget = (i == 0) ? concatOpSourceCRS.as_nullable()
                                          : operationsInOut[i - 1]->targetCRS();
+            if (prevOpTarget == nullptr) {
+                throw InvalidOperation(
+                    "Cannot determine targetCRS of operation at step " +
+                    toString(static_cast<int>(i)));
+            }
             if (compareStepCRS(l_sourceCRS.get(), prevOpTarget.get())) {
                 // do nothing
             } else if (compareStepCRS(l_targetCRS.get(), prevOpTarget.get())) {

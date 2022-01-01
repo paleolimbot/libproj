@@ -27,9 +27,9 @@
  *****************************************************************************/
 
 #define PJ_LIB__
-#include "R-libproj/proj.h"
+#include "proj.h"
 #include <errno.h>
-#include "R-libproj/proj_internal.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(airy, "Airy") "\n\tMisc Sph, no inv\n\tno_cut lat_b=";
 

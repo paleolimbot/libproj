@@ -30,29 +30,29 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/crs.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/common.hpp"
+#include "proj/coordinateoperation.hpp"
+#include "proj/crs.hpp"
+#include "proj/io.hpp"
+#include "proj/metadata.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/internal.hpp"
-#include "R-libproj/proj/internal/io_internal.hpp"
+#include "proj/internal/internal.hpp"
+#include "proj/internal/io_internal.hpp"
 
-#include "R-libproj/iso19111/operation/coordinateoperation_internal.hpp"
-#include "R-libproj/iso19111/operation/coordinateoperation_private.hpp"
-#include "R-libproj/iso19111/operation/operationmethod_private.hpp"
-#include "R-libproj/iso19111/operation/oputils.hpp"
-#include "R-libproj/iso19111/operation/parammappings.hpp"
+#include "coordinateoperation_internal.hpp"
+#include "coordinateoperation_private.hpp"
+#include "operationmethod_private.hpp"
+#include "oputils.hpp"
+#include "parammappings.hpp"
 
 // PROJ include order is sensitive
 // clang-format off
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h" // M_PI
+#include "proj.h"
+#include "proj_internal.h" // M_PI
 // clang-format on
-#include "R-libproj/proj_constants.h"
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_constants.h"
+#include "proj_json_streaming_writer.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -2118,15 +2118,18 @@ bool SingleOperation::exportToPROJStringGeneric(
     }
 
     if (methodEPSGCode == EPSG_CODE_METHOD_CHANGE_VERTICAL_UNIT) {
-        double convFactor = parameterValueNumericAsSI(
+        const double convFactor = parameterValueNumericAsSI(
             EPSG_CODE_PARAMETER_UNIT_CONVERSION_SCALAR);
-        auto uom = common::UnitOfMeasure(std::string(), convFactor,
-                                         common::UnitOfMeasure::Type::LINEAR)
-                       .exportToPROJString();
-        auto reverse_uom =
-            common::UnitOfMeasure(std::string(), 1.0 / convFactor,
+        const auto uom =
+            common::UnitOfMeasure(std::string(), convFactor,
                                   common::UnitOfMeasure::Type::LINEAR)
                 .exportToPROJString();
+        const auto reverse_uom =
+            convFactor == 0.0
+                ? std::string()
+                : common::UnitOfMeasure(std::string(), 1.0 / convFactor,
+                                        common::UnitOfMeasure::Type::LINEAR)
+                      .exportToPROJString();
         if (uom == "m") {
             // do nothing
         } else if (!uom.empty()) {

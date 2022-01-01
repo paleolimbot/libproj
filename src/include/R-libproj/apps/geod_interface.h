@@ -1,7 +1,7 @@
 #if !defined(GEOD_INTERFACE_H)
 #define GEOD_INTERFACE_H
 
-#include "R-libproj/geodesic.h"
+#include "geodesic.h"
 
 #ifdef __cplusplus
 extern "C" {

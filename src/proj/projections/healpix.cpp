@@ -33,8 +33,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(healpix, "HEALPix") "\n\tSph&Ell\n\trot_xy=";
 PROJ_HEAD(rhealpix, "rHEALPix") "\n\tSph&Ell\n\tnorth_square= south_square=";
@@ -416,7 +416,7 @@ static CapMap get_cap(double x, double y, int north_square, int south_square,
             } else {
                 capmap.cn = north_square;
             }
-        } else if (capmap.region == CapMap::south) {
+        } else /* if (capmap.region == CapMap::south) */ {
             if (y <= x + M_FORTPI + EPS && y > -x - 5*M_FORTPI + EPS) {
                 capmap.cn = (south_square + 1) % 4;
             } else if (y < x + M_FORTPI - EPS && y <= -x - 5*M_FORTPI + EPS) {

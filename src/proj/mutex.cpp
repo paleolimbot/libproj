@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ.4
  * Purpose:  Mutex (thread lock) functions.
@@ -31,11 +30,11 @@
 #define _GNU_SOURCE
 #endif
 
-#include "R-libproj/proj.h"
+#include "proj.h"
 #ifndef _WIN32
-#include "R-libproj/proj_config.h"
+#include "proj_config.h"
 #endif
-#include "R-libproj/proj_internal.h"
+#include "proj_internal.h"
 
 /* on win32 we always use win32 mutexes, even if pthreads are available */
 #if defined(_WIN32) && !defined(MUTEX_stub)
@@ -94,16 +93,16 @@ void pj_cleanup_lock()
 
 #ifdef MUTEX_pthread
 
-#include "R-libproj/pthread.h"
+#include "pthread.h"
 
 #ifdef PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP
 #ifdef __GNUC__
-// #pragma GCC diagnostic push
-// #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
 #endif
 static pthread_mutex_t core_lock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 #ifdef __GNUC__
-// #pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
 #endif
 #else
 static pthread_mutex_t core_lock;
@@ -143,7 +142,7 @@ void pj_acquire_lock()
     static pthread_once_t sOnceKey = PTHREAD_ONCE_INIT;
     if( pthread_once(&sOnceKey, pj_create_lock) != 0 )
     {
-        cpp_compat_printerrf("pthread_once() failed in pj_acquire_lock().\n");
+        fprintf(stderr, "pthread_once() failed in pj_acquire_lock().\n");
     }
 #endif
 

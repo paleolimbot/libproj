@@ -29,8 +29,8 @@
 #ifndef VECTOROFVALUESPARAMS_HPP
 #define VECTOROFVALUESPARAMS_HPP
 
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/coordinateoperation.hpp"
+#include "proj/util.hpp"
 
 // ---------------------------------------------------------------------------
 

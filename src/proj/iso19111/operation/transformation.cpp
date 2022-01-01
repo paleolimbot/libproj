@@ -30,31 +30,31 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/crs.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/metadata.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/common.hpp"
+#include "proj/coordinateoperation.hpp"
+#include "proj/crs.hpp"
+#include "proj/io.hpp"
+#include "proj/metadata.hpp"
+#include "proj/util.hpp"
 
-#include "R-libproj/proj/internal/internal.hpp"
+#include "proj/internal/internal.hpp"
 
-#include "R-libproj/iso19111/operation/coordinateoperation_internal.hpp"
-#include "R-libproj/iso19111/operation/coordinateoperation_private.hpp"
-#include "R-libproj/iso19111/operation/esriparammappings.hpp"
-#include "R-libproj/iso19111/operation/operationmethod_private.hpp"
-#include "R-libproj/iso19111/operation/oputils.hpp"
-#include "R-libproj/iso19111/operation/parammappings.hpp"
-#include "R-libproj/iso19111/operation/vectorofvaluesparams.hpp"
+#include "coordinateoperation_internal.hpp"
+#include "coordinateoperation_private.hpp"
+#include "esriparammappings.hpp"
+#include "operationmethod_private.hpp"
+#include "oputils.hpp"
+#include "parammappings.hpp"
+#include "vectorofvaluesparams.hpp"
 
 // PROJ include order is sensitive
 // clang-format off
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h" // M_PI
+#include "proj.h"
+#include "proj_internal.h" // M_PI
 // clang-format on
-#include "R-libproj/proj_constants.h"
+#include "proj_constants.h"
 
-#include "R-libproj/proj_json_streaming_writer.hpp"
+#include "proj_json_streaming_writer.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -474,13 +474,16 @@ static void getTransformationType(const crs::CRSNNPtr &sourceCRSIn,
         dynamic_cast<const crs::GeographicCRS *>(sourceCRSIn.get());
     auto targetCRSGeog =
         dynamic_cast<const crs::GeographicCRS *>(targetCRSIn.get());
-    if (!sourceCRSGeog || !targetCRSGeog) {
+    if (!(sourceCRSGeog ||
+          (sourceCRSGeod && sourceCRSGeod->isSphericalPlanetocentric())) ||
+        !(targetCRSGeog ||
+          (targetCRSGeod && targetCRSGeod->isSphericalPlanetocentric()))) {
         throw InvalidOperation("Inconsistent CRS type");
     }
     const auto nSrcAxisCount =
-        sourceCRSGeog->coordinateSystem()->axisList().size();
+        sourceCRSGeod->coordinateSystem()->axisList().size();
     const auto nTargetAxisCount =
-        targetCRSGeog->coordinateSystem()->axisList().size();
+        targetCRSGeod->coordinateSystem()->axisList().size();
     isGeog2D = nSrcAxisCount == 2 && nTargetAxisCount == 2;
     isGeog3D = !isGeog2D && nSrcAxisCount >= 2 && nTargetAxisCount >= 2;
 }
@@ -1003,36 +1006,36 @@ TransformationNNPtr Transformation::createTOWGS84(
             "Invalid number of elements in TOWGS84Parameters");
     }
 
-    crs::CRSPtr transformSourceCRS = sourceCRSIn->extractGeodeticCRS();
-    if (!transformSourceCRS) {
+    auto transformSourceGeodCRS = sourceCRSIn->extractGeodeticCRS();
+    if (!transformSourceGeodCRS) {
         throw InvalidOperation(
             "Cannot find GeodeticCRS in sourceCRS of TOWGS84 transformation");
     }
 
     util::PropertyMap properties;
     properties.set(common::IdentifiedObject::NAME_KEY,
-                   concat("Transformation from ", transformSourceCRS->nameStr(),
-                          " to WGS84"));
+                   concat("Transformation from ",
+                          transformSourceGeodCRS->nameStr(), " to WGS84"));
 
-    auto targetCRS =
-        dynamic_cast<const crs::GeographicCRS *>(transformSourceCRS.get())
-            ? util::nn_static_pointer_cast<crs::CRS>(
-                  crs::GeographicCRS::EPSG_4326)
-            : util::nn_static_pointer_cast<crs::CRS>(
-                  crs::GeodeticCRS::EPSG_4978);
+    auto targetCRS = dynamic_cast<const crs::GeographicCRS *>(
+                         transformSourceGeodCRS.get()) ||
+                             transformSourceGeodCRS->isSphericalPlanetocentric()
+                         ? util::nn_static_pointer_cast<crs::CRS>(
+                               crs::GeographicCRS::EPSG_4326)
+                         : util::nn_static_pointer_cast<crs::CRS>(
+                               crs::GeodeticCRS::EPSG_4978);
 
+    crs::CRSNNPtr transformSourceCRS = NN_NO_CHECK(transformSourceGeodCRS);
     if (TOWGS84Parameters.size() == 3) {
         return createGeocentricTranslations(
-            properties, NN_NO_CHECK(transformSourceCRS), targetCRS,
-            TOWGS84Parameters[0], TOWGS84Parameters[1], TOWGS84Parameters[2],
-            {});
+            properties, transformSourceCRS, targetCRS, TOWGS84Parameters[0],
+            TOWGS84Parameters[1], TOWGS84Parameters[2], {});
     }
 
-    return createPositionVector(properties, NN_NO_CHECK(transformSourceCRS),
-                                targetCRS, TOWGS84Parameters[0],
-                                TOWGS84Parameters[1], TOWGS84Parameters[2],
-                                TOWGS84Parameters[3], TOWGS84Parameters[4],
-                                TOWGS84Parameters[5], TOWGS84Parameters[6], {});
+    return createPositionVector(
+        properties, transformSourceCRS, targetCRS, TOWGS84Parameters[0],
+        TOWGS84Parameters[1], TOWGS84Parameters[2], TOWGS84Parameters[3],
+        TOWGS84Parameters[4], TOWGS84Parameters[5], TOWGS84Parameters[6], {});
 }
 
 // ---------------------------------------------------------------------------

@@ -28,9 +28,9 @@
  *****************************************************************************/
 
 #define PJ_LIB__
-#include "R-libproj/proj.h"
+#include "proj.h"
 #include <errno.h>
-#include "R-libproj/proj_internal.h"
+#include "proj_internal.h"
 #include <math.h>
 
 

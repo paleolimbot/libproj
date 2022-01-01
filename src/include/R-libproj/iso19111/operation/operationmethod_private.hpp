@@ -29,8 +29,8 @@
 #ifndef OPERATIONMETHOD_PRIVATE_HPP
 #define OPERATIONMETHOD_PRIVATE_HPP
 
-#include "R-libproj/proj/coordinateoperation.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "proj/coordinateoperation.hpp"
+#include "proj/util.hpp"
 
 // ---------------------------------------------------------------------------
 

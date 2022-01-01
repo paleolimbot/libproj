@@ -54,16 +54,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/coordinateoperation.hpp"
+#include "proj/common.hpp"
+#include "proj/coordinateoperation.hpp"
 
 #include <string>
 #include <vector>
 
-#include "R-libproj/proj.h"
+#include "proj.h"
 
 #ifdef PROJ_RENAME_SYMBOLS
-#include "R-libproj/proj_symbol_rename.h"
+#include "proj_symbol_rename.h"
 #endif
 
 #define STATIC_ASSERT(COND) ((void)sizeof(char[(COND) ? 1 : -1]))
@@ -552,8 +552,8 @@ struct PJconsts {
     double  datum_params[7] = {0,0,0,0,0,0,0}; /* Parameters for 3PARAM and 7PARAM */
 
     int     has_geoid_vgrids = 0;      /* used by legacy transform.cpp */
-    void*   hgrids_legacy = nullptr;   /* used by legacy transform.cpp. Is a pointer to a ListOfHGrids* */
-    void*   vgrids_legacy = nullptr;   /* used by legacy transform.cpp. Is a pointer to a ListOfVGrids* */
+    void*   hgrids_legacy = nullptr;   /* used by legacy transform.cpp. Is a pointer to a ListOfHGrids* */ 
+    void*   vgrids_legacy = nullptr;   /* used by legacy transform.cpp. Is a pointer to a ListOfVGrids* */ 
 
     double  from_greenwich = 0.0;       /* prime meridian offset (in radians) */
     double  long_wrap_center = 0.0;     /* 0.0 for -180 to 180, actually in radians*/
@@ -597,20 +597,13 @@ struct PJconsts {
 struct ARG_list {
     paralist *next;
     char used;
-// this causes CRAN checks to fail and has been backported to most
-// versions of GCC8 in use. We need param[64] because the sanitizer checks
-// for address errors outside the bounds of param[1] (which is literally
-// every parameter). This will add 64 bytes of overhead to every +proj=XXX param
-// which should be trivial as the overhead of creating projections is not linked
-// to the parameter list. It should be noted that arguments can still be more than
-// 64 bytes because struct ARG_list is always allocated as sizeof(paralist) + strlen(param) + 1.
-// #if (defined(__GNUC__) && __GNUC__ >= 8) || (defined(__clang__) && __clang_major__ >= 9)
-//    char param[]; /* variable-length member */
-//    /* Safer to use [] for gcc 8. See https://github.com/OSGeo/proj.4/pull/1087 */
-//    /* and https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86914 */
-// #else
-    char param[64]; /* variable-length member */
-// #endif
+#if (defined(__GNUC__) && __GNUC__ >= 8) || (defined(__clang__) && __clang_major__ >= 9)
+    char param[]; /* variable-length member */
+    /* Safer to use [] for gcc 8. See https://github.com/OSGeo/proj.4/pull/1087 */
+    /* and https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86914 */
+#else
+    char param[1]; /* variable-length member */
+#endif
 };
 
 
@@ -925,6 +918,7 @@ void pj_acquire_lock(void);
 void pj_release_lock(void);
 void pj_cleanup_lock(void);
 
+bool pj_log_active( PJ_CONTEXT *ctx, int level );
 void pj_log( PJ_CONTEXT * ctx, int level, const char *fmt, ... );
 void pj_stderr_logger( void *, int, const char * );
 

@@ -3,8 +3,8 @@
 #include <errno.h>
 #include <math.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 PROJ_HEAD(eck3, "Eckert III") "\n\tPCyl, Sph";
 PROJ_HEAD(putp1, "Putnins P1") "\n\tPCyl, Sph";

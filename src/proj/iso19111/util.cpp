@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -31,10 +30,10 @@
 #define FROM_PROJ_CPP
 #endif
 
-#include "R-libproj/proj/util.hpp"
-#include "R-libproj/proj/io.hpp"
+#include "proj/util.hpp"
+#include "proj/io.hpp"
 
-#include "R-libproj/proj/internal/internal.hpp"
+#include "proj/internal/internal.hpp"
 
 #include <map>
 #include <memory>
@@ -97,7 +96,7 @@ BaseObject &BaseObject::operator=(BaseObject &&) {
  * extractGeographicBaseObject() can later return a shared pointer on itself.
  */
 void BaseObject::assignSelf(const BaseObjectNNPtr &self) {
-    cpp_compat_assert(self.get() == this);
+    assert(self.get() == this);
     d->self_ = self.as_nullable();
 }
 
@@ -298,9 +297,10 @@ const BaseObjectNNPtr *PropertyMap::get(const std::string &key) const {
 
 //! @cond Doxygen_Suppress
 void PropertyMap::unset(const std::string &key) {
-    for (auto iter = d->list_.begin(); iter != d->list_.end(); ++iter) {
+    auto &list = d->list_;
+    for (auto iter = list.begin(); iter != list.end(); ++iter) {
         if (iter->first == key) {
-            d->list_.erase(iter);
+            list.erase(iter);
             return;
         }
     }

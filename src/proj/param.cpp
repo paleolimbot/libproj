@@ -1,4 +1,3 @@
-#include "cpp-compat.h"
 /* put parameters in linked list and retrieve */
 
 #include <ctype.h>
@@ -7,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 static void unquote_string(char* param_str) {
 
@@ -164,8 +163,8 @@ PROJVALUE pj_param (PJ_CONTEXT *ctx, paralist *pl, const char *opt) {
     type = *opt++;
 
     if (nullptr==strchr ("tbirds", type)) {
-        cpp_compat_printerrf("invalid request to pj_param, fatal\n");
-        cpp_compat_exit(1);
+        fprintf(stderr, "invalid request to pj_param, fatal\n");
+        exit(1);
     }
 
     pl = pj_param_exists (pl, opt);

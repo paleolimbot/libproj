@@ -1,6 +1,5 @@
 #pragma once
 
-#include "cpp-compat.h"
 /*
  * Copyright (c) 2015 Dropbox, Inc.
  *
@@ -364,9 +363,9 @@ template <typename T> struct hash<::dropbox::oxygen::nn<T>> {
   (([&](typename std::remove_reference<decltype(_e)>::type p) {                \
     /* note: assert() alone is not sufficient here, because it might be        \
      * compiled out. */                                                        \
-    cpp_compat_assert(p &&#_e " must not be null");                                       \
+    assert(p &&#_e " must not be null");                                       \
     if (!p)                                                                    \
-      cpp_compat_abort();                                                            \
+      std::abort();                                                            \
     return dropbox::oxygen::nn<                                                \
         typename std::remove_reference<decltype(p)>::type>(                    \
         dropbox::oxygen::i_promise_i_checked_for_null, std::move(p));          \

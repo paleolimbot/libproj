@@ -28,8 +28,8 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj_internal.h"
+#include "proj.h"
+#include "proj_internal.h"
 
 #define MAX_ITER 20
 

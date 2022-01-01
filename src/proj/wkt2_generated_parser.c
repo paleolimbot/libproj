@@ -99,7 +99,7 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-#include "R-libproj/wkt2_parser.h"
+#include "wkt2_parser.h"
 
 
 
