@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
     }
 
     if (opt_given (o, "v"))
-        puts ("Feeling chatty today?");
+        cpp_compat_puts("Feeling chatty today?");
 
     if (opt_given (o, "hello")) {
         printf ("Hello, %s!\n", opt_arg(o, "hello"));
