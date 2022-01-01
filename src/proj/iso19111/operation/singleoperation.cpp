@@ -1302,8 +1302,8 @@ bool SingleOperation::_isEquivalentTo(const util::IComparable *other,
                 auto otherTransf = static_cast<const Transformation *>(otherSO);
                 auto params = transf->getTOWGS84Parameters();
                 auto otherParams = otherTransf->getTOWGS84Parameters();
-                assert(params.size() == 7);
-                assert(otherParams.size() == 7);
+                cpp_compat_assert(params.size() == 7);
+                cpp_compat_assert(otherParams.size() == 7);
                 for (size_t i = 0; i < 7; i++) {
                     if (std::fabs(params[i] - otherParams[i]) >
                         1e-10 * std::fabs(params[i])) {
@@ -1941,7 +1941,7 @@ bool ParameterValue::_isEquivalentTo(const util::IComparable *other,
     }
 
     default: {
-        assert(false);
+        cpp_compat_assert(false);
         break;
     }
     }

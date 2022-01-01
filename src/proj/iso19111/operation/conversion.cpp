@@ -300,7 +300,7 @@ ConversionNNPtr
 Conversion::create(const util::PropertyMap &properties, int method_epsg_code,
                    const std::vector<ParameterValueNNPtr> &values) {
     const MethodMapping *mapping = getMapping(method_epsg_code);
-    assert(mapping);
+    cpp_compat_assert(mapping);
     return createConversion(properties, mapping, values);
 }
 
@@ -311,7 +311,7 @@ Conversion::create(const util::PropertyMap &properties,
                    const char *method_wkt2_name,
                    const std::vector<ParameterValueNNPtr> &values) {
     const MethodMapping *mapping = getMapping(method_wkt2_name);
-    assert(mapping);
+    cpp_compat_assert(mapping);
     return createConversion(properties, mapping, values);
 }
 
@@ -3332,7 +3332,7 @@ createPROJExtensionFromCustomProj(const Conversion *conv,
                                   io::PROJStringFormatter *formatter,
                                   bool forExtensionNode) {
     const auto &methodName = conv->method()->nameStr();
-    assert(starts_with(methodName, "PROJ "));
+    cpp_compat_assert(starts_with(methodName, "PROJ "));
     auto tokens = split(methodName, ' ');
 
     formatter->addStep(tokens[1]);
@@ -3847,7 +3847,7 @@ void Conversion::_exportToPROJString(
             convFactor = parameterValueNumericAsSI(
                 EPSG_CODE_PARAMETER_UNIT_CONVERSION_SCALAR);
         } else {
-            assert(methodEPSGCode ==
+            cpp_compat_assert(methodEPSGCode ==
                    EPSG_CODE_METHOD_CHANGE_VERTICAL_UNIT_NO_CONV_FACTOR);
             const auto vertSrcCRS =
                 dynamic_cast<const crs::VerticalCRS *>(l_sourceCRS.get());

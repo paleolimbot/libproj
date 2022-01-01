@@ -488,7 +488,7 @@ static PJ_LP exact_e_inv (PJ_XY xy, PJ *P) {
 static PJ *setup_exact(PJ *P) {
     auto *Q = &(static_cast<struct tmerc_data*>(P->opaque)->exact);
 
-    assert( P->es > 0 );
+    cpp_compat_assert( P->es > 0 );
 
     /* third flattening */
     const double n = P->n;

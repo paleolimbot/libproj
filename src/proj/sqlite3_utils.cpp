@@ -67,7 +67,7 @@ typedef int (*ClosePtr)(sqlite3_file *);
 
 static int VFSClose(sqlite3_file *file) {
     sqlite3_vfs *defaultVFS = sqlite3_vfs_find(nullptr);
-    assert(defaultVFS);
+    cpp_compat_assert(defaultVFS);
     ClosePtr defaultClosePtr;
     std::memcpy(&defaultClosePtr,
                 reinterpret_cast<char *>(file) + defaultVFS->szOsFile,
@@ -91,7 +91,7 @@ static int VFSCustomOpen(sqlite3_vfs *vfs, const char *name, sqlite3_file *file,
     int ret = defaultVFS->xOpen(defaultVFS, name, file, flags, outFlags);
     if (ret == SQLITE_OK) {
         ClosePtr defaultClosePtr = file->pMethods->xClose;
-        assert(defaultClosePtr);
+        cpp_compat_assert(defaultClosePtr);
         sqlite3_io_methods *methods = static_cast<sqlite3_io_methods *>(
             std::malloc(sizeof(sqlite3_io_methods)));
         if (!methods) {
@@ -156,7 +156,7 @@ std::unique_ptr<SQLite3VFS> SQLite3VFS::create(bool fakeSync, bool fakeLock,
     // people building SQLite3 with -DSQLITE_OMIT_AUTOINIT
     sqlite3_initialize();
     sqlite3_vfs *defaultVFS = sqlite3_vfs_find(nullptr);
-    assert(defaultVFS);
+    cpp_compat_assert(defaultVFS);
 
     auto vfs = new pj_sqlite3_vfs();
     vfs->fakeSync = fakeSync;

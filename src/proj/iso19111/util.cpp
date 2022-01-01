@@ -96,7 +96,7 @@ BaseObject &BaseObject::operator=(BaseObject &&) {
  * extractGeographicBaseObject() can later return a shared pointer on itself.
  */
 void BaseObject::assignSelf(const BaseObjectNNPtr &self) {
-    assert(self.get() == this);
+    cpp_compat_assert(self.get() == this);
     d->self_ = self.as_nullable();
 }
 

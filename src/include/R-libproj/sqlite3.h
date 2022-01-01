@@ -134,15 +134,15 @@ extern "C" {
 ** These interfaces provide the same information as the [SQLITE_VERSION],
 ** [SQLITE_VERSION_NUMBER], and [SQLITE_SOURCE_ID] C preprocessor macros
 ** but are associated with the library instead of the header file.  ^(Cautious
-** programmers might include assert() statements in their application to
+** programmers might include cpp_compat_assert() statements in their application to
 ** verify that values returned by these interfaces match the macros in
 ** the header, and thus ensure that the application is
 ** compiled with matching library and header files.
 **
 ** <blockquote><pre>
-** assert( sqlite3_libversion_number()==SQLITE_VERSION_NUMBER );
-** assert( strncmp(sqlite3_sourceid(),SQLITE_SOURCE_ID,80)==0 );
-** assert( strcmp(sqlite3_libversion(),SQLITE_VERSION)==0 );
+** cpp_compat_assert( sqlite3_libversion_number()==SQLITE_VERSION_NUMBER );
+** cpp_compat_assert( strncmp(sqlite3_sourceid(),SQLITE_SOURCE_ID,80)==0 );
+** cpp_compat_assert( strcmp(sqlite3_libversion(),SQLITE_VERSION)==0 );
 ** </pre></blockquote>)^
 **
 ** ^The sqlite3_version[] string constant contains the text of [SQLITE_VERSION]
@@ -7633,8 +7633,8 @@ struct sqlite3_mutex_methods {
 ** CAPI3REF: Mutex Verification Routines
 **
 ** The sqlite3_mutex_held() and sqlite3_mutex_notheld() routines
-** are intended for use inside assert() statements.  The SQLite core
-** never uses these routines except inside an assert() and applications
+** are intended for use inside cpp_compat_assert() statements.  The SQLite core
+** never uses these routines except inside an cpp_compat_assert() and applications
 ** are advised to follow the lead of the core.  The SQLite core only
 ** provides implementations for these routines when it is compiled
 ** with the SQLITE_DEBUG flag.  External mutex implementations
@@ -7653,7 +7653,7 @@ struct sqlite3_mutex_methods {
 ** the routine should return 1.   This seems counter-intuitive since
 ** clearly the mutex cannot be held if it does not exist.  But
 ** the reason the mutex does not exist is because the build is not
-** using mutexes.  And we do not want the assert() containing the
+** using mutexes.  And we do not want the cpp_compat_assert() containing the
 ** call to sqlite3_mutex_held() to fail, so a non-zero return is
 ** the appropriate thing to do.  The sqlite3_mutex_notheld()
 ** interface should also return 1 when given a NULL pointer.

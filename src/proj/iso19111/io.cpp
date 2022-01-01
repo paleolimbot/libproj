@@ -374,7 +374,7 @@ WKTFormatter::WKTFormatter(Convention convention)
         break;
 
     default:
-        assert(false);
+        cpp_compat_assert(false);
         break;
     }
 }
@@ -412,7 +412,7 @@ void WKTFormatter::enter() {
 // ---------------------------------------------------------------------------
 
 void WKTFormatter::leave() {
-    assert(d->level_ > 0);
+    cpp_compat_assert(d->level_ > 0);
     --d->level_;
     if (d->indentLevel_ == 0 && d->level_ == 0) {
         d->stackHasChild_.pop_back();
@@ -478,7 +478,7 @@ void WKTFormatter::startNode(const std::string &keyword, bool hasId) {
 // ---------------------------------------------------------------------------
 
 void WKTFormatter::endNode() {
-    assert(d->indentLevel_ > 0);
+    cpp_compat_assert(d->indentLevel_ > 0);
     d->stackHasId_.pop_back();
     popOutputId();
     d->indentLevel_--;
@@ -499,7 +499,7 @@ WKTFormatter &WKTFormatter::simulCurNodeHasId() {
 // ---------------------------------------------------------------------------
 
 void WKTFormatter::Private::startNewChild() {
-    assert(!stackHasChild_.empty());
+    cpp_compat_assert(!stackHasChild_.empty());
     if (stackHasChild_.back()) {
         result_ += ',';
     }
@@ -857,7 +857,7 @@ void WKTFormatter::startInversion() {
 // ---------------------------------------------------------------------------
 
 void WKTFormatter::stopInversion() {
-    assert(!d->inversionStack_.empty());
+    cpp_compat_assert(!d->inversionStack_.empty());
     d->inversionStack_.pop_back();
 }
 
@@ -1164,7 +1164,7 @@ WKTNodeNNPtr WKTNode::createFrom(const std::string &wkt, size_t indexStart,
     while (i < wkt.size() && wkt[i] != ']' && wkt[i] != ')') {
         size_t indexEndChild;
         node->addChild(createFrom(wkt, i, recLevel + 1, indexEndChild));
-        assert(indexEndChild > i);
+        cpp_compat_assert(indexEndChild > i);
         i = indexEndChild;
         i = skipSpace(wkt, i);
         if (i < wkt.size() && wkt[i] == ',') {
@@ -3066,7 +3066,7 @@ CRSNNPtr WKTParser::Private::buildDerivedGeodeticCRS(const WKTNodeNNPtr &node) {
     auto &baseGeodCRSNode = nodeP->lookForChild(WKTConstants::BASEGEODCRS,
                                                 WKTConstants::BASEGEOGCRS);
     // given the constraints enforced on calling code path
-    assert(!isNull(baseGeodCRSNode));
+    cpp_compat_assert(!isNull(baseGeodCRSNode));
 
     auto baseGeodCRS = buildGeodeticCRS(baseGeodCRSNode);
 
@@ -3552,7 +3552,7 @@ ConversionNNPtr WKTParser::Private::buildProjectionFromESRI(
         } catch (const std::exception &) {
         }
     }
-    assert(wkt2_mapping);
+    cpp_compat_assert(wkt2_mapping);
 
     wkt2_mapping = selectSphericalOrEllipsoidal(wkt2_mapping, baseGeodCRS);
 
@@ -4569,7 +4569,7 @@ WKTParser::Private::buildDerivedVerticalCRS(const WKTNodeNNPtr &node) {
     const auto *nodeP = node->GP();
     auto &baseVertCRSNode = nodeP->lookForChild(WKTConstants::BASEVERTCRS);
     // given the constraints enforced on calling code path
-    assert(!isNull(baseVertCRSNode));
+    cpp_compat_assert(!isNull(baseVertCRSNode));
 
     auto baseVertCRS_tmp = buildVerticalCRS(baseVertCRSNode);
     auto baseVertCRS = NN_NO_CHECK(baseVertCRS_tmp->extractVerticalCRS());
@@ -4714,7 +4714,7 @@ WKTParser::Private::buildDerivedTemporalCRS(const WKTNodeNNPtr &node) {
     const auto *nodeP = node->GP();
     auto &baseCRSNode = nodeP->lookForChild(WKTConstants::BASETIMECRS);
     // given the constraints enforced on calling code path
-    assert(!isNull(baseCRSNode));
+    cpp_compat_assert(!isNull(baseCRSNode));
 
     auto &derivingConversionNode =
         nodeP->lookForChild(WKTConstants::DERIVINGCONVERSION);
@@ -4773,7 +4773,7 @@ WKTParser::Private::buildDerivedEngineeringCRS(const WKTNodeNNPtr &node) {
     const auto *nodeP = node->GP();
     auto &baseEngCRSNode = nodeP->lookForChild(WKTConstants::BASEENGCRS);
     // given the constraints enforced on calling code path
-    assert(!isNull(baseEngCRSNode));
+    cpp_compat_assert(!isNull(baseEngCRSNode));
 
     auto baseEngCRS = buildEngineeringCRS(baseEngCRSNode);
 
@@ -4835,7 +4835,7 @@ WKTParser::Private::buildDerivedParametricCRS(const WKTNodeNNPtr &node) {
     const auto *nodeP = node->GP();
     auto &baseParamCRSNode = nodeP->lookForChild(WKTConstants::BASEPARAMCRS);
     // given the constraints enforced on calling code path
-    assert(!isNull(baseParamCRSNode));
+    cpp_compat_assert(!isNull(baseParamCRSNode));
 
     auto &derivingConversionNode =
         nodeP->lookForChild(WKTConstants::DERIVINGCONVERSION);
@@ -6349,7 +6349,7 @@ static CRSNNPtr importFromWMSAUTO(const std::string &text) {
     double dfRefLong;
     double dfRefLat = 0.0;
 
-    assert(ci_starts_with(text, "AUTO:"));
+    cpp_compat_assert(ci_starts_with(text, "AUTO:"));
     const auto parts = split(text.substr(strlen("AUTO:")), ',');
 
     try {
@@ -7552,7 +7552,7 @@ PROJStringFormatter::setMaxLineLength(int maxLineLength) noexcept {
 /** \brief Returns the PROJ string. */
 const std::string &PROJStringFormatter::toString() const {
 
-    assert(d->inversionStack_.size() == 1);
+    cpp_compat_assert(d->inversionStack_.size() == 1);
 
     d->result_.clear();
 
@@ -7663,7 +7663,7 @@ const std::string &PROJStringFormatter::toString() const {
         }
         while (iterCur != steps.end()) {
 
-            assert(iterCur != steps.begin());
+            cpp_compat_assert(iterCur != steps.begin());
             auto iterPrev = std::prev(iterCur);
             auto &prevStep = *iterPrev;
             auto &curStep = *iterCur;
@@ -8314,11 +8314,11 @@ PROJStringSyntaxParser(const std::string &projString, std::vector<Step> &steps,
 
             prevWasTitle = false;
             if (starts_with(word, "proj=") && !hasInit) {
-                assert(hasProj);
+                cpp_compat_assert(hasProj);
                 auto stepName = word.substr(strlen("proj="));
                 steps.back().name = stepName;
             } else if (starts_with(word, "init=")) {
-                assert(hasInit);
+                cpp_compat_assert(hasInit);
                 auto initName = word.substr(strlen("init="));
                 steps.back().name = initName;
                 steps.back().isInit = true;
@@ -8445,7 +8445,7 @@ void PROJStringFormatter::startInversion() {
 // ---------------------------------------------------------------------------
 
 void PROJStringFormatter::stopInversion() {
-    assert(!d->inversionStack_.empty());
+    cpp_compat_assert(!d->inversionStack_.empty());
     auto startIter = d->inversionStack_.back().startIter;
     if (!d->inversionStack_.back().iterValid) {
         startIter = d->steps_.begin();
@@ -8495,7 +8495,7 @@ void PROJStringFormatter::addStep(const std::string &stepName) {
 // ---------------------------------------------------------------------------
 
 void PROJStringFormatter::setCurrentStepInverted(bool inverted) {
-    assert(!d->steps_.empty());
+    cpp_compat_assert(!d->steps_.empty());
     d->steps_.back().inverted = inverted;
 }
 
@@ -8660,7 +8660,7 @@ const std::string &PROJStringFormatter::getHDatumExtension() const {
 // ---------------------------------------------------------------------------
 
 void PROJStringFormatter::setOmitProjLongLatIfPossible(bool omit) {
-    assert(d->omitProjLongLatIfPossible_ ^ omit);
+    cpp_compat_assert(d->omitProjLongLatIfPossible_ ^ omit);
     d->omitProjLongLatIfPossible_ = omit;
 }
 
@@ -8679,7 +8679,7 @@ void PROJStringFormatter::pushOmitZUnitConversion() {
 // ---------------------------------------------------------------------------
 
 void PROJStringFormatter::popOmitZUnitConversion() {
-    assert(d->omitZUnitConversion_.size() > 1);
+    cpp_compat_assert(d->omitZUnitConversion_.size() > 1);
     d->omitZUnitConversion_.pop_back();
 }
 
@@ -8698,7 +8698,7 @@ void PROJStringFormatter::pushOmitHorizontalConversionInVertTransformation() {
 // ---------------------------------------------------------------------------
 
 void PROJStringFormatter::popOmitHorizontalConversionInVertTransformation() {
-    assert(d->omitHorizontalConversionInVertTransformation_.size() > 1);
+    cpp_compat_assert(d->omitHorizontalConversionInVertTransformation_.size() > 1);
     d->omitHorizontalConversionInVertTransformation_.pop_back();
 }
 
@@ -9279,7 +9279,7 @@ PROJStringParser::Private::buildDatum(Step &step, const std::string &title) {
                 auto proj_ellps = proj_list_ellps();
                 for (int i = 0; proj_ellps[i].id != nullptr; i++) {
                     if (ellpsStr == proj_ellps[i].id) {
-                        assert(strncmp(proj_ellps[i].major, "a=", 2) == 0);
+                        cpp_compat_assert(strncmp(proj_ellps[i].major, "a=", 2) == 0);
                         const double a_iter =
                             c_locale_stod(proj_ellps[i].major + 2);
                         EllipsoidPtr ellipsoid;
@@ -9294,7 +9294,7 @@ PROJStringParser::Private::buildDatum(Step &step, const std::string &title) {
                                     Length(a_iter), Length(b_iter))
                                     .as_nullable();
                         } else {
-                            assert(strncmp(proj_ellps[i].ell, "rf=", 3) == 0);
+                            cpp_compat_assert(strncmp(proj_ellps[i].ell, "rf=", 3) == 0);
                             const double rf_iter =
                                 c_locale_stod(proj_ellps[i].ell + 3);
                             ellipsoid =
@@ -9478,7 +9478,7 @@ PROJStringParser::Private::processAxisSwap(Step &step,
                                            const UnitOfMeasure &unit,
                                            int iAxisSwap, AxisType axisType,
                                            bool ignorePROJAxis) {
-    assert(iAxisSwap < 0 || ci_equal(steps_[iAxisSwap].name, "axisswap"));
+    cpp_compat_assert(iAxisSwap < 0 || ci_equal(steps_[iAxisSwap].name, "axisswap"));
 
     const bool isGeographic = unit.type() == UnitOfMeasure::Type::ANGULAR;
     const bool isSpherical = isGeographic && hasParamValue(step, "geoc");
@@ -9595,7 +9595,7 @@ PROJStringParser::Private::processAxisSwap(Step &step,
 EllipsoidalCSNNPtr PROJStringParser::Private::buildEllipsoidalCS(
     int iStep, int iUnitConvert, int iAxisSwap, bool ignorePROJAxis) {
     auto &step = steps_[iStep];
-    assert(iUnitConvert < 0 ||
+    cpp_compat_assert(iUnitConvert < 0 ||
            ci_equal(steps_[iUnitConvert].name, "unitconvert"));
 
     UnitOfMeasure angularUnit = UnitOfMeasure::DEGREE;
@@ -9639,7 +9639,7 @@ EllipsoidalCSNNPtr PROJStringParser::Private::buildEllipsoidalCS(
 SphericalCSNNPtr PROJStringParser::Private::buildSphericalCS(
     int iStep, int iUnitConvert, int iAxisSwap, bool ignorePROJAxis) {
     auto &step = steps_[iStep];
-    assert(iUnitConvert < 0 ||
+    cpp_compat_assert(iUnitConvert < 0 ||
            ci_equal(steps_[iUnitConvert].name, "unitconvert"));
 
     UnitOfMeasure angularUnit = UnitOfMeasure::DEGREE;
@@ -9733,8 +9733,8 @@ GeodeticCRSNNPtr
 PROJStringParser::Private::buildGeocentricCRS(int iStep, int iUnitConvert) {
     auto &step = steps_[iStep];
 
-    assert(isGeocentricStep(step.name));
-    assert(iUnitConvert < 0 ||
+    cpp_compat_assert(isGeocentricStep(step.name));
+    cpp_compat_assert(iUnitConvert < 0 ||
            ci_equal(steps_[iUnitConvert].name, "unitconvert"));
 
     const auto &title = title_;
@@ -9907,8 +9907,8 @@ PROJStringParser::Private::buildProjectedCRS(int iStep,
         mapping = selectSphericalOrEllipsoidal(mapping, geodCRS);
     }
 
-    assert(isProjectedStep(step.name));
-    assert(iUnitConvert < 0 ||
+    cpp_compat_assert(isProjectedStep(step.name));
+    cpp_compat_assert(iUnitConvert < 0 ||
            ci_equal(steps_[iUnitConvert].name, "unitconvert"));
 
     const auto &title = title_;

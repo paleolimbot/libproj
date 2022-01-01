@@ -785,7 +785,7 @@ void NetworkChunkCache::insert(PJ_CONTEXT *ctx, const std::string &url,
 
     // Always insert DOWNLOAD_CHUNK_SIZE bytes to avoid fragmentation
     std::vector<unsigned char> blob(*dataPtr);
-    assert(blob.size() <= DOWNLOAD_CHUNK_SIZE);
+    cpp_compat_assert(blob.size() <= DOWNLOAD_CHUNK_SIZE);
     blob.resize(DOWNLOAD_CHUNK_SIZE);
 
     // Check if there is an existing entry for that URL and offset

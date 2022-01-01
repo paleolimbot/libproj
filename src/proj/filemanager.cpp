@@ -1531,7 +1531,7 @@ static void *pj_open_lib_internal(
             sysname = name;
         }
 
-        assert(sysname); // to make Coverity Scan happy
+        cpp_compat_assert(sysname); // to make Coverity Scan happy
         if (fid != nullptr ||
             (fid = open_file(ctx, sysname, mode)) != nullptr) {
             if (out_full_filename != nullptr && out_full_filename_size > 0) {

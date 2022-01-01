@@ -1613,7 +1613,7 @@ static PJ* create_operation_to_geog_crs(PJ_CONTEXT* ctx, const PJ* crs) {
         geodetic_crs_type == PJ_TYPE_GEOGRAPHIC_3D_CRS )
     {
         auto datum = proj_crs_get_datum_forced(ctx, geodetic_crs);
-        assert( datum );
+        cpp_compat_assert( datum );
         auto cs = proj_create_ellipsoidal_2D_cs(
             ctx, PJ_ELLPS2D_LONGITUDE_LATITUDE, nullptr, 0);
         auto ellps = proj_get_ellipsoid(ctx, datum);
@@ -1669,7 +1669,7 @@ static PJ* create_operation_to_geog_crs(PJ_CONTEXT* ctx, const PJ* crs) {
     for(int i = 0; i < nOpCount; i++ )
     {
         auto op = proj_list_get(ctx, op_list_to_geodetic, i);
-        assert(op);
+        cpp_compat_assert(op);
         if( proj_coordoperation_get_grid_used_count(ctx, op) == 0 )
         {
             opGeogToCrs = op;
@@ -1680,7 +1680,7 @@ static PJ* create_operation_to_geog_crs(PJ_CONTEXT* ctx, const PJ* crs) {
     if( opGeogToCrs == nullptr )
     {
         opGeogToCrs = proj_list_get(ctx, op_list_to_geodetic, 0);
-        assert(opGeogToCrs);
+        cpp_compat_assert(opGeogToCrs);
     }
     proj_list_destroy(op_list_to_geodetic);
     return opGeogToCrs;
@@ -1765,7 +1765,7 @@ std::vector<PJCoordOperation> pj_create_prepared_operations(PJ_CONTEXT *ctx,
         for( int i = 0; i < op_count; i++ )
         {
             auto op = proj_list_get(ctx, op_list, i);
-            assert(op);
+            cpp_compat_assert(op);
             double west_lon = 0.0;
             double south_lat = 0.0;
             double east_lon = 0.0;
@@ -1914,7 +1914,7 @@ PJ  *proj_create_crs_to_crs_from_pj (PJ_CONTEXT *ctx, const PJ *source_crs, cons
     }
 
     PJ* P = proj_list_get(ctx, op_list, 0);
-    assert(P);
+    cpp_compat_assert(P);
 
     if( P == nullptr || op_count == 1 || (area && area->bbox_set) ||
         proj_get_type(source_crs) == PJ_TYPE_GEOCENTRIC_CRS ||
@@ -2109,7 +2109,7 @@ static char *path_append (char *buf, const char *app, size_t *buf_size) {
         free (buf);
         buf = p;
     }
-    assert(buf);
+    cpp_compat_assert(buf);
 
     /* Only append a delimiter if something's already there */
     if (0 != buflen)
@@ -2445,7 +2445,7 @@ PJ_FACTORS proj_factors(PJ *P, PJ_COORD lp) {
 
         auto ctx = P->ctx;
         auto geodetic_crs = proj_get_source_crs(ctx, P);
-        assert(geodetic_crs);
+        cpp_compat_assert(geodetic_crs);
         auto datum = proj_crs_get_datum(ctx, geodetic_crs);
         auto datum_ensemble = proj_crs_get_datum_ensemble(ctx, geodetic_crs);
         auto cs = proj_create_ellipsoidal_2D_cs(
@@ -2459,7 +2459,7 @@ PJ_FACTORS proj_factors(PJ *P, PJ_COORD lp) {
         proj_destroy(geodetic_crs);
         auto newOp = proj_create_crs_to_crs_from_pj(ctx, temp, P, nullptr, nullptr);
         proj_destroy(temp);
-        assert(newOp);
+        cpp_compat_assert(newOp);
         auto ret = proj_factors(newOp, lp);
         proj_destroy(newOp);
         return ret;

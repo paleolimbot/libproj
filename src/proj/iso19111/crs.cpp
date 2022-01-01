@@ -301,7 +301,7 @@ CRSNNPtr CRS::alterCSLinearUnit(const common::UnitOfMeasure &unit) const {
         if (geodCRS && geodCRS->isGeocentric()) {
             auto cs = dynamic_cast<const cs::CartesianCS *>(
                 geodCRS->coordinateSystem().get());
-            assert(cs);
+            cpp_compat_assert(cs);
             return GeodeticCRS::create(
                 createPropertyMap(this), geodCRS->datum(),
                 geodCRS->datumEnsemble(), cs->alterUnit(unit));
@@ -1514,7 +1514,7 @@ void SingleCRS::exportDatumOrDatumEnsembleToWkt(
         l_datum->_exportToWKT(formatter);
     } else {
         const auto &l_datumEnsemble = d->datumEnsemble;
-        assert(l_datumEnsemble);
+        cpp_compat_assert(l_datumEnsemble);
         l_datumEnsemble->_exportToWKT(formatter);
     }
 }
@@ -1544,7 +1544,7 @@ checkEnsembleForGeodeticCRS(const datum::GeodeticReferenceFramePtr &datumIn,
         msg = "Datum and DatumEnsemble should not be defined";
     } else if (ensemble) {
         const auto &datums = ensemble->datums();
-        assert(!datums.empty());
+        cpp_compat_assert(!datums.empty());
         auto grfFirst =
             dynamic_cast<datum::GeodeticReferenceFrame *>(datums[0].get());
         if (grfFirst) {
@@ -1634,7 +1634,7 @@ GeodeticCRS::datumNonNull(const io::DatabaseContextPtr &dbContext) const {
 //! @cond Doxygen_Suppress
 static datum::GeodeticReferenceFrame *oneDatum(const GeodeticCRS *crs) {
     const auto &l_datumEnsemble = crs->datumEnsemble();
-    assert(l_datumEnsemble);
+    cpp_compat_assert(l_datumEnsemble);
     const auto &l_datums = l_datumEnsemble->datums();
     return static_cast<datum::GeodeticReferenceFrame *>(l_datums[0].get());
 }
@@ -1858,7 +1858,7 @@ static bool exportAsESRIWktCompoundCRSWithEllipsoidalHeight(
         // See https://github.com/OSGeo/PROJ/issues/2757
 
         const auto &axisList = geodCRS->coordinateSystem()->axisList();
-        assert(axisList.size() == 3U);
+        cpp_compat_assert(axisList.size() == 3U);
 
         formatter->startNode(io::WKTConstants::VERTCS, false);
         auto vertcs_name = l_esri_name;
@@ -2611,7 +2611,7 @@ GeodeticCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
                     approximateMatch);
                 for (const auto &obj : objects) {
                     auto crs = util::nn_dynamic_pointer_cast<GeodeticCRS>(obj);
-                    assert(crs);
+                    cpp_compat_assert(crs);
                     auto crsNN = NN_NO_CHECK(crs);
                     if (_isEquivalentTo(crs.get(), crsCriterion, dbContext)) {
                         if (crs->nameStr() == thisName) {
@@ -2892,7 +2892,7 @@ bool GeographicCRS::is2DPartOf3D(util::nn<const GeographicCRS *> other,
     } catch (const util::InvalidValueTypeException &) {
         // should not happen really, but potentially thrown by
         // Identifier::Private::setProperties()
-        assert(false);
+        cpp_compat_assert(false);
         return false;
     }
 }
@@ -3184,7 +3184,7 @@ checkEnsembleForVerticalCRS(const datum::VerticalReferenceFramePtr &datumIn,
         msg = "Datum and DatumEnsemble should not be defined";
     } else if (ensemble) {
         const auto &datums = ensemble->datums();
-        assert(!datums.empty());
+        cpp_compat_assert(!datums.empty());
         auto grfFirst =
             dynamic_cast<datum::VerticalReferenceFrame *>(datums[0].get());
         if (grfFirst) {
@@ -3630,7 +3630,7 @@ VerticalCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
                     approximateMatch);
                 for (const auto &obj : objects) {
                     auto crs = util::nn_dynamic_pointer_cast<VerticalCRS>(obj);
-                    assert(crs);
+                    cpp_compat_assert(crs);
                     auto crsNN = NN_NO_CHECK(crs);
                     if (_isEquivalentTo(
                             crs.get(), util::IComparable::Criterion::EQUIVALENT,
@@ -4666,7 +4666,7 @@ ProjectedCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
                 for (const auto &pairObjName : objects) {
                     auto crs = util::nn_dynamic_pointer_cast<ProjectedCRS>(
                         pairObjName.first);
-                    assert(crs);
+                    cpp_compat_assert(crs);
                     auto crsNN = NN_NO_CHECK(crs);
                     const bool eqName = metadata::Identifier::isEquivalentName(
                         thisName.c_str(), pairObjName.second.c_str());
@@ -4714,7 +4714,7 @@ ProjectedCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
             std::set<std::pair<std::string, std::string>> alreadyKnown;
             for (const auto &pair : res) {
                 const auto &ids = pair.first->identifiers();
-                assert(!ids.empty());
+                cpp_compat_assert(!ids.empty());
                 alreadyKnown.insert(std::pair<std::string, std::string>(
                     *(ids[0]->codeSpace()), ids[0]->code()));
             }
@@ -4725,7 +4725,7 @@ ProjectedCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
                 authorityFactory->createProjectedCRSFromExisting(self);
             for (const auto &crs : candidates) {
                 const auto &ids = crs->identifiers();
-                assert(!ids.empty());
+                cpp_compat_assert(!ids.empty());
                 if (alreadyKnown.find(std::pair<std::string, std::string>(
                         *(ids[0]->codeSpace()), ids[0]->code())) !=
                     alreadyKnown.end()) {
@@ -5229,7 +5229,7 @@ CompoundCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
                     approximateMatch);
                 for (const auto &obj : objects) {
                     auto crs = util::nn_dynamic_pointer_cast<CompoundCRS>(obj);
-                    assert(crs);
+                    cpp_compat_assert(crs);
                     auto crsNN = NN_NO_CHECK(crs);
                     const bool eqName = metadata::Identifier::isEquivalentName(
                         thisName.c_str(), crs->nameStr().c_str());
@@ -5283,7 +5283,7 @@ CompoundCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
             std::set<std::pair<std::string, std::string>> alreadyKnown;
             for (const auto &pair : res) {
                 const auto &ids = pair.first->identifiers();
-                assert(!ids.empty());
+                cpp_compat_assert(!ids.empty());
                 alreadyKnown.insert(std::pair<std::string, std::string>(
                     *(ids[0]->codeSpace()), ids[0]->code()));
             }
@@ -5294,7 +5294,7 @@ CompoundCRS::identify(const io::AuthorityFactoryPtr &authorityFactory) const {
                 authorityFactory->createCompoundCRSFromExisting(self);
             for (const auto &crs : candidates) {
                 const auto &ids = crs->identifiers();
-                assert(!ids.empty());
+                cpp_compat_assert(!ids.empty());
                 if (alreadyKnown.find(std::pair<std::string, std::string>(
                         *(ids[0]->codeSpace()), ids[0]->code())) !=
                     alreadyKnown.end()) {
@@ -6011,7 +6011,7 @@ void DerivedGeodeticCRS::_exportToWKT(io::WKTFormatter *formatter) const {
         l_datum->_exportToWKT(formatter);
     } else {
         auto l_datumEnsemble = datumEnsemble();
-        assert(l_datumEnsemble);
+        cpp_compat_assert(l_datumEnsemble);
         l_datumEnsemble->_exportToWKT(formatter);
     }
     l_baseCRS->primeMeridian()->_exportToWKT(formatter);

@@ -266,7 +266,7 @@ GTXVerticalShiftGrid *GTXVerticalShiftGrid::open(PJ_CONTEXT *ctx,
 // ---------------------------------------------------------------------------
 
 bool GTXVerticalShiftGrid::valueAt(int x, int y, float &out) const {
-    assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
+    cpp_compat_assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
 
     m_fp->seek(40 + sizeof(float) * (y * m_width + x));
     if (m_fp->read(&out, sizeof(out)) != sizeof(out)) {
@@ -562,7 +562,7 @@ template <class T>
 float GTiffGrid::readValue(const std::vector<unsigned char> &buffer,
                            uint32_t offsetInBlock, uint16_t sample) const {
     const auto ptr = reinterpret_cast<const T *>(buffer.data());
-    assert(offsetInBlock < buffer.size() / sizeof(T));
+    cpp_compat_assert(offsetInBlock < buffer.size() / sizeof(T));
     const auto val = ptr[offsetInBlock];
     if ((!m_hasNodata || static_cast<float>(val) != m_noData) &&
         sample < m_adfScale.size()) {
@@ -578,8 +578,8 @@ float GTiffGrid::readValue(const std::vector<unsigned char> &buffer,
 
 bool GTiffGrid::valueAt(uint16_t sample, int x, int yFromBottom,
                         float &out) const {
-    assert(x >= 0 && yFromBottom >= 0 && x < m_width && yFromBottom < m_height);
-    assert(sample < m_samplesPerPixel);
+    cpp_compat_assert(x >= 0 && yFromBottom >= 0 && x < m_width && yFromBottom < m_height);
+    cpp_compat_assert(sample < m_samplesPerPixel);
 
     // All non-TIFF grids have the first rows in the file being the one
     // corresponding to the southern-most row. In GeoTIFF, the convention is
@@ -727,7 +727,7 @@ class GTiffDataset {
     }
 
     static tsize_t tiffWriteProc(thandle_t, tdata_t, tsize_t) {
-        assert(false);
+        cpp_compat_assert(false);
         return 0;
     }
 
@@ -819,7 +819,7 @@ class OneTimeTIFFTagInit {
 
   public:
     OneTimeTIFFTagInit() {
-        assert(ParentExtender == nullptr);
+        cpp_compat_assert(ParentExtender == nullptr);
         // Install our TIFF tag extender
         ParentExtender = TIFFSetTagExtender(GTiffTagExtender);
     }
@@ -1636,7 +1636,7 @@ NTv1Grid *NTv1Grid::open(PJ_CONTEXT *ctx, std::unique_ptr<File> fp,
 
 bool NTv1Grid::valueAt(int x, int y, bool compensateNTConvention,
                        float &lonShift, float &latShift) const {
-    assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
+    cpp_compat_assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
 
     double two_doubles[2];
     // NTv1 is organized from east to west !
@@ -1755,7 +1755,7 @@ CTable2Grid *CTable2Grid::open(PJ_CONTEXT *ctx, std::unique_ptr<File> fp,
 
 bool CTable2Grid::valueAt(int x, int y, bool compensateNTConvention,
                           float &lonShift, float &latShift) const {
-    assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
+    cpp_compat_assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
 
     float two_floats[2];
     m_fp->seek(160 + 2 * sizeof(float) * (y * m_width + x));
@@ -1833,7 +1833,7 @@ class NTv2Grid : public HorizontalShiftGrid {
 
 bool NTv2Grid::valueAt(int x, int y, bool compensateNTConvention,
                        float &lonShift, float &latShift) const {
-    assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
+    cpp_compat_assert(x >= 0 && y >= 0 && x < m_width && y < m_height);
 
     float two_float[2];
     // NTv2 is organized from east to west !
@@ -3241,7 +3241,7 @@ static double read_vgrid_value(PJ_CONTEXT *ctx, const ListOfVGrids &grids,
         return HUGE_VAL;
     }
     int grid_iy = static_cast<int>(lround(floor(grid_y)));
-    assert(grid_iy >= 0 && grid_iy < grid->height());
+    cpp_compat_assert(grid_iy >= 0 && grid_iy < grid->height());
     grid_x -= grid_ix;
     grid_y -= grid_iy;
 

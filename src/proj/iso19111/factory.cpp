@@ -248,7 +248,7 @@ class SQLiteHandle {
 
     SQLiteHandle(sqlite3 *sqlite_handle, bool close_handle)
         : sqlite_handle_(sqlite_handle), close_handle_(close_handle) {
-        assert(sqlite_handle_);
+        cpp_compat_assert(sqlite_handle_);
     }
 
     // cppcheck-suppress functionStatic
@@ -390,7 +390,7 @@ SQLResultSet SQLiteHandle::run(sqlite3_stmt *stmt, const std::string &sql,
         } else if (paramType == SQLValues::Type::INT) {
             sqlite3_bind_int(stmt, nBindField, param.intValue());
         } else {
-            assert(paramType == SQLValues::Type::DOUBLE);
+            cpp_compat_assert(paramType == SQLValues::Type::DOUBLE);
             sqlite3_bind_double(stmt, nBindField, param.doubleValue());
         }
         nBindField++;
@@ -401,7 +401,7 @@ SQLResultSet SQLiteHandle::run(sqlite3_stmt *stmt, const std::string &sql,
     std::string sqlSubst(sql);
     for (const auto &param : parameters) {
         nPos = sqlSubst.find('?', nPos);
-        assert(nPos != std::string::npos);
+        cpp_compat_assert(nPos != std::string::npos);
         std::string strValue;
         const auto paramType = param.type();
         if (paramType == SQLValues::Type::STRING) {
@@ -915,7 +915,7 @@ DatabaseContext::Private::Private() = default;
 // ---------------------------------------------------------------------------
 
 DatabaseContext::Private::~Private() {
-    assert(recLevel_ == 0);
+    cpp_compat_assert(recLevel_ == 0);
 
     closeDB();
 }
@@ -1186,8 +1186,8 @@ void DatabaseContext::Private::open(const std::string &databasePath,
 
 void DatabaseContext::Private::setHandle(sqlite3 *sqlite_handle) {
 
-    assert(sqlite_handle);
-    assert(!sqlite_handle_);
+    cpp_compat_assert(sqlite_handle);
+    cpp_compat_assert(!sqlite_handle_);
     sqlite_handle_ = SQLiteHandle::initFromExisting(sqlite_handle, false, 0, 0);
 }
 
@@ -1226,7 +1226,7 @@ void DatabaseContext::Private::attachExtraDatabases(
     const std::vector<std::string> &auxiliaryDatabasePaths) {
 
     auto l_handle = handle();
-    assert(l_handle);
+    cpp_compat_assert(l_handle);
 
     auto tables =
         run("SELECT name FROM sqlite_master WHERE type IN ('table', 'view') "
@@ -1321,7 +1321,7 @@ SQLResultSet DatabaseContext::Private::run(const std::string &sql,
                                            bool useMaxFloatPrecision) {
 
     auto l_handle = handle();
-    assert(l_handle);
+    cpp_compat_assert(l_handle);
 
     sqlite3_stmt *stmt = nullptr;
     auto iter = mapSqlToStatement_.find(sql);
@@ -2213,7 +2213,7 @@ std::vector<std::string> DatabaseContext::Private::getInsertStatementsFor(
     std::vector<std::string> sqlStatements;
 
     const auto &members = ensemble->datums();
-    assert(!members.empty());
+    cpp_compat_assert(!members.empty());
 
     int counter = 1;
     std::vector<std::pair<std::string, std::string>> membersId;
@@ -2256,13 +2256,13 @@ std::vector<std::string> DatabaseContext::Private::getInsertStatementsFor(
                 ->createGeodeticDatum(membersId.front().second);
         const auto &ellipsoid = firstDatum->ellipsoid();
         const auto &ellipsoidIds = ellipsoid->identifiers();
-        assert(!ellipsoidIds.empty());
+        cpp_compat_assert(!ellipsoidIds.empty());
         const std::string &ellipsoidAuthName =
             *(ellipsoidIds.front()->codeSpace());
         const std::string &ellipsoidCode = ellipsoidIds.front()->code();
         const auto &pm = firstDatum->primeMeridian();
         const auto &pmIds = pm->identifiers();
-        assert(!pmIds.empty());
+        cpp_compat_assert(!pmIds.empty());
         const std::string &pmAuthName = *(pmIds.front()->codeSpace());
         const std::string &pmCode = pmIds.front()->code();
         const auto anchor = *(firstDatum->anchorDefinition());
@@ -2342,7 +2342,7 @@ std::vector<std::string> DatabaseContext::Private::getInsertStatementsFor(
         }
     } else {
         const auto &datum = crs->datum();
-        assert(datum);
+        cpp_compat_assert(datum);
         const auto datumNN = NN_NO_CHECK(datum);
         identifyFromNameOrCode(self, allowedAuthorities, authName, datumNN,
                                datumAuthName, datumCode);
@@ -2681,7 +2681,7 @@ std::vector<std::string> DatabaseContext::Private::getInsertStatementsFor(
         }
     } else {
         const auto &datum = crs->datum();
-        assert(datum);
+        cpp_compat_assert(datum);
         const auto datumNN = NN_NO_CHECK(datum);
         identifyFromNameOrCode(self, allowedAuthorities, authName, datumNN,
                                datumAuthName, datumCode);
@@ -4208,10 +4208,10 @@ static double normalizeMeasure(const std::string &uom_code,
                << normalized_value;
         auto formatted = buffer.str();
         size_t dotPos = formatted.find('.');
-        assert(dotPos + 1 + precision == formatted.size());
+        cpp_compat_assert(dotPos + 1 + precision == formatted.size());
         auto minutes = formatted.substr(dotPos + 1, 2);
         auto seconds = formatted.substr(dotPos + 3);
-        assert(seconds.size() == precision - 2);
+        cpp_compat_assert(seconds.size() == precision - 2);
         normalized_value =
             (normalized_value < 0 ? -1.0 : 1.0) *
             (std::floor(std::fabs(normalized_value)) +
@@ -5505,7 +5505,7 @@ static util::PropertyMap createMapNameEPSGCode(const std::string &name,
 
 static operation::OperationParameterNNPtr createOpParamNameEPSGCode(int code) {
     const char *name = operation::OperationParameter::getNameForEPSGCode(code);
-    assert(name);
+    cpp_compat_assert(name);
     return operation::OperationParameter::create(
         createMapNameEPSGCode(name, code));
 }
@@ -5642,7 +5642,7 @@ operation::CoordinateOperationNNPtr AuthorityFactory::createCoordinateOperation(
             const auto &operation_version = row[idx++];
             const auto &deprecated_str = row[idx++];
             const bool deprecated = deprecated_str == "1";
-            assert(idx == row.size());
+            cpp_compat_assert(idx == row.size());
 
             auto uom_translation = d->createUnitOfMeasure(
                 translation_uom_auth_name, translation_uom_code);
@@ -5849,7 +5849,7 @@ operation::CoordinateOperationNNPtr AuthorityFactory::createCoordinateOperation(
             const auto &operation_version = row[idx++];
             const auto &deprecated_str = row[idx++];
             const bool deprecated = deprecated_str == "1";
-            assert(idx == row.size());
+            cpp_compat_assert(idx == row.size());
 
             auto sourceCRS =
                 d->createFactory(source_crs_auth_name)
@@ -5995,7 +5995,7 @@ operation::CoordinateOperationNNPtr AuthorityFactory::createCoordinateOperation(
             }
             idx = base_param_idx + 6 * N_MAX_PARAMS;
             (void)idx;
-            assert(idx == row.size());
+            cpp_compat_assert(idx == row.size());
 
             auto sourceCRS =
                 d->createFactory(source_crs_auth_name)
@@ -7285,7 +7285,7 @@ AuthorityFactory::createBetweenGeodeticCRSWithDatumBasedIntermediates(
         const common::IdentifiedObject *obj = crs->datum().get();
         if (obj == nullptr)
             obj = crs->datumEnsemble().get();
-        assert(obj != nullptr);
+        cpp_compat_assert(obj != nullptr);
         const auto &ids = obj->identifiers();
         std::string datumAuthName;
         std::string datumCode;
@@ -7671,7 +7671,7 @@ AuthorityFactory::createBetweenGeodeticCRSWithDatumBasedIntermediates(
                 op1Source.get(), util::IComparable::Criterion::EQUIVALENT)) {
             auto opFirst =
                 opFactory->createOperation(sourceCRS, NN_NO_CHECK(op1Source));
-            assert(opFirst);
+            cpp_compat_assert(opFirst);
             steps.emplace_back(NN_NO_CHECK(opFirst));
         }
 
@@ -7681,7 +7681,7 @@ AuthorityFactory::createBetweenGeodeticCRSWithDatumBasedIntermediates(
                 op2Source.get(), util::IComparable::Criterion::EQUIVALENT)) {
             auto opMiddle = opFactory->createOperation(NN_NO_CHECK(op1Target),
                                                        NN_NO_CHECK(op2Source));
-            assert(opMiddle);
+            cpp_compat_assert(opMiddle);
             steps.emplace_back(NN_NO_CHECK(opMiddle));
         }
 
@@ -7691,7 +7691,7 @@ AuthorityFactory::createBetweenGeodeticCRSWithDatumBasedIntermediates(
                 targetCRS.get(), util::IComparable::Criterion::EQUIVALENT)) {
             auto opLast =
                 opFactory->createOperation(NN_NO_CHECK(op2Target), targetCRS);
-            assert(opLast);
+            cpp_compat_assert(opLast);
             steps.emplace_back(NN_NO_CHECK(opLast));
         }
 
@@ -8622,7 +8622,7 @@ AuthorityFactory::createObjectsFromNameEx(
                         if (datum) {
                             return NN_NO_CHECK(datum);
                         }
-                        assert(datumEnsemble);
+                        cpp_compat_assert(datumEnsemble);
                         return NN_NO_CHECK(datumEnsemble);
                     }
                     return factory->createGeodeticDatum(l_code);
@@ -8636,7 +8636,7 @@ AuthorityFactory::createObjectsFromNameEx(
                         if (datum) {
                             return NN_NO_CHECK(datum);
                         }
-                        assert(datumEnsemble);
+                        cpp_compat_assert(datumEnsemble);
                         return NN_NO_CHECK(datumEnsemble);
                     }
                     return factory->createVerticalDatum(l_code);
@@ -8954,7 +8954,7 @@ AuthorityFactory::createProjectedCRSFromExisting(
     }
 
     auto lockedThisFactory(d->getSharedFromThis());
-    assert(lockedThisFactory);
+    cpp_compat_assert(lockedThisFactory);
     const auto &baseCRS(crs->baseCRS());
     auto candidatesGeodCRS = baseCRS->crs::CRS::identify(lockedThisFactory);
     auto geogCRS = dynamic_cast<const crs::GeographicCRS *>(baseCRS.get());
@@ -9260,7 +9260,7 @@ AuthorityFactory::createCompoundCRSFromExisting(
     std::list<crs::CompoundCRSNNPtr> res;
 
     auto lockedThisFactory(d->getSharedFromThis());
-    assert(lockedThisFactory);
+    cpp_compat_assert(lockedThisFactory);
 
     const auto &components = crs->componentReferenceSystems();
     if (components.size() != 2) {

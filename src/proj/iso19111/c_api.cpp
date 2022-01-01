@@ -230,7 +230,7 @@ static PJ *pj_obj_create(PJ_CONTEXT *ctx, const IdentifiedObjectNNPtr &objIn) {
                         return nullptr;
                     }
                     pj_calc_ellipsoid_params(pj, a, es);
-                    assert(pj->geod == nullptr);
+                    cpp_compat_assert(pj->geod == nullptr);
                     pj->geod = static_cast<struct geod_geodesic *>(
                         calloc(1, sizeof(struct geod_geodesic)));
                     if (pj->geod) {
@@ -8477,7 +8477,7 @@ PJ *proj_crs_get_datum_forced(PJ_CONTEXT *ctx, const PJ *crs) {
         return pj_obj_create(ctx, NN_NO_CHECK(datum));
     }
     const auto &datumEnsemble = l_crs->datumEnsemble();
-    assert(datumEnsemble);
+    cpp_compat_assert(datumEnsemble);
     auto dbContext = getDBcontextNoException(ctx, __FUNCTION__);
     try {
         return pj_obj_create(ctx, datumEnsemble->asDatum(dbContext));

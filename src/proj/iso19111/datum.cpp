@@ -940,7 +940,7 @@ bool Ellipsoid::lookForProjWellKnownEllps(std::string &projEllpsName,
     const double rf = computedInverseFlattening();
     auto proj_ellps = proj_list_ellps();
     for (int i = 0; proj_ellps[i].id != nullptr; i++) {
-        assert(strncmp(proj_ellps[i].major, "a=", 2) == 0);
+        cpp_compat_assert(strncmp(proj_ellps[i].major, "a=", 2) == 0);
         const double a_iter = c_locale_stod(proj_ellps[i].major + 2);
         if (::fabs(a - a_iter) < 1e-10 * a_iter) {
             if (strncmp(proj_ellps[i].ell, "b=", 2) == 0) {
@@ -954,7 +954,7 @@ bool Ellipsoid::lookForProjWellKnownEllps(std::string &projEllpsName,
                     return true;
                 }
             } else {
-                assert(strncmp(proj_ellps[i].ell, "rf=", 3) == 0);
+                cpp_compat_assert(strncmp(proj_ellps[i].ell, "rf=", 3) == 0);
                 const double rf_iter = c_locale_stod(proj_ellps[i].ell + 3);
                 if (::fabs(rf - rf_iter) < 1e-10 * rf_iter) {
                     projEllpsName = proj_ellps[i].id;
@@ -1746,7 +1746,7 @@ DatumEnsemble::asDatum(const io::DatabaseContextPtr &dbContext) const {
         return GeodeticReferenceFrame::create(props, grf->ellipsoid(), anchor,
                                               grf->primeMeridian());
     } else {
-        assert(dynamic_cast<VerticalReferenceFrame *>(l_datums[0].get()));
+        cpp_compat_assert(dynamic_cast<VerticalReferenceFrame *>(l_datums[0].get()));
         return datum::VerticalReferenceFrame::create(props, anchor);
     }
 }
@@ -1764,7 +1764,7 @@ void DatumEnsemble::_exportToWKT(
     }
 
     const auto &l_datums = datums();
-    assert(!l_datums.empty());
+    cpp_compat_assert(!l_datums.empty());
 
     formatter->startNode(io::WKTConstants::ENSEMBLE, false);
     const auto &l_name = nameStr();

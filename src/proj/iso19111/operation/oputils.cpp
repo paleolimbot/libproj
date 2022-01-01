@@ -70,7 +70,7 @@ const char *BALLPARK_VERTICAL_TRANSFORMATION_NO_ELLIPSOID_VERT_HEIGHT =
 
 OperationParameterNNPtr createOpParamNameEPSGCode(int code) {
     const char *name = OperationParameter::getNameForEPSGCode(code);
-    assert(name);
+    cpp_compat_assert(name);
     return OperationParameter::create(createMapNameEPSGCode(name, code));
 }
 
@@ -87,7 +87,7 @@ util::PropertyMap createMethodMapNameEPSGCode(int code) {
             break;
         }
     }
-    assert(name);
+    cpp_compat_assert(name);
     return createMapNameEPSGCode(name, code);
 }
 
@@ -229,7 +229,7 @@ createPropertiesForInverse(const OperationMethodNNPtr &method) {
 util::PropertyMap createPropertiesForInverse(const CoordinateOperation *op,
                                              bool derivedFrom,
                                              bool approximateInversion) {
-    assert(op);
+    cpp_compat_assert(op);
     util::PropertyMap map;
 
     // The domain(s) are unchanged by the inverse operation
@@ -593,9 +593,9 @@ double getAccuracy(const std::vector<CoordinateOperationNNPtr> &ops) {
 void exportSourceCRSAndTargetCRSToWKT(const CoordinateOperation *co,
                                       io::WKTFormatter *formatter) {
     auto l_sourceCRS = co->sourceCRS();
-    assert(l_sourceCRS);
+    cpp_compat_assert(l_sourceCRS);
     auto l_targetCRS = co->targetCRS();
-    assert(l_targetCRS);
+    cpp_compat_assert(l_targetCRS);
     const bool isWKT2 = formatter->version() == io::WKTFormatter::Version::WKT2;
     const bool canExportCRSId =
         (isWKT2 && formatter->use2019Keywords() &&
