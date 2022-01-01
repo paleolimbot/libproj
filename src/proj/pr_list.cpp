@@ -19,13 +19,13 @@ pr_list(PJ *P, int not_used) {
 		if ((!not_used && t->used) || (not_used && !t->used)) {
 			l = (int)strlen(t->param) + 1;
 			if (n + l > LINE_LEN) {
-				(void)fputs("\n#", stdout);
+				(void)cpp_compat_puts("\n#");
 				n = 2;
 			}
 			(void)cpp_compat_putchar(' ');
 			if (*(t->param) != '+')
 				(void)cpp_compat_putchar('+');
-			(void)fputs(t->param, stdout);
+			(void)cpp_compat_puts(t->param);
 			n += l;
 		} else
 			flag = 1;
@@ -45,7 +45,7 @@ pj_pr_list(PJ *P) {
 	}
 	(void)cpp_compat_putchar('\n');
 	if (pr_list(P, 0)) {
-		(void)fputs("#--- following specified but NOT used\n", stdout);
+		(void)cpp_compat_puts("#--- following specified but NOT used\n");
 		(void)pr_list(P, 1);
 	}
 }
