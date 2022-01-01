@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /* put parameters in linked list and retrieve */
 
 #include <ctype.h>

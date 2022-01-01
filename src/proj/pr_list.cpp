@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /* print projection's list of parameters */
 
 #include <stddef.h>

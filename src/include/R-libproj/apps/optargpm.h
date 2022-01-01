@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /***********************************************************************
 
           OPTARGPM - a header-only library for decoding

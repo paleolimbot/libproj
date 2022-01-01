@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  Functionality related to deformation model

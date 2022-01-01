@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ.4
  * Purpose:  Implementation of pj_log() function.

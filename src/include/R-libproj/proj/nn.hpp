@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 #pragma once
 
 /*

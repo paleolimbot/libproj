@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ.4
  * Purpose:  Implement a (currently minimalistic) proj API based primarily

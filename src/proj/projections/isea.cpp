@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /*
  * This code was entirely written by Nathan Wagner
  * and is in the public domain.
