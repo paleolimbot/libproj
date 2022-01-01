@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
         int ret = fgets (buf, 1000, o->input);
         opt_eof_handler (o);
         if (nullptr==ret) {
-            fprintf (stderr, "Read error in record %d\n", (int) o->record_index);
+            cpp_compat_printerrf("Read error in record %d\n", (int) o->record_index);
             continue;
         }
         do_what_needs_to_be_done (buf);
@@ -447,7 +447,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
         if ('='!=longflags[i][1])
             continue;
         if (nullptr==strchr (flags, longflags[i][0])) {
-            fprintf (stderr, "%s: Invalid alias - '%s'. Valid short flags are '%s'\n", o->progname, longflags[i], flags);
+            cpp_compat_printerrf("%s: Invalid alias - '%s'. Valid short flags are '%s'\n", o->progname, longflags[i], flags);
             free (o);
             return nullptr;
         }
@@ -459,7 +459,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
         if ('='!=longkeys[i][1])
             continue;
         if (nullptr==strchr (keys, longkeys[i][0])) {
-            fprintf (stderr, "%s: Invalid alias - '%s'. Valid short flags are '%s'\n", o->progname, longkeys[i], keys);
+            cpp_compat_printerrf("%s: Invalid alias - '%s'. Valid short flags are '%s'\n", o->progname, longkeys[i], keys);
             free (o);
             return nullptr;
         }
@@ -472,7 +472,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
     for (i = 128; (longflags != nullptr) && (longflags[i - 128] != nullptr); i++) {
         if (i==192) {
             free (o);
-            fprintf (stderr, "Too many flag style long options\n");
+            cpp_compat_printerrf("Too many flag style long options\n");
             return nullptr;
         }
         o->optarg[i] = o->flaglevel;
@@ -481,7 +481,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
     for (i = 192;  (longkeys != nullptr) && (longkeys[i - 192] != nullptr);  i++) {
         if (i==256) {
             free (o);
-            fprintf (stderr, "Too many value style long options\n");
+            cpp_compat_printerrf("Too many value style long options\n");
             return nullptr;
         }
         o->optarg[i] = argv[0];
@@ -523,7 +523,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
                     *equals = 0;
                 c = opt_ordinal (o, crepr);
                 if (0==c) {
-                    fprintf (stderr, "Invalid option \"%s\"\n", crepr);
+                    cpp_compat_printerrf("Invalid option \"%s\"\n", crepr);
                     free (o);
                     return nullptr;
                 }
@@ -532,7 +532,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
                 if (equals) {
                     *equals = '=';
                     if (opt_is_flag (o, c)) {
-                        fprintf (stderr, "Option \"%s\" takes no arguments\n", crepr);
+                        cpp_compat_printerrf("Option \"%s\" takes no arguments\n", crepr);
                         free (o);
                         return nullptr;
                     }
@@ -543,7 +543,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
                 /* "outline" --foo bar style arg */
                 if (!opt_is_flag (o, c)) {
                     if ((argc==i + 1) || ('+'==argv[i+1][0]) || ('-'==argv[i+1][0])) {
-                        fprintf (stderr, "Missing argument for option \"%s\"\n", crepr);
+                        cpp_compat_printerrf("Missing argument for option \"%s\"\n", crepr);
                         free (o);
                         return nullptr;
                     }
@@ -553,7 +553,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
                 }
 
                 if (!opt_is_flag (o, c)) {
-                    fprintf (stderr, "Expected flag style long option here, but got \"%s\"\n", crepr);
+                    cpp_compat_printerrf("Expected flag style long option here, but got \"%s\"\n", crepr);
                     free (o);
                     return nullptr;
                 }
@@ -565,7 +565,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
 
             /* classic short options */
             if (nullptr==o->optarg[c]) {
-                fprintf (stderr, "Invalid option \"%s\"\n", crepr);
+                cpp_compat_printerrf("Invalid option \"%s\"\n", crepr);
                 free (o);
                 return nullptr;
             }
@@ -582,7 +582,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
             if (j + 1==arg_group_size) {
                 if ((argc==i + 1) || ('+'==argv[i+1][0]) || ('-'==argv[i+1][0]))
                 {
-                    fprintf (stderr, "Bad or missing arg for option \"%s\"\n", crepr);
+                    cpp_compat_printerrf("Bad or missing arg for option \"%s\"\n", crepr);
                     free (o);
                     return nullptr;
                 }
@@ -620,7 +620,7 @@ OPTARGS *opt_parse (int argc, char **argv, const char *flags, const char *keys, 
     for (/* empty */; i < argc; i++) {
         if ('-' == argv[i][0]) {
             free (o);
-            fprintf (stderr, "+ and - style options must not be mixed\n");
+            cpp_compat_printerrf("+ and - style options must not be mixed\n");
             return nullptr;
         }
 

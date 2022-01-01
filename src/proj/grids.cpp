@@ -3072,15 +3072,14 @@ static PJ_LP pj_hgrid_apply_internal(PJ_CONTEXT *ctx, PJ_LP in,
         /* If we had access to a context, this should go through pj_log, and we
          * should set ctx->errno */
         if (getenv("PROJ_DEBUG"))
-            fprintf(stderr,
-                    "Inverse grid shift iterator failed to converge.\n");
+            cpp_compat_printerrf("Inverse grid shift iterator failed to converge.\n");
         t.lam = t.phi = HUGE_VAL;
         return t;
     }
 
     /* and again: pj_log and ctx->errno */
     if (del.lam == HUGE_VAL && getenv("PROJ_DEBUG"))
-        fprintf(stderr, "Inverse grid shift iteration failed, presumably at "
+        cpp_compat_printerrf("Inverse grid shift iteration failed, presumably at "
                         "grid edge.\nUsing first approximation.\n");
 
     in.lam = adjlon(t.lam + extent->west);

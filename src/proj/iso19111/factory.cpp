@@ -7408,7 +7408,7 @@ AuthorityFactory::createBetweenGeodeticCRSWithDatumBasedIntermediates(
     sql += BuildSQLPart(true, false);
     sql += "UNION ALL ";
     sql += BuildSQLPart(false, false);
-    // fprintf(stderr, "sql : %s\n", sql.c_str());
+    // cpp_compat_printerrf("sql : %s\n", sql.c_str());
 
     // Find all operations that have as source/target CRS a CRS that
     // share the same datum as the source or targetCRS

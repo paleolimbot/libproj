@@ -42,7 +42,7 @@ void pj_stderr_logger( void *app_data, int level, const char *msg )
 {
     (void) app_data;
     (void) level;
-    fprintf( stderr, "%s\n", msg );
+    cpp_compat_printerrf("%s\n", msg );
 }
 
 /************************************************************************/
