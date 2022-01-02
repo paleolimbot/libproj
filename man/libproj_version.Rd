@@ -37,7 +37,9 @@ libproj_configure(
   network_endpoint = getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE),
   log_level = getOption("libproj.log_level", 1L),
-  restore_previous_on_error = TRUE
+  restore_previous_on_error = TRUE,
+  user_writable_directory = libproj_default_writable_dir(),
+  context = NULL
 )
 }
 \arguments{
@@ -71,6 +73,13 @@ This defaults to \code{FALSE}.}
 
 \item{restore_previous_on_error}{Use \code{FALSE} to skip resetting the previous configuration
 if the configuration fails.}
+
+\item{user_writable_directory}{A value to use for the user-writable directory.
+The implementation of the user-writable directory is experimental and might
+not actually result in the writable directory being updated.}
+
+\item{context}{An external pointer to a \verb{PJ_CONTEXT*} created by the libproj
+API or \code{NULL} to configure the default context.}
 }
 \value{
 \itemize{

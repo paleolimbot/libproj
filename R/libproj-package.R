@@ -33,6 +33,11 @@ NULL
 #' @param expr An expression to evaluate with the specified state
 #' @param restore_previous_on_error Use `FALSE` to skip resetting the previous configuration
 #'   if the configuration fails.
+#' @param user_writable_directory A value to use for the user-writable directory.
+#'   The implementation of the user-writable directory is experimental and might
+#'   not actually result in the writable directory being updated.
+#' @param context An external pointer to a `PJ_CONTEXT*` created by the libproj
+#'   API or `NULL` to configure the default context.
 #' @export
 #'
 #' @return
@@ -142,7 +147,9 @@ libproj_configure <- function(
   network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),
   network_enabled = getOption("libproj.network_enabled", FALSE),
   log_level = getOption("libproj.log_level", 1L),
-  restore_previous_on_error = TRUE
+  restore_previous_on_error = TRUE,
+  user_writable_directory = libproj_default_writable_dir(),
+  context = NULL
 ) {
 
   search_path <- enc2utf8(search_path)
@@ -152,16 +159,14 @@ libproj_configure <- function(
   network_enabled <- as.logical(network_enabled)
   log_level <- as.integer(log_level)
 
-  # this can't be unset, so always use the default until it can be
-  user_writable_directory <- libproj_default_writable_dir()
-
   stopifnot(
     length(db_path) >= 1, all(file.exists(db_path)), all(!dir.exists(db_path)),
     length(ca_bundle_path) == 1, is.na(ca_bundle_path) || dir.exists(ca_bundle_path),
     length(network_endpoint) == 1, !is.na(network_endpoint),
     length(network_enabled) == 1, !is.na(network_enabled),
     length(log_level) == 1, log_level >= 0, log_level <= 4,
-    length(user_writable_directory) == 1, dir.exists(user_writable_directory)
+    length(user_writable_directory) == 1, dir.exists(user_writable_directory),
+    is.null(context) || typeof(context) == "exernalptr"
   )
 
   # handle case where this errors (it shouldn't since we've
@@ -179,6 +184,7 @@ libproj_configure <- function(
   tryCatch({
     .Call(
       libproj_c_configure_default_context,
+      context,
       search_path,
       db_path,
       ca_bundle_path,
@@ -189,7 +195,10 @@ libproj_configure <- function(
   }, error = function(e) {
     if (restore_previous_on_error) {
       tryCatch(
-        do.call(libproj_configure, c(old_config, list(restore_previous_on_error = FALSE))),
+        do.call(
+          libproj_configure,
+          c(old_config, list(restore_previous_on_error = FALSE))
+        ),
         error = function(e) {
           warning("Failed to restore previous configuration after error in libproj_configure()")
         }
