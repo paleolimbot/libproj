@@ -57,6 +57,7 @@ void libproj_register_c_callables() {
   R_RegisterCCallable("libproj", "proj_trans", (DL_FUNC) &proj_trans);
   R_RegisterCCallable("libproj", "proj_trans_array", (DL_FUNC) &proj_trans_array);
   R_RegisterCCallable("libproj", "proj_trans_generic", (DL_FUNC) &proj_trans_generic);
+  R_RegisterCCallable("libproj", "proj_trans_bounds", (DL_FUNC) &proj_trans_bounds);
   R_RegisterCCallable("libproj", "proj_coord", (DL_FUNC) &proj_coord);
   R_RegisterCCallable("libproj", "proj_roundtrip", (DL_FUNC) &proj_roundtrip);
   R_RegisterCCallable("libproj", "proj_lp_dist", (DL_FUNC) &proj_lp_dist);

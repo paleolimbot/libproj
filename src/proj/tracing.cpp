@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -33,7 +34,6 @@
 #endif
 
 #include <stdlib.h>
-#include <exception.h>
 
 #include "R-libproj/proj/internal/internal.hpp"
 #include "R-libproj/proj/internal/tracing.hpp"
@@ -95,7 +95,7 @@ Singleton::Singleton() {
     if (traceFile)
         f = fopen(traceFile, "wb");
     if (!f)
-        throw std::runtime_error("Can't log to stderr from within R")
+        f = stderr;
 
     const char *minDelay = getenv("PROJ_TRACE_MIN_DELAY");
     if (minDelay) {
@@ -127,7 +127,8 @@ Singleton::~Singleton() {
     logTraceRaw("</log>");
     fflush(f);
 
-    fclose(f);
+    if (f != stderr)
+        fclose(f);
 }
 
 // ---------------------------------------------------------------------------

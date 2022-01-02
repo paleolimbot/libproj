@@ -168,7 +168,7 @@
 #endif
 
 #if defined(PROJ_RENAME_SYMBOLS)
-#include "R-libproj/proj_symbol_rename.h"
+#include "proj_symbol_rename.h"
 #endif
 
 #if defined(__cplusplus)

@@ -49,9 +49,15 @@
 #define TINSHIFT_NAMESPACE TINShift
 #endif
 
-#include "R-libproj/transformations/tinshift_exceptions.hpp"
+#include "tinshift_exceptions.hpp"
 
 namespace TINSHIFT_NAMESPACE {
+
+enum FallbackStrategy {
+    FALLBACK_NONE,
+    FALLBACK_NEAREST_SIDE,
+    FALLBACK_NEAREST_CENTROID,
+};
 
 using json = nlohmann::json;
 
@@ -92,6 +98,10 @@ class TINShiftFile {
     /** Get a text description of the model. Intended to be longer than name()
      */
     const std::string &publicationDate() const { return mPublicationDate; }
+
+    const enum FallbackStrategy &fallbackStrategy() const {
+        return mFallbackStrategy;
+    }
 
     /** Basic information on the agency responsible for the model. */
     struct Authority {
@@ -204,6 +214,7 @@ class TINShiftFile {
     std::string mLicense{};
     std::string mDescription{};
     std::string mPublicationDate{};
+    enum FallbackStrategy mFallbackStrategy {};
     Authority mAuthority{};
     std::vector<Link> mLinks{};
     std::string mInputCRS{};
@@ -252,6 +263,6 @@ class Evaluator {
 
 // ---------------------------------------------------------------------------
 
-#include "R-libproj/transformations/tinshift_impl.hpp"
+#include "tinshift_impl.hpp"
 
 #endif // TINSHIFT_HPP

@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /*
     __ _____ _____ _____
  __|  |   __|     |   | |  JSON for Modern C++
@@ -2068,7 +2069,7 @@ JSON_HEDLEY_DIAGNOSTIC_POP
     #define JSON_INTERNAL_CATCH(exception) catch(exception)
 #else
     #include <cstdlib>
-    #define JSON_THROW(exception) std::abort()
+    #define JSON_THROW(exception) cpp_compat_abort()
     #define JSON_TRY if(true)
     #define JSON_CATCH(exception) if(false)
     #define JSON_INTERNAL_CATCH(exception) if(false)
@@ -2097,7 +2098,7 @@ JSON_HEDLEY_DIAGNOSTIC_POP
 // allow to override assert
 #if !defined(JSON_ASSERT)
     #include <cassert> // assert
-    #define JSON_ASSERT(x) assert(x)
+    #define JSON_ASSERT(x) cpp_compat_assert(x)
 #endif
 
 /*!

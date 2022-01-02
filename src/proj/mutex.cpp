@@ -94,7 +94,7 @@ void pj_cleanup_lock()
 
 #ifdef MUTEX_pthread
 
-#include "R-libproj/pthread.h"
+#include "pthread.h"
 
 #ifdef PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP
 #ifdef __GNUC__

@@ -32,8 +32,8 @@
 
 #include "R-libproj/sqlite3.h"
 
-#include "R-libproj/proj.h"
-#include "R-libproj/proj/util.hpp"
+#include "proj.h"
+#include "proj/util.hpp"
 
 NS_PROJ_START
 

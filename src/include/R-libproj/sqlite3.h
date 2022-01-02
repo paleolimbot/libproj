@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /*
 ** 2001-09-15
 **
@@ -134,15 +135,15 @@ extern "C" {
 ** These interfaces provide the same information as the [SQLITE_VERSION],
 ** [SQLITE_VERSION_NUMBER], and [SQLITE_SOURCE_ID] C preprocessor macros
 ** but are associated with the library instead of the header file.  ^(Cautious
-** programmers might include assert() statements in their application to
+** programmers might include cpp_compat_assert() statements in their application to
 ** verify that values returned by these interfaces match the macros in
 ** the header, and thus ensure that the application is
 ** compiled with matching library and header files.
 **
 ** <blockquote><pre>
-** assert( sqlite3_libversion_number()==SQLITE_VERSION_NUMBER );
-** assert( strncmp(sqlite3_sourceid(),SQLITE_SOURCE_ID,80)==0 );
-** assert( strcmp(sqlite3_libversion(),SQLITE_VERSION)==0 );
+** cpp_compat_assert( sqlite3_libversion_number()==SQLITE_VERSION_NUMBER );
+** cpp_compat_assert( strncmp(sqlite3_sourceid(),SQLITE_SOURCE_ID,80)==0 );
+** cpp_compat_assert( strcmp(sqlite3_libversion(),SQLITE_VERSION)==0 );
 ** </pre></blockquote>)^
 **
 ** ^The sqlite3_version[] string constant contains the text of [SQLITE_VERSION]
@@ -2954,7 +2955,7 @@ SQLITE_API sqlite3_int64 sqlite3_memory_highwater(int resetFlag);
 ** SQLite contains a high-quality pseudo-random number generator (PRNG) used to
 ** select random [ROWID | ROWIDs] when inserting new records into a table that
 ** already uses the largest possible [ROWID].  The PRNG is also used for
-** the built-in random() and randomblob() SQL functions.  This interface allows
+** the built-in cpp_compat_random() and randomblob() SQL functions.  This interface allows
 ** applications to access the same PRNG for other purposes.
 **
 ** ^A call to this routine stores N bytes of randomness into buffer P.
@@ -5123,7 +5124,7 @@ SQLITE_API int sqlite3_reset(sqlite3_stmt *pStmt);
 ** ^The fourth parameter may optionally be ORed with [SQLITE_DETERMINISTIC]
 ** to signal that the function will always return the same result given
 ** the same inputs within a single SQL statement.  Most SQL functions are
-** deterministic.  The built-in [random()] SQL function is an example of a
+** deterministic.  The built-in [cpp_compat_random()] SQL function is an example of a
 ** function that is not deterministic.  The SQLite query planner is able to
 ** perform additional optimizations on deterministic functions, so use
 ** of the [SQLITE_DETERMINISTIC] flag is recommended where possible.
@@ -5292,7 +5293,7 @@ SQLITE_API int sqlite3_create_window_function(
 ** The [load_extension() SQL function] is not innocuous because of its
 ** side effects.
 ** <p> SQLITE_INNOCUOUS is similar to SQLITE_DETERMINISTIC, but is not
-** exactly the same.  The [random|random() function] is an example of a
+** exactly the same.  The [random|cpp_compat_random() function] is an example of a
 ** function that is innocuous but not deterministic.
 ** <p>Some heightened security settings
 ** ([SQLITE_DBCONFIG_TRUSTED_SCHEMA] and [PRAGMA trusted_schema=OFF])
@@ -7633,8 +7634,8 @@ struct sqlite3_mutex_methods {
 ** CAPI3REF: Mutex Verification Routines
 **
 ** The sqlite3_mutex_held() and sqlite3_mutex_notheld() routines
-** are intended for use inside assert() statements.  The SQLite core
-** never uses these routines except inside an assert() and applications
+** are intended for use inside cpp_compat_assert() statements.  The SQLite core
+** never uses these routines except inside an cpp_compat_assert() and applications
 ** are advised to follow the lead of the core.  The SQLite core only
 ** provides implementations for these routines when it is compiled
 ** with the SQLITE_DEBUG flag.  External mutex implementations
@@ -7653,7 +7654,7 @@ struct sqlite3_mutex_methods {
 ** the routine should return 1.   This seems counter-intuitive since
 ** clearly the mutex cannot be held if it does not exist.  But
 ** the reason the mutex does not exist is because the build is not
-** using mutexes.  And we do not want the assert() containing the
+** using mutexes.  And we do not want the cpp_compat_assert() containing the
 ** call to sqlite3_mutex_held() to fail, so a non-zero return is
 ** the appropriate thing to do.  The sqlite3_mutex_notheld()
 ** interface should also return 1 when given a NULL pointer.

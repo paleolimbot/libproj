@@ -36,7 +36,7 @@
 
 #define CPL_DLL
 
-#include "R-libproj/proj/util.hpp"
+#include "proj/util.hpp"
 NS_PROJ_START
 
 typedef std::int64_t GIntBig;

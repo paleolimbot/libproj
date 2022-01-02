@@ -463,8 +463,7 @@ bool DiskChunkCache::checkConsistency() {
             auto next = stmt->getInt64();
             if (next == 0) {
                 if (id != tail) {
-                    cpp_compat_printerrf(
-                            "last item when following next is not tail.\n");
+                    cpp_compat_printerrf("last item when following next is not tail.\n");
                     return false;
                 }
                 break;
@@ -477,8 +476,7 @@ bool DiskChunkCache::checkConsistency() {
             id = next;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            cpp_compat_printerrf(
-                    "ghost items in linked_chunks when following next.\n");
+            cpp_compat_printerrf("ghost items in linked_chunks when following next.\n");
             return false;
         }
     } else if (count_linked_chunks) {
@@ -506,8 +504,7 @@ bool DiskChunkCache::checkConsistency() {
             auto prev = stmt->getInt64();
             if (prev == 0) {
                 if (id != head) {
-                    cpp_compat_printerrf(
-                            "last item when following prev is not head.\n");
+                    cpp_compat_printerrf("last item when following prev is not head.\n");
                     return false;
                 }
                 break;
@@ -520,8 +517,7 @@ bool DiskChunkCache::checkConsistency() {
             id = prev;
         }
         if (visitedIds.size() != static_cast<size_t>(count_linked_chunks)) {
-            cpp_compat_printerrf(
-                    "ghost items in linked_chunks when following prev.\n");
+            cpp_compat_printerrf("ghost items in linked_chunks when following prev.\n");
             return false;
         }
     } else if (count_linked_chunks) {
@@ -786,7 +782,7 @@ void NetworkChunkCache::insert(PJ_CONTEXT *ctx, const std::string &url,
 
     // Always insert DOWNLOAD_CHUNK_SIZE bytes to avoid fragmentation
     std::vector<unsigned char> blob(*dataPtr);
-    assert(blob.size() <= DOWNLOAD_CHUNK_SIZE);
+    cpp_compat_assert(blob.size() <= DOWNLOAD_CHUNK_SIZE);
     blob.resize(DOWNLOAD_CHUNK_SIZE);
 
     // Check if there is an existing entry for that URL and offset
@@ -1186,7 +1182,7 @@ bool NetworkFilePropertiesCache::tryGet(PJ_CONTEXT *ctx, const std::string &url,
     if (stmt->execute() != SQLITE_ROW) {
         return false;
     }
-    props.lastChecked = stmt->getInt64();
+    props.lastChecked = static_cast<time_t>(stmt->getInt64());
     props.size = stmt->getInt64();
     const char *lastModified = stmt->getText();
     props.lastModified = lastModified ? lastModified : std::string();
@@ -2266,7 +2262,7 @@ int proj_is_download_needed(PJ_CONTEXT *ctx, const char *url_or_filename,
     }
 
     NS_PROJ::FileProperties cachedProps;
-    cachedProps.lastChecked = stmt->getInt64();
+    cachedProps.lastChecked = static_cast<time_t>(stmt->getInt64());
     cachedProps.size = stmt->getInt64();
     const char *lastModified = stmt->getText();
     cachedProps.lastModified = lastModified ? lastModified : std::string();

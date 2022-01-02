@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -1302,8 +1303,8 @@ bool SingleOperation::_isEquivalentTo(const util::IComparable *other,
                 auto otherTransf = static_cast<const Transformation *>(otherSO);
                 auto params = transf->getTOWGS84Parameters();
                 auto otherParams = otherTransf->getTOWGS84Parameters();
-                assert(params.size() == 7);
-                assert(otherParams.size() == 7);
+                cpp_compat_assert(params.size() == 7);
+                cpp_compat_assert(otherParams.size() == 7);
                 for (size_t i = 0; i < 7; i++) {
                     if (std::fabs(params[i] - otherParams[i]) >
                         1e-10 * std::fabs(params[i])) {
@@ -1941,7 +1942,7 @@ bool ParameterValue::_isEquivalentTo(const util::IComparable *other,
     }
 
     default: {
-        assert(false);
+        cpp_compat_assert(false);
         break;
     }
     }
@@ -2118,15 +2119,18 @@ bool SingleOperation::exportToPROJStringGeneric(
     }
 
     if (methodEPSGCode == EPSG_CODE_METHOD_CHANGE_VERTICAL_UNIT) {
-        double convFactor = parameterValueNumericAsSI(
+        const double convFactor = parameterValueNumericAsSI(
             EPSG_CODE_PARAMETER_UNIT_CONVERSION_SCALAR);
-        auto uom = common::UnitOfMeasure(std::string(), convFactor,
-                                         common::UnitOfMeasure::Type::LINEAR)
-                       .exportToPROJString();
-        auto reverse_uom =
-            common::UnitOfMeasure(std::string(), 1.0 / convFactor,
+        const auto uom =
+            common::UnitOfMeasure(std::string(), convFactor,
                                   common::UnitOfMeasure::Type::LINEAR)
                 .exportToPROJString();
+        const auto reverse_uom =
+            convFactor == 0.0
+                ? std::string()
+                : common::UnitOfMeasure(std::string(), 1.0 / convFactor,
+                                        common::UnitOfMeasure::Type::LINEAR)
+                      .exportToPROJString();
         if (uom == "m") {
             // do nothing
         } else if (!uom.empty()) {

@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ
  * Purpose:  Functionality related to deformation model
@@ -279,8 +280,8 @@ struct EvaluatorIface : public EvaluatorIfacePrototype<Grid, GridSet> {
                                 double &Z) {
         (void)a;
         (void)b;
-        assert(cart->a == a);
-        assert(cart->b == b);
+        cpp_compat_assert(cart->a == a);
+        cpp_compat_assert(cart->b == b);
         PJ_LPZ lpz;
         lpz.lam = lam;
         lpz.phi = phi;
@@ -296,8 +297,8 @@ struct EvaluatorIface : public EvaluatorIfacePrototype<Grid, GridSet> {
                                 double &phi, double &height) {
         (void)a;
         (void)b;
-        assert(cart->a == a);
-        assert(cart->b == b);
+        cpp_compat_assert(cart->a == a);
+        cpp_compat_assert(cart->b == b);
         PJ_XYZ xyz;
         xyz.x = X;
         xyz.y = Y;

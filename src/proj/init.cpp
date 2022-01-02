@@ -41,7 +41,6 @@
 #include "R-libproj/filemanager.hpp"
 #include <math.h>
 
-
 /**************************************************************************************/
 static paralist *string_to_paralist (PJ_CONTEXT *ctx, char *definition) {
 /***************************************************************************************

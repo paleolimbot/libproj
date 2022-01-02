@@ -44,6 +44,7 @@ int (*proj_degree_output)(PJ*, enum PJ_DIRECTION) = NULL;
 PJ_COORD (*proj_trans)(PJ*, PJ_DIRECTION, PJ_COORD) = NULL;
 int (*proj_trans_array)(PJ*, PJ_DIRECTION, size_t, PJ_COORD*) = NULL;
 size_t (*proj_trans_generic)( PJ*, PJ_DIRECTION, double*, size_t, size_t, double*, size_t, size_t, double*, size_t, size_t, double*, size_t, size_t nt ) = NULL;
+int (*proj_trans_bounds)( PJ_CONTEXT*, PJ*, PJ_DIRECTION, double, double, double, double, double*, double*, double*, double*, int densify_pts ) = NULL;
 PJ_COORD (*proj_coord)(double, double, double, double) = NULL;
 double (*proj_roundtrip)(PJ*, PJ_DIRECTION, int, PJ_COORD*) = NULL;
 double (*proj_lp_dist)(const PJ*, PJ_COORD, PJ_COORD) = NULL;
@@ -215,6 +216,7 @@ void libproj_init_api() {
   proj_trans = (PJ_COORD (*)(PJ*, PJ_DIRECTION, PJ_COORD)) R_GetCCallable("libproj", "proj_trans");
   proj_trans_array = (int (*)(PJ*, PJ_DIRECTION, size_t, PJ_COORD*)) R_GetCCallable("libproj", "proj_trans_array");
   proj_trans_generic = (size_t (*)( PJ*, PJ_DIRECTION, double*, size_t, size_t, double*, size_t, size_t, double*, size_t, size_t, double*, size_t, size_t nt )) R_GetCCallable("libproj", "proj_trans_generic");
+  proj_trans_bounds = (int (*)( PJ_CONTEXT*, PJ*, PJ_DIRECTION, double, double, double, double, double*, double*, double*, double*, int densify_pts )) R_GetCCallable("libproj", "proj_trans_bounds");
   proj_coord = (PJ_COORD (*)(double, double, double, double)) R_GetCCallable("libproj", "proj_coord");
   proj_roundtrip = (double (*)(PJ*, PJ_DIRECTION, int, PJ_COORD*)) R_GetCCallable("libproj", "proj_roundtrip");
   proj_lp_dist = (double (*)(const PJ*, PJ_COORD, PJ_COORD)) R_GetCCallable("libproj", "proj_lp_dist");

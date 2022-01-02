@@ -33,8 +33,8 @@
 #include <string>
 #include <vector>
 
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "io.hpp"
+#include "util.hpp"
 
 NS_PROJ_START
 

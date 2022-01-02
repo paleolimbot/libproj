@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  * Project:  PROJ.4
  * Purpose:  Implementation of the aitoff (Aitoff) and wintri (Winkel Tripel)
@@ -171,7 +172,7 @@ static PJ_LP aitoff_s_inverse (PJ_XY xy, PJ *P) {           /* Spheroidal, inver
     if (iter == MAXITER && round == MAXROUND)
     {
         proj_context_errno_set( P->ctx, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN );
-        /* fprintf(stderr, "Warning: Accuracy of 1e-12 not reached. Last increments: dlat=%e and dlon=%e\n", dp, dl); */
+        /* cpp_compat_printerrf("Warning: Accuracy of 1e-12 not reached. Last increments: dlat=%e and dlon=%e\n", dp, dl); */
     }
 
     return lp;

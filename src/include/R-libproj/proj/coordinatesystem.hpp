@@ -34,9 +34,9 @@
 #include <string>
 #include <vector>
 
-#include "R-libproj/proj/common.hpp"
-#include "R-libproj/proj/io.hpp"
-#include "R-libproj/proj/util.hpp"
+#include "common.hpp"
+#include "io.hpp"
+#include "util.hpp"
 
 NS_PROJ_START
 
@@ -313,6 +313,11 @@ class PROJ_GCC_DLL SphericalCS final : public CoordinateSystem {
            const CoordinateSystemAxisNNPtr &axis1,
            const CoordinateSystemAxisNNPtr &axis2,
            const CoordinateSystemAxisNNPtr &axis3);
+
+    PROJ_DLL static SphericalCSNNPtr
+    create(const util::PropertyMap &properties,
+           const CoordinateSystemAxisNNPtr &axis1,
+           const CoordinateSystemAxisNNPtr &axis2);
 
   protected:
     PROJ_INTERNAL explicit SphericalCS(

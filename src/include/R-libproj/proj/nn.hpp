@@ -1,6 +1,6 @@
+#include "cpp-compat.h"
 #pragma once
 
-#include "cpp-compat.h"
 /*
  * Copyright (c) 2015 Dropbox, Inc.
  *
@@ -362,7 +362,7 @@ template <typename T> struct hash<::dropbox::oxygen::nn<T>> {
 // Triggers an assertion if expression evaluates to null.
 #define NN_CHECK_ASSERT(_e)                                                    \
   (([&](typename std::remove_reference<decltype(_e)>::type p) {                \
-    /* note: assert() alone is not sufficient here, because it might be        \
+    /* note: cpp_compat_assert() alone is not sufficient here, because it might be        \
      * compiled out. */                                                        \
     cpp_compat_assert(p &&#_e " must not be null");                                       \
     if (!p)                                                                    \

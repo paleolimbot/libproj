@@ -43,7 +43,7 @@
 #define nlohmann proj_nlohmann
 
 #if !defined(DOXYGEN_ENABLED)
-#include "R-libproj/proj/internal/vendor/nlohmann/json.hpp"
+#include "vendor/nlohmann/json.hpp"
 #endif
 
 #endif // EXTERNAL_NLOHMANN_JSON

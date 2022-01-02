@@ -32,7 +32,7 @@
 #include "R-libproj/proj/coordinateoperation.hpp"
 #include "R-libproj/proj/util.hpp"
 
-
+#include "esriparammappings.hpp"
 #include <vector>
 
 // ---------------------------------------------------------------------------

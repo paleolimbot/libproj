@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -362,6 +363,18 @@ void PrimeMeridian::_exportToWKT(
                     l_name = l_alias;
                     aliasFound = true;
                 }
+            }
+            if (!aliasFound && dbContext) {
+                auto authFactory = io::AuthorityFactory::create(
+                    NN_NO_CHECK(dbContext), "ESRI");
+                aliasFound =
+                    authFactory
+                        ->createObjectsFromName(
+                            l_name,
+                            {io::AuthorityFactory::ObjectType::PRIME_MERIDIAN},
+                            false // approximateMatch
+                            )
+                        .size() == 1;
             }
             if (!aliasFound) {
                 l_name = io::WKTFormatter::morphNameToESRI(l_name);
@@ -820,6 +833,18 @@ void Ellipsoid::_exportToWKT(
                             aliasFound = true;
                         }
                     }
+                    if (!aliasFound && dbContext) {
+                        auto authFactory = io::AuthorityFactory::create(
+                            NN_NO_CHECK(dbContext), "ESRI");
+                        aliasFound = authFactory
+                                         ->createObjectsFromName(
+                                             l_name,
+                                             {io::AuthorityFactory::ObjectType::
+                                                  ELLIPSOID},
+                                             false // approximateMatch
+                                             )
+                                         .size() == 1;
+                    }
                     if (!aliasFound) {
                         l_name = io::WKTFormatter::morphNameToESRI(l_name);
                     }
@@ -916,7 +941,7 @@ bool Ellipsoid::lookForProjWellKnownEllps(std::string &projEllpsName,
     const double rf = computedInverseFlattening();
     auto proj_ellps = proj_list_ellps();
     for (int i = 0; proj_ellps[i].id != nullptr; i++) {
-        assert(strncmp(proj_ellps[i].major, "a=", 2) == 0);
+        cpp_compat_assert(strncmp(proj_ellps[i].major, "a=", 2) == 0);
         const double a_iter = c_locale_stod(proj_ellps[i].major + 2);
         if (::fabs(a - a_iter) < 1e-10 * a_iter) {
             if (strncmp(proj_ellps[i].ell, "b=", 2) == 0) {
@@ -930,7 +955,7 @@ bool Ellipsoid::lookForProjWellKnownEllps(std::string &projEllpsName,
                     return true;
                 }
             } else {
-                assert(strncmp(proj_ellps[i].ell, "rf=", 3) == 0);
+                cpp_compat_assert(strncmp(proj_ellps[i].ell, "rf=", 3) == 0);
                 const double rf_iter = c_locale_stod(proj_ellps[i].ell + 3);
                 if (::fabs(rf - rf_iter) < 1e-10 * rf_iter) {
                     projEllpsName = proj_ellps[i].id;
@@ -1247,6 +1272,18 @@ void GeodeticReferenceFrame::_exportToWKT(
                         }
                     }
                 }
+                if (!aliasFound && dbContext) {
+                    auto authFactory = io::AuthorityFactory::create(
+                        NN_NO_CHECK(dbContext), "ESRI");
+                    aliasFound = authFactory
+                                     ->createObjectsFromName(
+                                         l_name,
+                                         {io::AuthorityFactory::ObjectType::
+                                              GEODETIC_REFERENCE_FRAME},
+                                         false // approximateMatch
+                                         )
+                                     .size() == 1;
+                }
                 if (!aliasFound) {
                     l_name = io::WKTFormatter::morphNameToESRI(l_name);
                     if (!starts_with(l_name, "D_")) {
@@ -1401,17 +1438,32 @@ bool GeodeticReferenceFrame::hasEquivalentNameToUsingAlias(
     if (dbContext) {
         if (!identifiers().empty()) {
             const auto &id = identifiers().front();
-            auto aliasesResult =
+
+            const std::string officialNameFromId = dbContext->getName(
+                "geodetic_datum", *(id->codeSpace()), id->code());
+            const auto aliasesResult =
                 dbContext->getAliases(*(id->codeSpace()), id->code(), nameStr(),
                                       "geodetic_datum", std::string());
-            const char *otherName = other->nameStr().c_str();
-            for (const auto &aliasResult : aliasesResult) {
-                if (metadata::Identifier::isEquivalentName(
-                        otherName, aliasResult.c_str())) {
-                    return true;
-                }
-            }
-            return false;
+
+            const auto isNameMatching =
+                [&aliasesResult, &officialNameFromId](const std::string &name) {
+                    const char *nameCstr = name.c_str();
+                    if (metadata::Identifier::isEquivalentName(
+                            nameCstr, officialNameFromId.c_str())) {
+                        return true;
+                    } else {
+                        for (const auto &aliasResult : aliasesResult) {
+                            if (metadata::Identifier::isEquivalentName(
+                                    nameCstr, aliasResult.c_str())) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                };
+
+            return isNameMatching(nameStr()) &&
+                   isNameMatching(other->nameStr());
         } else if (!other->identifiers().empty()) {
             auto otherGRF = dynamic_cast<const GeodeticReferenceFrame *>(other);
             if (otherGRF) {
@@ -1695,7 +1747,7 @@ DatumEnsemble::asDatum(const io::DatabaseContextPtr &dbContext) const {
         return GeodeticReferenceFrame::create(props, grf->ellipsoid(), anchor,
                                               grf->primeMeridian());
     } else {
-        assert(dynamic_cast<VerticalReferenceFrame *>(l_datums[0].get()));
+        cpp_compat_assert(dynamic_cast<VerticalReferenceFrame *>(l_datums[0].get()));
         return datum::VerticalReferenceFrame::create(props, anchor);
     }
 }
@@ -1713,7 +1765,7 @@ void DatumEnsemble::_exportToWKT(
     }
 
     const auto &l_datums = datums();
-    assert(!l_datums.empty());
+    cpp_compat_assert(!l_datums.empty());
 
     formatter->startNode(io::WKTConstants::ENSEMBLE, false);
     const auto &l_name = nameStr();
@@ -1969,6 +2021,18 @@ void VerticalReferenceFrame::_exportToWKT(
                     l_name = l_alias;
                     aliasFound = true;
                 }
+            }
+            if (!aliasFound && dbContext) {
+                auto authFactory = io::AuthorityFactory::create(
+                    NN_NO_CHECK(dbContext), "ESRI");
+                aliasFound = authFactory
+                                 ->createObjectsFromName(
+                                     l_name,
+                                     {io::AuthorityFactory::ObjectType::
+                                          VERTICAL_REFERENCE_FRAME},
+                                     false // approximateMatch
+                                     )
+                                 .size() == 1;
             }
             if (!aliasFound) {
                 l_name = io::WKTFormatter::morphNameToESRI(l_name);

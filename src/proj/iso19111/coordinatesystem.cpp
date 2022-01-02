@@ -1,3 +1,4 @@
+#include "cpp-compat.h"
 /******************************************************************************
  *
  * Project:  PROJ
@@ -667,6 +668,27 @@ SphericalCSNNPtr SphericalCS::create(const util::PropertyMap &properties,
 
 // ---------------------------------------------------------------------------
 
+/** \brief Instantiate a SphericalCS with 2 axis.
+ *
+ * This is an extension to ISO19111 to support (planet)-ocentric CS with
+ * geocentric latitude.
+ *
+ * @param properties See \ref general_properties.
+ * @param axis1 The first axis.
+ * @param axis2 The second axis.
+ * @return a new SphericalCS.
+ */
+SphericalCSNNPtr SphericalCS::create(const util::PropertyMap &properties,
+                                     const CoordinateSystemAxisNNPtr &axis1,
+                                     const CoordinateSystemAxisNNPtr &axis2) {
+    std::vector<CoordinateSystemAxisNNPtr> axis{axis1, axis2};
+    auto cs(SphericalCS::nn_make_shared<SphericalCS>(axis));
+    cs->setProperties(properties);
+    return cs;
+}
+
+// ---------------------------------------------------------------------------
+
 //! @cond Doxygen_Suppress
 EllipsoidalCS::~EllipsoidalCS() = default;
 //! @endcond
@@ -852,7 +874,7 @@ EllipsoidalCSNNPtr EllipsoidalCS::alterAngularUnit(
                                      l_axisList[0]->alterUnit(angularUnit),
                                      l_axisList[1]->alterUnit(angularUnit));
     } else {
-        assert(l_axisList.size() == 3);
+        cpp_compat_assert(l_axisList.size() == 3);
         return EllipsoidalCS::create(
             util::PropertyMap(), l_axisList[0]->alterUnit(angularUnit),
             l_axisList[1]->alterUnit(angularUnit), l_axisList[2]);
@@ -870,7 +892,7 @@ EllipsoidalCS::alterLinearUnit(const common::UnitOfMeasure &linearUnit) const {
         return EllipsoidalCS::create(util::PropertyMap(), l_axisList[0],
                                      l_axisList[1]);
     } else {
-        assert(l_axisList.size() == 3);
+        cpp_compat_assert(l_axisList.size() == 3);
         return EllipsoidalCS::create(util::PropertyMap(), l_axisList[0],
                                      l_axisList[1],
                                      l_axisList[2]->alterUnit(linearUnit));
@@ -1139,7 +1161,7 @@ CartesianCS::alterUnit(const common::UnitOfMeasure &unit) const {
                                    l_axisList[0]->alterUnit(unit),
                                    l_axisList[1]->alterUnit(unit));
     } else {
-        assert(l_axisList.size() == 3);
+        cpp_compat_assert(l_axisList.size() == 3);
         return CartesianCS::create(
             util::PropertyMap(), l_axisList[0]->alterUnit(unit),
             l_axisList[1]->alterUnit(unit), l_axisList[2]->alterUnit(unit));
@@ -1217,7 +1239,7 @@ ParametricCS::create(const util::PropertyMap &properties,
 // ---------------------------------------------------------------------------
 
 AxisDirection::AxisDirection(const std::string &nameIn) : CodeList(nameIn) {
-    assert(registry.find(nameIn) == registry.end());
+    cpp_compat_assert(registry.find(nameIn) == registry.end());
     registry[nameIn] = this;
 }
 
@@ -1238,7 +1260,7 @@ AxisDirection::valueOf(const std::string &nameIn) noexcept {
 
 AxisDirectionWKT1::AxisDirectionWKT1(const std::string &nameIn)
     : CodeList(nameIn) {
-    assert(registry.find(nameIn) == registry.end());
+    cpp_compat_assert(registry.find(nameIn) == registry.end());
     registry[nameIn] = this;
 }
 

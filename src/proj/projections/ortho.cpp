@@ -89,7 +89,6 @@ static PJ_LP ortho_s_inverse (PJ_XY xy, PJ *P) {           /* Spheroidal, invers
     if (sinc > 1.) {
         if ((sinc - 1.) > EPS10) {
             proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
-            proj_log_trace(P, "Point (%.3f, %.3f) is outside the projection boundary");
             return lp;
         }
         sinc = 1.;
@@ -177,7 +176,6 @@ static PJ_LP ortho_e_inverse (PJ_XY xy, PJ *P) {           /* Ellipsoidal, inver
         if (rh2 >= 1. - 1e-15) {
             if ((rh2 - 1.) > EPS10) {
                 proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
-                proj_log_trace(P, "Point (%.3f, %.3f) is outside the projection boundary");
                 lp.lam = HUGE_VAL; lp.phi = HUGE_VAL;
                 return lp;
             }
@@ -201,7 +199,6 @@ static PJ_LP ortho_e_inverse (PJ_XY xy, PJ *P) {           /* Ellipsoidal, inver
         // Equation of the ellipse
         if( SQ(xy.x) + SQ(xy.y * (P->a / P->b)) > 1 + 1e-11 ) {
             proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
-            proj_log_trace(P, "Point (%.3f, %.3f) is outside the projection boundary");
             lp.lam = HUGE_VAL; lp.phi = HUGE_VAL;
             return lp;
         }
@@ -229,7 +226,6 @@ static PJ_LP ortho_e_inverse (PJ_XY xy, PJ *P) {           /* Ellipsoidal, inver
     xy_recentered.y = (xy.y - Q->y_shift) / Q->y_scale;
     if( SQ(xy.x) + SQ(xy_recentered.y) > 1 + 1e-11 ) {
         proj_errno_set(P, PROJ_ERR_COORD_TRANSFM_OUTSIDE_PROJECTION_DOMAIN);
-        proj_log_trace(P, "Point (%.3f, %.3f) is outside the projection boundary");
         lp.lam = HUGE_VAL; lp.phi = HUGE_VAL;
         return lp;
     }
@@ -258,15 +254,23 @@ static PJ_LP ortho_e_inverse (PJ_XY xy, PJ *P) {           /* Ellipsoidal, inver
         const double J11 = -rho * sinphi * sinlam;
         const double J12 = nu * cosphi * coslam;
         const double J21 = rho * (cosphi * Q->cosph0 + sinphi * Q->sinph0 * coslam);
-        const double J22 = nu * Q->sinph0 * Q->cosph0 * sinlam;
+        const double J22 = nu * Q->sinph0 * cosphi * sinlam;
         const double D = J11 * J22 - J12 * J21;
         const double dx = xy.x - xy_new.x;
         const double dy = xy.y - xy_new.y;
         const double dphi = (J22 * dx - J12 * dy) / D;
         const double dlam = (-J21 * dx + J11 * dy) / D;
         lp.phi += dphi;
-        if( lp.phi > M_PI_2) lp.phi = M_PI_2;
-        else if( lp.phi < -M_PI_2) lp.phi = -M_PI_2;
+        if( lp.phi > M_PI_2)
+        {
+            lp.phi = M_PI_2 - (lp.phi - M_PI_2);
+            lp.lam = adjlon(lp.lam + M_PI);
+        }
+        else if( lp.phi < -M_PI_2)
+        {
+            lp.phi = -M_PI_2 + (-M_PI_2 - lp.phi);
+            lp.lam = adjlon(lp.lam + M_PI);
+        }
         lp.lam += dlam;
         if( fabs(dphi) < 1e-12 && fabs(dlam) < 1e-12 )
         {
