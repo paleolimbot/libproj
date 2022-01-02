@@ -166,7 +166,7 @@ libproj_configure <- function(
     length(network_enabled) == 1, !is.na(network_enabled),
     length(log_level) == 1, log_level >= 0, log_level <= 4,
     length(user_writable_directory) == 1, dir.exists(user_writable_directory),
-    is.null(context) || typeof(context) == "exernalptr"
+    is.null(context) || typeof(context) == "externalptr"
   )
 
   # handle case where this errors (it shouldn't since we've
