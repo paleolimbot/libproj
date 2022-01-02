@@ -45,7 +45,7 @@ test_that("libproj can be linked to", {
   ')
 
   expect_equal(.Call("libproj_version_run"), 8 * 10000 + 2 * 100 + 0)
-  expect_equal(.Call("libproj_version_build"), 8 * 10000 + 1 * 100 + 0)
+  expect_equal(.Call("libproj_version_build"), 8 * 10000 + 2 * 100 + 0)
 
   unlink(shlib_file)
 })
