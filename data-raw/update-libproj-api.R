@@ -3,7 +3,61 @@ library(tidyverse)
 
 capi_header <- read_file("src/include/R-libproj/proj.h")
 
-version_defs_chr <- read_lines(capi_header)[173:188]
+capi_header_no_comments <- capi_header %>%
+  str_remove_all(regex("/\\*.*?\\*/", dotall = TRUE, multiline = TRUE)) %>%
+  str_replace_all("//.*?\n", "\n")
+
+version_defines <- capi_header %>%
+  str_extract_all('#define PROJ_VERSION.*[0-9]\\s*\n') %>%
+  unlist() %>%
+  str_trim() %>%
+  str_replace_all("\\s+", " ")
+
+# typedef struct|union|enum SOMETHING;
+typedefs <- capi_header_no_comments %>%
+  str_extract_all(
+    regex("\ntypedef\\s+(union|struct|enum)[^\\{\\}]*?;\\s*\n", dotall = TRUE, multiline = TRUE)
+  ) %>%
+  unlist() %>%
+  str_trim() %>%
+  str_replace_all("\\s+", " ")
+
+typedefs_fun <- capi_header_no_comments %>%
+  str_extract_all("\ntypedef.*?\\(\\*[A-Za-z0-9_]+\\)[^;]+;") %>%
+  unlist() %>%
+  str_trim() %>%
+  str_replace_all(" +", " ") %>%
+  str_replace_all("\\s*?\n", "\n") %>%
+  str_replace_all("\n ([^ ])", "\n  \\1")
+
+# (typedef ) (union|struct|enum) MAYBE_SOMETHING {...} MAYBE_SOMETHING;
+structs <- capi_header_no_comments %>%
+  str_extract_all(
+    regex(
+      "(typedef\\s+)?(union|struct|enum)[A-Za-z_ \n]*\\{[^\\}]*\\}[^;]*;",
+      dotall = TRUE, multiline = TRUE
+    )
+  ) %>%
+  unlist() %>%
+  str_trim() %>%
+  str_replace_all("\\s*?\n", "\n") %>%
+  str_replace_all(" +", " ") %>%
+  str_replace_all("\n(\\s+?\n)+", "\n") %>%
+  str_replace_all("\n+", "\n") %>%
+  str_replace_all("\n\\{", " {") %>%
+  str_replace_all("\n ([^ ])", "\n  \\1")
+
+
+# enum typedefs have to go first because forward declarations aren't
+# valid ISO C++. This only affects PJ_DIRECTION, which is the only one
+# that isn't typedef enum
+enums <- c(
+  str_subset(structs, "enum[^\\{]*\\{"),
+  str_subset(typedefs, "enum")
+)
+
+typedefs <- str_subset(typedefs, "enum", negate = TRUE)
+structs <- str_subset(structs, "enum[^\\{]*\\{", negate = TRUE)
 
 function_defs_chr <- capi_header %>%
   str_extract_all(
@@ -15,23 +69,6 @@ function_defs_chr <- capi_header %>%
   ) %>%
   .[[1]] %>%
   str_replace_all(regex("\\s+"), " ")
-
-
-# too complex for a regex...also includes enums
-
-typedefs_chr <- c(
-  read_lines(capi_header)[194:357], # major typedefs to PJ_CONTEXT
-  read_lines(capi_header)[369:373], # default context
-  read_lines(capi_header)[379:379], # typedef proj_file_finder
-  read_lines(capi_header)[389:441], # PROJ_FILE_API
-  read_lines(capi_header)[448:511], # PROJ_NETWORK_HANDLE to read range type
-  read_lines(capi_header)[577:583], # PJ_DIRECTION
-  read_lines(capi_header)[627:651], # error codes
-  read_lines(capi_header)[705:1045], # Data types for ISO19111 C API
-  read_lines(capi_header)[1068], # PJ_OBJ_LIST
-  read_lines(capi_header)[1239], # PJ_INSERT_SESSION
-  read_lines(capi_header)[1266] # PJ_OPERATION_FACTORY_CONTEXT
-)
 
 function_defs <- tibble(
   # move pointer spec to be with type to the left, remove extern
@@ -70,8 +107,9 @@ function_header_defs <- function_defs %>%
 libproj_h <- with(
   rlang::list2(
     !!!function_header_defs,
-    typedefs_chr = typedefs_chr,
-    version_defs_chr = version_defs_chr
+    typedefs = typedefs,
+    version_defines = version_defines,
+    structs = structs
   ),
   glue::glue(
     '
@@ -80,7 +118,7 @@ libproj_h <- with(
 #define LIBPROJ_H
 
 #ifndef __cplusplus
-# include <stddef.h> /* for size_t definition */
+# include <stddef.h>
 #else
 # include <cstddef>
 using std::size_t;
@@ -90,9 +128,13 @@ using std::size_t;
 extern "C" {{
 #endif
 
-#define PROJ_DLL
+#ifdef __cplusplus
+#define PJ_DEFAULT_CTX nullptr
+#else
+#define PJ_DEFAULT_CTX 0
+#endif
 
-{ paste0(version_defs_chr, collapse = "\n") }
+{ paste0(version_defines, collapse = "\n") }
 
 // how integer versions are calculated
 #define LIBPROJ_VERSION_INT(major, minor, patch) (patch + minor * 100 + major * 10000)
@@ -100,10 +142,17 @@ extern "C" {{
 // the runtime version of libproj
 extern int (*libproj_version_int)();
 
-// the compile-time version of libPROJ
+// the compile-time version of libproj
 #define LIBPROJ_VERSION_COMPILE_INT LIBPROJ_VERSION_INT(PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH)
 
-{ paste0(typedefs_chr, collapse = "\n") }
+{ paste0(typedefs, collapse = "\n") }
+typedef char **PROJ_STRING_LIST;
+
+{ paste0(enums, collapse = "\n\n") }
+
+{ paste0(typedefs_fun, collapse = "\n\n") }
+
+{ paste0(structs, collapse = "\n\n") }
 
 { paste0(header_def, collapse = "\n") }
 
