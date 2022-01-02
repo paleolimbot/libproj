@@ -78,7 +78,9 @@
   network_endpoint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"libproj.network_endpoint"</span>, <span class="st">"https://cdn.proj.org"</span><span class="op">)</span>,
   network_enabled <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"libproj.network_enabled"</span>, <span class="cn">FALSE</span><span class="op">)</span>,
   log_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"libproj.log_level"</span>, <span class="fl">1L</span><span class="op">)</span>,
-  restore_previous_on_error <span class="op">=</span> <span class="cn">TRUE</span>
+  restore_previous_on_error <span class="op">=</span> <span class="cn">TRUE</span>,
+  user_writable_directory <span class="op">=</span> <span class="fu">libproj_default_writable_dir</span><span class="op">(</span><span class="op">)</span>,
+  context <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -115,6 +117,13 @@ This defaults to <code>FALSE</code>.</p></dd>
 <dt>restore_previous_on_error</dt>
 <dd><p>Use <code>FALSE</code> to skip resetting the previous configuration
 if the configuration fails.</p></dd>
+<dt>user_writable_directory</dt>
+<dd><p>A value to use for the user-writable directory.
+The implementation of the user-writable directory is experimental and might
+not actually result in the writable directory being updated.</p></dd>
+<dt>context</dt>
+<dd><p>An external pointer to a <code>PJ_CONTEXT*</code> created by the libproj
+API or <code>NULL</code> to configure the default context.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
