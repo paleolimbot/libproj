@@ -28,11 +28,8 @@ You can install the released version of libproj from
 install.packages("libproj")
 ```
 
-To install a binary on supported Linux platforms, you can use [RStudio
-Package Manager’s public instance](https://packagemanager.rstudio.com/)
-(see
-[here](https://packagemanager.rstudio.com/client/#/repos/1/overview) for
-how to configure on your platform).
+To install a binary on supported Linux platforms, you can use RStudio
+Package Manager’s public instance.
 
 You can install the development version from [R
 Universe](https://r-universe.dev/) with:
@@ -50,11 +47,11 @@ all systems by default.
 library(libproj)
 libproj_configuration()
 #> $db_path
-#> [1] "/Library/Frameworks/R.framework/Versions/4.1/Resources/library/libproj/proj/proj.db"
+#> [1] "/Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/libproj/proj/proj.db"
 #> 
 #> $search_path
-#> [1] "/Library/Frameworks/R.framework/Versions/4.1/Resources/library/libproj/proj"
-#> [2] "/Users/dewey/Library/Application Support/R-libproj/data"                    
+#> [1] "/Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/libproj/proj"
+#> [2] "/Users/deweydunnington/Library/Application Support/R-libproj/data"                
 #> 
 #> $network_endpoint
 #> [1] "https://cdn.proj.org"
