@@ -22,7 +22,7 @@ jobs:
           - {os: windows-latest, r: 'release'}
           # the UCRT build here seems to ignore OBJECTS in Makevars.win
           # UCRT doesn't seem to be installing right now
-          - {os: windows-2022, r: 'devel-ucrt'}
+          # - {os: windows-2022, r: 'devel-ucrt'}
           - {os: macOS-latest,   r: 'release'}
           - {os: ubuntu-18.04,   r: 'release', curl: "curl", rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
           - {os: ubuntu-20.04,   r: 'release', curl: "curl", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
