@@ -48,6 +48,11 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="8.2.0-1" id="libproj-820-1">libproj 8.2.0-1<a class="anchor" aria-label="anchor" href="#libproj-820-1"></a></h2>
+<ul><li>Update internal PROJ to 8.2.0 and automate the process for future updates.</li>
+<li>Fix default location of the user-writable directory to comply with CRAN policies.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="8.1.0-2" id="libproj-810-2">libproj 8.1.0-2<a class="anchor" aria-label="anchor" href="#libproj-810-2"></a></h2>
 <ul><li>Fix check problem where a test was creating files in the user’s home directory that were not cleaned.</li>
 <li>Update rwinlibs libraries to rix UCRT check error.</li>
@@ -57,7 +62,7 @@
 <ul><li>Rewrite the configure script using autoconf and test it on all the platforms supported by rhub.</li>
 <li>Update the internal PROJ copy to 8.1.0.</li>
 <li>Rewrite tests to make sure the C API can be linked to and don’t skip them on any platform.</li>
-<li>Test using a wrapper package that uses most of the exported functions (see <a href="https://github.com/paleolimbot/rlibproj" class="external-link uri">https://github.com/paleolimbot/rlibproj</a>)</li>
+<li>Test using a wrapper package that uses most of the exported functions (see <a href="https://github.com/paleolimbot/rproj" class="external-link uri">https://github.com/paleolimbot/rproj</a>)</li>
 <li>Update the README with examples of how to make use of this package (optionally using Rcpp or cpp11 as a helper)</li>
 <li>Correctly declare system requirements.</li>
 <li>Update configuration options to be more robust across environments.</li>
