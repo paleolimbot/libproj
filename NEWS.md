@@ -1,3 +1,10 @@
+# libproj 8.2.0-1
+
+* Update internal PROJ to 8.2.0 and automate the process
+  for future updates.
+* Fix default location of the user-writable directory
+  to comply with CRAN policies.
+
 # libproj 8.1.0-2
 
 * Fix check problem where a test was creating files
@@ -13,7 +20,7 @@
   and don't skip them on any platform.
 * Test using a wrapper package that uses most of the
   exported functions
-  (see <https://github.com/paleolimbot/rlibproj>)
+  (see <https://github.com/paleolimbot/rproj>)
 * Update the README with examples of how to make use of this
   package (optionally using Rcpp or cpp11 as a helper)
 * Correctly declare system requirements.
