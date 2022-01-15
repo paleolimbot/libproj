@@ -5,7 +5,7 @@ library(tidyverse)
 
 # download PROJ
 # check latest release here: https://proj.org/download.html
-source_url <- "https://download.osgeo.org/proj/proj-8.2.0.tar.gz"
+source_url <- "https://download.osgeo.org/proj/proj-8.2.1.tar.gz"
 curl::curl_download(source_url, "data-raw/proj-source.tar.gz")
 untar("data-raw/proj-source.tar.gz", exdir = "data-raw")
 
@@ -132,6 +132,8 @@ objects <- list.files("src", pattern = "\\.(cpp|c)$", recursive = TRUE, full.nam
   paste(collapse = " \\\n    ")
 
 clipr::write_clip(objects)
+usethis::edit_file("src/Makevars.in")
+usethis::edit_file("src/Makevars.win")
 
 # (check to make sure everything builds and tests pass on all systems)
 
@@ -271,3 +273,5 @@ src_files[file_has_pragmas] %>%
 #'   warnings about a flexible-legth member using gcc or clang (-Wpedantic).
 #'   See https://github.com/paleolimbot/libproj/blob/v8.1.0-1/src/include/R-libproj/proj_internal.h#L597-L614
 #'
+browseURL("https://github.com/paleolimbot/libproj/blob/v8.1.0-1/src/include/R-libproj/proj_internal.h#L597-L614")
+usethis::edit_file("src/include/R-libproj/proj_internal.h")
