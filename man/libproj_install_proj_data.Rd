@@ -5,11 +5,7 @@
 \alias{libproj_has_proj_data}
 \title{Download and install PROJ data files}
 \usage{
-libproj_install_proj_data(
-  where = libproj_default_data_dir(),
-  overwrite = NA,
-  quiet = FALSE
-)
+libproj_install_proj_data(where = NULL, overwrite = NA, quiet = FALSE)
 
 libproj_has_proj_data(where = libproj_default_data_dir())
 }

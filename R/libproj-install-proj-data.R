@@ -21,7 +21,26 @@
 #' libproj_install_proj_data()
 #' }
 #'
-libproj_install_proj_data <- function(where = libproj_default_data_dir(), overwrite = NA, quiet = FALSE) {
+libproj_install_proj_data <- function(where = NULL, overwrite = NA, quiet = FALSE) {
+  if (is.null(where)) {
+    where <- libproj_default_data_dir()
+    if (!quiet) message("Using `where = libproj_default_data_dir()`")
+  }
+
+  if (is.null(where)) {
+    stop(
+      paste0(
+        '`where` is unspecified and options(libproj.default_data_dir = "") is unset.\n',
+        'It is recommended to install the data to `rappdirs::user_data_dir("R-libproj")`\n',
+        'and persist this value between sessions by adding \n',
+        '`options(libproj.default_data_dir = rappdirs::user_data_dir("R-libproj"))`\n',
+        'to your .Rprofile (e.g., by running `usethis::edit_r_profile()`)'
+      )
+    )
+  } else {
+    stopifnot(is.character(where), length(where) == 1)
+  }
+
   if (!quiet) message("Checking for latest PROJ-data package at https://github.com/OSGeo/PROJ-data/releases/latest")
   result <- gh::gh("/repos/OSGeo/PROJ-data/releases/latest")
 

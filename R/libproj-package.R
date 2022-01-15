@@ -77,8 +77,7 @@ libproj_has_libcurl <- function() {
 #' @export
 libproj_default_writable_dir <- function() {
   # we have to use a temporary directory that's cleaned up on
-  # unload to comply with CRAN policies that are not compatible with
-  # rappdirs choice of the user data directory
+  # unload to maximize reproducibility
   temp_dir_internal
 }
 
@@ -89,7 +88,22 @@ libproj_default_data_dir <- function() {
   # (i.e., until a user explicitly creates it and installs the data
   # there) to comply with CRAN policy about writing to the home
   # directory.
-  path.expand(file.path(rappdirs::user_data_dir("R-libproj"), "data"))
+  opt <- getOption(
+    "libproj.default_data_dir",
+    Sys.getenv("R_LIBPROJ_DEFAULT_DATA_DIR", "")
+  )
+
+  if (identical(opt, "")) {
+    NULL
+  } else {
+    tryCatch(
+      as.character(opt),
+      error = function(e) {
+        warning(conditionMessage(e))
+        NULL
+      }
+    )
+  }
 }
 
 #' @rdname libproj_version
@@ -129,7 +143,7 @@ warn_for_configuration <- function() {
         "Package 'libproj' is running without data files installed or network enabled\n",
         "which may lead to unexpected coordinate transforms. Silence this message by:\n",
         "- Running `libproj::libproj_install_proj_data()`\n",
-        "- Adding `options(libproj.search_path = \"path/to/proj_data\")` to your .Rprofile\n",
+        "- Adding `options(libproj.default_data_dir = \"path/to/proj_data\")` to your .Rprofile\n",
         "- Adding `options(libproj.network_enabled = TRUE)` to your .Rprofile\n",
         "- Adding `options(libproj.check_data_installed = FALSE)` to your .Rprofile\n",
         "...and restarting your R session."
@@ -141,7 +155,7 @@ warn_for_configuration <- function() {
 #' @rdname libproj_version
 #' @export
 libproj_configure <- function(
-  search_path = c(system.file("proj", package = "libproj"), getOption("libproj.search_path", libproj_default_data_dir())),
+  search_path = c(system.file("proj", package = "libproj"), libproj_default_data_dir()),
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package = "libproj")),
   ca_bundle_path = NA,
   network_endpoint =  getOption("libproj.network_endpoint", "https://cdn.proj.org"),

@@ -29,8 +29,7 @@ libproj_configuration()
 warn_for_configuration()
 
 libproj_configure(
-  search_path = c(system.file("proj", package = "libproj"),
-    getOption("libproj.search_path", libproj_default_data_dir())),
+  search_path = c(system.file("proj", package = "libproj"), libproj_default_data_dir()),
   db_path = getOption("libproj.db_path", system.file("proj/proj.db", package =
     "libproj")),
   ca_bundle_path = NA,

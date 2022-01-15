@@ -34,5 +34,3 @@ Suggests:
     testthat
 URL: https://paleolimbot.github.io/libproj/, https://github.com/paleolimbot/libproj
 BugReports: https://github.com/paleolimbot/libproj/issues
-Imports: 
-    rappdirs
