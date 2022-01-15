@@ -21,7 +21,7 @@ extern "C" {
 
 #define PROJ_VERSION_MAJOR 8
 #define PROJ_VERSION_MINOR 2
-#define PROJ_VERSION_PATCH 0
+#define PROJ_VERSION_PATCH 1
 
 // how integer versions are calculated
 #define LIBPROJ_VERSION_INT(major, minor, patch) (patch + minor * 100 + major * 10000)
