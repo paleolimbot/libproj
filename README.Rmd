@@ -58,19 +58,24 @@ libproj_configuration()
 You probably want to install the [PROJ-data files](https://github.com/OSGeo/PROJ-data) or turn on network access (by setting `options(libproj.network_enabled = TRUE)` in your .Rprofile) to ensure that datum transforms are handled correctly. The preferred approach is to install all the data files (~600 MB).
 
 ``` r
+# put this in your .Rprofile to persist this value between sessions
+# (e.g., with `usethis::edit_r_profile()`)
+options(libproj.default_data_dir = rappdirs::user_data_dir("R-libproj"))
 libproj_install_proj_data()
 ```
 
+    Using `where = libproj_default_data_dir()`
     Checking for latest PROJ-data package at https://github.com/OSGeo/PROJ-data/releases/latest
-    Downloading 'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip' (558 MB)
-    trying URL 'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip'
-    Content type 'application/octet-stream' length 585582140 bytes (558.5 MB)
+    Downloading 'https://github.com/OSGeo/PROJ-data/releases/download/1.8.0/proj-data-1.8.zip' (560 MB)
+    trying URL 'https://github.com/OSGeo/PROJ-data/releases/download/1.8.0/proj-data-1.8.zip'
+    Content type 'application/octet-stream' length 586840379 bytes (559.7 MB)
     ==================================================
-    downloaded 558.5 MB
+    downloaded 559.7 MB
     
-    Extracting '/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmplU9vQO/filed4072e1fa820.zip' to '/Users/dewey/Library/Application Support/R-libproj/data'
-    Saving a record of the install to '/Users/dewey/Library/Application Support/R-libproj/data/.libproj_install_proj_data'
+    Extracting '/var/folders/gt/l87wjg8s7312zs9s7c1fgs900000gn/T//RtmpqCIieN/file11be83a6fd69.zip' to '~/Library/Application Support/R-libproj'
+    Saving a record of the install to '~/Library/Application Support/R-libproj/.libproj_install_proj_data'
     Done.
+
 
 ## Example
 
