@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">libproj</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">8.2.0-1</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">8.2.1-1</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $search_path</span>
 <span class="co">#&gt; [1] "/Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library/libproj/proj"</span>
-<span class="co">#&gt; [2] "/Users/deweydunnington/Library/Application Support/R-libproj/data"                </span>
+<span class="co">#&gt; [2] "~/Library/Application Support/R-libproj"                                          </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $network_endpoint</span>
 <span class="co">#&gt; [1] "https://cdn.proj.org"</span>
@@ -116,17 +116,21 @@
 <span class="co">#&gt; [1] FALSE</span></code></pre></div>
 <p>You probably want to install the <a href="https://github.com/OSGeo/PROJ-data" class="external-link">PROJ-data files</a> or turn on network access (by setting <code>options(libproj.network_enabled = TRUE)</code> in your .Rprofile) to ensure that datum transforms are handled correctly. The preferred approach is to install all the data files (~600 MB).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/libproj_install_proj_data.html">libproj_install_proj_data</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>Checking <span class="cf">for</span> latest PROJ<span class="op">-</span>data package at https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>OSGeo<span class="op">/</span>PROJ<span class="op">-</span>data<span class="op">/</span>releases<span class="op">/</span>latest</span>
-<span id="cb5-2"><a href="#cb5-2"></a>Downloading <span class="st">'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip'</span> (<span class="dv">558</span> MB)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>trying URL <span class="st">'https://github.com/OSGeo/PROJ-data/releases/download/1.6.0/proj-data-1.6.zip'</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>Content type <span class="st">'application/octet-stream'</span> length <span class="dv">585582140</span> <span class="kw">bytes</span> (<span class="fl">558.5</span> MB)</span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="op">==</span><span class="er">================================================</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>downloaded <span class="fl">558.5</span> MB</span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a>Extracting <span class="st">'/var/folders/bq/2rcjstv90nx1_wrt8d3gqw6m0000gn/T//RtmplU9vQO/filed4072e1fa820.zip'</span> to <span class="st">'/Users/dewey/Library/Application Support/R-libproj/data'</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>Saving a record of the install to <span class="st">'/Users/dewey/Library/Application Support/R-libproj/data/.libproj_install_proj_data'</span></span>
-<span id="cb5-10"><a href="#cb5-10"></a>Done.</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># put this in your .Rprofile to persist this value between sessions</span>
+<span class="co"># (e.g., with `usethis::edit_r_profile()`)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>libproj.default_data_dir <span class="op">=</span> <span class="fu">rappdirs</span><span class="fu">::</span><span class="fu"><a href="https://rappdirs.r-lib.org/reference/user_data_dir.html" class="external-link">user_data_dir</a></span><span class="op">(</span><span class="st">"R-libproj"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="reference/libproj_install_proj_data.html">libproj_install_proj_data</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>Using <span class="st">`</span><span class="dt">where = libproj_default_data_dir()</span><span class="st">`</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>Checking <span class="cf">for</span> latest PROJ<span class="op">-</span>data package at https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>OSGeo<span class="op">/</span>PROJ<span class="op">-</span>data<span class="op">/</span>releases<span class="op">/</span>latest</span>
+<span id="cb5-3"><a href="#cb5-3"></a>Downloading <span class="st">'https://github.com/OSGeo/PROJ-data/releases/download/1.8.0/proj-data-1.8.zip'</span> (<span class="dv">560</span> MB)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>trying URL <span class="st">'https://github.com/OSGeo/PROJ-data/releases/download/1.8.0/proj-data-1.8.zip'</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>Content type <span class="st">'application/octet-stream'</span> length <span class="dv">586840379</span> <span class="kw">bytes</span> (<span class="fl">559.7</span> MB)</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="op">==</span><span class="er">================================================</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>downloaded <span class="fl">559.7</span> MB</span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a>Extracting <span class="st">'/var/folders/gt/l87wjg8s7312zs9s7c1fgs900000gn/T//RtmpqCIieN/file11be83a6fd69.zip'</span> to <span class="st">'~/Library/Application Support/R-libproj'</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>Saving a record of the install to <span class="st">'~/Library/Application Support/R-libproj/.libproj_install_proj_data'</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>Done.</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
